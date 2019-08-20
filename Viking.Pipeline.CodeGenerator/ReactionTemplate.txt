@@ -1,0 +1,66 @@
+﻿using System;
+using System.Linq;
+
+namespace Viking.Pipeline
+{
+    public partial class ReactionPipelineStage<$GenericParameters$> : IPipelineStage
+    {
+		public ReactionPipelineStage(
+			Action<$GenericParameters$> reaction, 
+			$ConstructorParameters$) :
+			this(GetDefaultName($RepassingParameters$), reaction, $RepassingParameters$) { }
+
+		public ReactionPipelineStage(
+			string name, 
+			Action<$GenericParameters$> reaction, 
+			$ConstructorParameters$) :
+			this(name, reaction, $RepassingParameters$, true) { }
+
+		public ReactionPipelineStage(
+			string name, 
+			Action<$GenericParameters$> reaction, 
+			$ConstructorParameters$, 
+			bool reactImmediately)
+		{
+			Name = name ?? throw new ArgumentNullException(nameof(name));
+			Reaction = reaction ?? throw new ArgumentNullException(nameof(reaction));
+			$ConstructorAssignment$
+			this.AddDependencies($RepassingParameters$);
+			if(reactImmediately)
+				Reaction($Getters$);
+		}
+
+		public string Name { get; }
+		public Action<$GenericParameters$> Reaction { get; }
+		$ClassFields$
+
+		public void OnInvalidate(IPipelineInvalidator invalidator)
+		{
+			invalidator.InvalidateAllDependentStages(this);
+			Reaction($Getters$);
+		}
+
+		public override string ToString() => $"{Name} - Reaction is {Reaction.GetDetailedStringRepresentation()}";
+
+		private static string GetDefaultName(params IPipelineStage[] stages) => $"Reaction to {string.Join(", ", stages.Select(p=>"'" + p.Name + "'"))}";
+    }
+
+	public static partial class PipelineReactions
+	{
+		public static IPipelineStage Create<$GenericParameters$>(
+			Action<$GenericParameters$> reaction, 
+			$ConstructorParameters$)
+			=> new ReactionPipelineStage<$GenericParameters$>(
+				reaction,
+				$RepassingParameters$);
+
+		public static IPipelineStage Create<$GenericParameters$>(
+			string name, 
+			Action<$GenericParameters$> reaction, 
+			$ConstructorParameters$)
+			=> new ReactionPipelineStage<$GenericParameters$>(
+				name,
+				reaction,
+				$RepassingParameters$);
+	}
+}

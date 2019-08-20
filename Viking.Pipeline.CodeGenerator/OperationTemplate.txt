@@ -1,0 +1,40 @@
+﻿using System;
+
+namespace Viking.Pipeline
+{
+    public class OperationPipelineStage<$GenericParameters$, TOutput> : IPipelineStage<TOutput>
+    {
+		public OperationPipelineStage(
+			string name, 
+			Func<$GenericParameters$, TOutput> operation, 
+			$ConstructorParameters$)
+		{
+			Name = name ?? throw new ArgumentNullException(nameof(name));
+			Operation = operation ?? throw new ArgumentNullException(nameof(operation));
+			$ConstructorAssignment$
+			this.AddDependencies($RepassingParameters$);
+		}
+
+		public string Name { get; }
+		public Func<$GenericParameters$, TOutput> Operation { get; }
+		$ClassFields$
+
+		public TOutput GetValue() => Operation($Getters$);
+
+		public void OnInvalidate(IPipelineInvalidator invalidator) => invalidator.InvalidateAllDependentStages(this);
+
+		public override string ToString() => $"{Name} - Operation is {Operation.GetDetailedStringRepresentation()}";
+    }
+
+	public static partial class PipelineOperations
+	{
+		public static IPipelineStage<TOutput> Create<$GenericParameters$, TOutput>(
+			string name, 
+			Func<$GenericParameters$, TOutput> operation, 
+			$ConstructorParameters$)
+			=> new OperationPipelineStage<$GenericParameters$, TOutput>(
+				name,
+				operation,
+				$RepassingParameters$);
+	}
+}
