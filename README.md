@@ -8,13 +8,14 @@ To consume the data and react to changes, reactions can be created. Much like Ev
 
 ## Features
 The pipeline library offers things like:
-* Exception messages detailing what, where, and how exception appeared in the pipeline, along with all the preceding stages.
+* Automatic propagation of updated values.
 * Eliminating double-calls during propagation using topology sorting.
 * Automatic cycle detection and exceptions.
+* Exception messages detailing what, where, and how exception appeared in the pipeline, along with all the preceding stages.
 * Automatic detection of concurrent propagations potentially conflicting with each other.
-* Automatic handling of detachment on GC of objects. No more memory leaks like in Events*!
+* Automatic handling of detachment on GC of pipeline objects. No more memory leaks like in Events*!
 
-_\* Subject to the shenananigans programmers do because we just love to make our own lives misserable_
+_\* Subject to the shenananigans programmers sometimes do because we just love to make our own lives misserable_
 
 ## Simple Examples
 Using the library is simple, and syntax is minimal for most operations. 
