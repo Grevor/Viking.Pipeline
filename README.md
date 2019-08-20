@@ -36,7 +36,7 @@ var reaction =
   .CreateReaction(value => Console.WriteLine("New value is: " + value.ToString()));
 ```
 
-The pipeline enables fairly simple extending: Simply create classes which extends IPipelineStage or IPipelineStage<T>, 
+The pipeline enables fairly simple extending: Simply create classes which extends `IPipelineStage` or `IPipelineStage<T>`, 
 depending on if the stage has output or not.
 All built-in functionality such as `WithCache()` or `CreateReaction()` will automatically be available, along with other neat methods.
 A pipeline stage which conditionally stopped propagation based on a flag set on the stage itself would perhaps look like:
