@@ -1,4 +1,6 @@
 # Viking.Pipeline
+**Note: Still in BETA stages**
+
 Declarative library for C# data processing.
 
 This library enables you to create a declarative, functional description of how data flows through your application. 
