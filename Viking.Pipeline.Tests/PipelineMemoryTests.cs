@@ -17,7 +17,7 @@ namespace Viking.Pipeline.Tests
 
             for (int i = 0; i < 100; ++i)
                 CreateMemoryPressure(1024 * 1024);
-            GC.Collect(2, GCCollectionMode.Forced, true);
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
 
             Assert.Less(source.GetAllDependentStages().Count(), 10000);
 

@@ -2,9 +2,9 @@
 
 namespace Viking.Pipeline
 {
-    public class PlugAndPlayPipelineStage<TValue> : IPipelineStage<TValue>
+    public class SourceSelectPipelineStage<TValue> : IPipelineStage<TValue>
     {
-        public PlugAndPlayPipelineStage(string name, IPipelineStage<TValue> source)
+        public SourceSelectPipelineStage(string name, IPipelineStage<TValue> source)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Source = source ?? throw new ArgumentNullException(nameof(source));
@@ -14,7 +14,9 @@ namespace Viking.Pipeline
         public string Name { get; }
         public IPipelineStage<TValue> Source { get; private set; }
 
-        public void ChangeSource(IPipelineStage<TValue> source)
+        public void SetSource(IPipelineStage<TValue> source) => SetSource(source, true);
+        public void SetSourceWithoutInvalidating(IPipelineStage<TValue> source) => SetSource(source, false);
+        private void SetSource(IPipelineStage<TValue> source, bool invalidate)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -25,6 +27,9 @@ namespace Viking.Pipeline
             this.RemoveDependencies(Source);
             Source = source;
             this.AddDependencies(source);
+
+            if (invalidate)
+                this.Invalidate();
         }
 
         public TValue GetValue() => Source.GetValue();

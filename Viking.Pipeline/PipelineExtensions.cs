@@ -13,7 +13,7 @@ namespace Viking.Pipeline
         public static IPipelineStage<T> WithNewName<T>(this IPipelineStage<T> stage, string name) => new PassThroughPipelineStage<T>(name, stage);
         public static IPipelineStage<T> AsAsync<T>(this IPipelineStage<T> stage) => new AsyncPipelineStage<T>(stage);
         public static IPipelineStage<T> AsEager<T>(this IPipelineStage<T> stage) => new EagerPipelineStage<T>(stage);
-        public static IPipelineStage<T> WithConditionalSuspender<T>(this IPipelineStage<T> stage, IPipelineStage<PipelineSuspending> suspender) => new SuspendingPipelineStage<T>(stage, suspender);
+        public static IPipelineStage<T> WithConditionalSuspender<T>(this IPipelineStage<T> stage, IPipelineStage<PipelineSuspension> suspender) => new SuspendingPipelineStage<T>(stage, suspender);
         public static IPipelineStage<T> ExceptWhen<T>(this IPipelineStage<T> stage, params IPipelineStage[] mutuallyExclusiveStages) => new MutuallyExclusivePipelineStage<T>(stage, mutuallyExclusiveStages);
 
         public static IPipelineStage<T> WithEqualityCheck<T>(this IPipelineStage<T> stage) => new EqualityCheckerPipelineStage<T>(stage);

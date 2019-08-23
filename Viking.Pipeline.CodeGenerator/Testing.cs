@@ -13,7 +13,7 @@ namespace Viking.Pipeline.CodeGenerator
             var two = 2.AsPipelineConstant();
 
             var value = new AssignablePipelineStage<int>("integer", 0);
-            var suspension = new AssignablePipelineStage<PipelineSuspending>("suspender", PipelineSuspending.Resume);
+            var suspension = new AssignablePipelineStage<PipelineSuspension>("suspender", PipelineSuspension.Resume);
 
             var multiply = PipelineOperations.Create("multiply", Multiply, value, two);
             var cache = multiply.WithCache();

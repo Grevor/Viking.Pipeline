@@ -2,16 +2,16 @@
 
 namespace Viking.Pipeline
 {
-    public enum PipelineSuspending
+    public enum PipelineSuspension
     {
         Resume,
-        ResumeWithoutPending,
+        ResumeWithoutPendingInvalidates,
         Suspend
     }
 
     public class SuspendingPipelineStage<TValue> : IPipelineStage<TValue>
     {
-        public SuspendingPipelineStage(IPipelineStage<TValue> input, IPipelineStage<PipelineSuspending> suspend)
+        public SuspendingPipelineStage(IPipelineStage<TValue> input, IPipelineStage<PipelineSuspension> suspend)
         {
             Input = input ?? throw new ArgumentNullException(nameof(input));
             Suspend = suspend ?? throw new ArgumentNullException(nameof(suspend));
@@ -20,29 +20,30 @@ namespace Viking.Pipeline
         }
 
         public IPipelineStage<TValue> Input { get; }
-        public IPipelineStage<PipelineSuspending> Suspend { get; }
+        public IPipelineStage<PipelineSuspension> Suspend { get; }
         public string Name { get; }
 
-        public PipelineSuspending SuspensionState => Suspend.GetValue();
+        public PipelineSuspension SuspensionState => Suspend.GetValue();
         public bool HasPendingInvalidate { get; private set; }
 
         public TValue GetValue() => Input.GetValue();
 
         public void OnInvalidate(IPipelineInvalidator invalidator)
         {
-            var shouldInvalidate = HasPendingInvalidate;
+            var invalidateFromInput = invalidator.IsInvalidated(Input);
+            var shouldInvalidate = HasPendingInvalidate || invalidateFromInput;
             switch (SuspensionState)
             {
-                case PipelineSuspending.Resume:
+                case PipelineSuspension.Resume:
                     HasPendingInvalidate = false;
                     break;
-                case PipelineSuspending.Suspend:
-                    HasPendingInvalidate = true;
+                case PipelineSuspension.Suspend:
+                    HasPendingInvalidate = shouldInvalidate;
                     shouldInvalidate = false;
                     break;
-                case PipelineSuspending.ResumeWithoutPending:
+                case PipelineSuspension.ResumeWithoutPendingInvalidates:
                     HasPendingInvalidate = false;
-                    shouldInvalidate = false;
+                    shouldInvalidate = invalidateFromInput;
                     break;
             }
 
