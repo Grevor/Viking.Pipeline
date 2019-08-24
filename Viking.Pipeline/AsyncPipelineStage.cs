@@ -3,8 +3,17 @@ using System.Threading.Tasks;
 
 namespace Viking.Pipeline
 {
-    public class AsyncPipelineStage<TValue> : IPipelineStage<TValue>
+    /// <summary>
+    /// Retrieves upstream values in an async-await fashion.
+    /// </summary>
+    /// <typeparam name="TValue">The value type.</typeparam>
+    public sealed class AsyncPipelineStage<TValue> : IPipelineStage<TValue>
     {
+        /// <summary>
+        /// Creates a new <see cref="AsyncPipelineStage{TValue}"/> with the specified input.
+        /// </summary>
+        /// <param name="input">The stage which to retrieve value from asynchronously.</param>
+        /// <exception cref="ArgumentNullException">If <paramref name="input"/> is null.</exception>
         public AsyncPipelineStage(IPipelineStage<TValue> input)
         {
             Input = input ?? throw new ArgumentNullException(nameof(input));
@@ -12,6 +21,9 @@ namespace Viking.Pipeline
             this.AddDependencies(input);
         }
 
+        /// <summary>
+        /// Gets the stage which will have its value retrieved asynchronously.
+        /// </summary>
         public IPipelineStage<TValue> Input { get; }
         public string Name { get; }
 

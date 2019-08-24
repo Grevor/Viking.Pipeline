@@ -2,16 +2,33 @@
 
 namespace Viking.Pipeline
 {
-    public class ConstantPipelineStage<TValue> : IPipelineStage<TValue>
+    /// <summary>
+    /// Makes a constant value available to the pipeline.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the value.</typeparam>
+    public sealed class ConstantPipelineStage<TValue> : IPipelineStage<TValue>
     {
+        /// <summary>
+        /// Creates a new <see cref="ConstantPipelineStage{TValue}"/> with the specified value.
+        /// </summary>
+        /// <param name="constant">The constant.</param>
         public ConstantPipelineStage(TValue constant) : this(constant?.ToString() ?? "<null>", constant) { }
+        /// <summary>
+        /// Creates a new <see cref="ConstantPipelineStage{TValue}"/> with the specified name and value.
+        /// </summary>
+        /// <param name="name">The name of the constant.</param>
+        /// <param name="constant">The constant.</param>
+        /// <exception cref="ArgumentNullException">If <paramref name="name"/> is null.</exception>
         public ConstantPipelineStage(string name, TValue constant)
         {
-            Name = name;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
             Value = constant;
         }
 
         public string Name { get; }
+        /// <summary>
+        /// The constant value.
+        /// </summary>
         public TValue Value { get; }
 
         public TValue GetValue() => Value;

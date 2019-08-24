@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Viking.Pipeline
 {
+    /// <summary>
+    /// Contains extension methods for pipeline objects.
+    /// </summary>
     public static partial class PipelineCore
     {
         /// <summary>
@@ -76,8 +79,28 @@ namespace Viking.Pipeline
         public static IPipelineStage<TOut> Cast<TIn, TOut>(this IPipelineStage<TIn> stage) where TIn : TOut
             => PipelineOperations.Create("Cast to " + typeof(TOut).Name + " for: " + stage.Name, a => (TOut)a, stage);
 
+        /// <summary>
+        /// Adds an <see cref="EqualityCheckerPipelineStage{TValue}"/> after this stage.
+        /// </summary>
+        /// <typeparam name="T">The type.</typeparam>
+        /// <param name="stage">The stage to add equality checking for.</param>
+        /// <returns>The equality checking stage.</returns>
         public static IPipelineStage<T> WithEqualityCheck<T>(this IPipelineStage<T> stage) => new EqualityCheckerPipelineStage<T>(stage);
+        /// <summary>
+        /// Adds an <see cref="EqualityCheckerPipelineStage{TValue}"/> after this stage.
+        /// </summary>
+        /// <typeparam name="T">The type.</typeparam>
+        /// <param name="stage">The stage to add equality checking for.</param>
+        /// <param name="comparer">The <see cref="IEqualityComparer{T}"/> to use when comparing for equality.</param>
+        /// <returns>The equality checking stage.</returns>
         public static IPipelineStage<T> WithEqualityCheck<T>(this IPipelineStage<T> stage, IEqualityComparer<T> comparer) => new EqualityCheckerPipelineStage<T>(stage, comparer);
+        /// <summary>
+        /// Adds an <see cref="EqualityCheckerPipelineStage{TValue}"/> after this stage.
+        /// </summary>
+        /// <typeparam name="T">The type.</typeparam>
+        /// <param name="stage">The stage to add equality checking for.</param>
+        /// <param name="comparer">The compare function to use when comparing for equality.</param>
+        /// <returns>The equality checking stage.</returns>
         public static IPipelineStage<T> WithEqualityCheck<T>(this IPipelineStage<T> stage, EqualityCheck<T> comparer) => new EqualityCheckerPipelineStage<T>(stage, comparer);
 
         /// <summary>

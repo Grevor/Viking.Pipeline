@@ -4,8 +4,10 @@ using System.Linq;
 
 namespace Viking.Pipeline
 {
-    public delegate bool EqualityChecker<T>(T x, T y);
-    public class PipelineComparers
+    /// <summary>
+    /// Provides functions to create comparers.
+    /// </summary>
+    public static class PipelineComparers
     {
 
         /// <summary>

@@ -19,7 +19,6 @@ namespace Viking.Pipeline.CodeGenerator
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
 
-
             for(int i = 1; i < toGenerate + 1; ++i)
             {
                 var generator = new Generator(new PepeHands(i));

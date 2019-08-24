@@ -101,10 +101,29 @@ namespace Viking.Pipeline.Tests
 
             cache.InvalidateCache();
             test.AssertInvalidations(1);
+        }
+
+        [Test]
+        public void MultipleInvalidationsOfCacheDoesNotLeadToMoreThanOneInvalidation()
+        {
+            var cache = CreateCache(1.AsPipelineConstant());
+            var test = cache.AttachTestStage();
+
+            cache.GetValue(); // to validate cache.
+            Assert.IsTrue(cache.IsValid);
+            test.AssertInvalidations(0);
 
             cache.InvalidateCache();
-            test.AssertInvalidations(2);
+            test.AssertInvalidations(1);
+
+            cache.InvalidateCache();
+            cache.InvalidateCache();
+            cache.InvalidateCache();
+            cache.InvalidateCache();
+            test.AssertInvalidations(1);
         }
+
+        private class Counter { public int I { get; set; } public void Increment() => I++; }
 
 
         public AssignablePipelineStage<int> GetAssignable(int initial) => new AssignablePipelineStage<int>("", initial);

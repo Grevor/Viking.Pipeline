@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace Viking.Pipeline
 {
+    /// <summary>
+    /// The core of the pipeline. Contains core functionality like add/remove dependencies and invalidate.
+    /// </summary>
     public static partial class PipelineCore
     {
         private const int MinimumOperationsRequiredBeforeCleanup = 100;

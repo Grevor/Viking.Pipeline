@@ -2,8 +2,18 @@
 
 namespace Viking.Pipeline
 {
-    public class SourceSelectPipelineStage<TValue> : IPipelineStage<TValue>
+    /// <summary>
+    /// Enables selecting between any number of pipeline stages as output.
+    /// </summary>
+    /// <typeparam name="TValue">The type of output from this stage.</typeparam>
+    public sealed class SourceSelectPipelineStage<TValue> : IPipelineStage<TValue>
     {
+        /// <summary>
+        /// Creates a new <see cref="SourceSelectPipelineStage{TValue}"/> with the specified name and initial source.
+        /// </summary>
+        /// <param name="name">The name of this stage. Must not be null.</param>
+        /// <param name="source">The initial source. Must no be null.</param>
+        /// <exception cref="ArgumentNullException">If either <paramref name="name"/> or <paramref name="source"/> is null.</exception>
         public SourceSelectPipelineStage(string name, IPipelineStage<TValue> source)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
@@ -12,9 +22,23 @@ namespace Viking.Pipeline
         }
 
         public string Name { get; }
+
+        /// <summary>
+        /// Gets the currently selected source.
+        /// </summary>
         public IPipelineStage<TValue> Source { get; private set; }
 
+        /// <summary>
+        /// Sets the source of this <see cref="SourceSelectPipelineStage{TValue}"/>.
+        /// </summary>
+        /// <param name="source">The new source. Must not be null.</param>
+        /// <exception cref="ArgumentNullException">If <paramref name="source"/> is null.</exception>
         public void SetSource(IPipelineStage<TValue> source) => SetSource(source, true);
+        /// <summary>
+        /// Sets the source of this <see cref="SourceSelectPipelineStage{TValue}"/> without notifying the rest of the pipeline.
+        /// </summary>
+        /// <param name="source">The new source. Must not be null.</param>
+        /// <exception cref="ArgumentNullException">If <paramref name="source"/> is null.</exception>
         public void SetSourceWithoutInvalidating(IPipelineStage<TValue> source) => SetSource(source, false);
         private void SetSource(IPipelineStage<TValue> source, bool invalidate)
         {

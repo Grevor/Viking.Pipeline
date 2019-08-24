@@ -1,10 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Viking.Pipeline
 {
-    public class MutuallyExclusivePipelineStage<TValue> : IPipelineStage<TValue>
+    /// <summary>
+    /// Conditionally propagates invalidations based on other stages invalidation state during propagation.
+    /// </summary>
+    /// <typeparam name="TValue">The output type.</typeparam>
+    public sealed class MutuallyExclusivePipelineStage<TValue> : IPipelineStage<TValue>
     {
+        /// <summary>
+        /// Creates a new <see cref="MutuallyExclusivePipelineStage{TValue}"/> with the specified input and mutually exclusive stages.
+        /// </summary>
+        /// <param name="input">The input stage.</param>
+        /// <param name="mutuallyExclusiveWith">The stages which, if invalidated at the time of propagation, will cause this stage to stop propagation.</param>
+        /// <exception cref="ArgumentNullException">If <paramref name="input"/> or <paramref name="mutuallyExclusiveWith"/> is null.</exception>
         public MutuallyExclusivePipelineStage(IPipelineStage<TValue> input, params IPipelineStage[] mutuallyExclusiveWith)
         {
             Input = input ?? throw new ArgumentNullException(nameof(input));
@@ -15,8 +26,14 @@ namespace Viking.Pipeline
         }
 
         public string Name { get; }
+        /// <summary>
+        /// Gets the input stage.
+        /// </summary>
         public IPipelineStage<TValue> Input { get; }
-        public IPipelineStage[] MutuallyExclusiveWith { get; }
+        /// <summary>
+        /// Gets all stages which will stop propagation of this stage if invalid.
+        /// </summary>
+        public IEnumerable<IPipelineStage> MutuallyExclusiveWith { get; }
 
         public TValue GetValue() => Input.GetValue();
 
