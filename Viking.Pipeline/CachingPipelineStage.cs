@@ -37,5 +37,7 @@ namespace Viking.Pipeline
             IsValid = false;
             invalidator.InvalidateAllDependentStages(this);
         }
+
+        public override string ToString() => FormattableString.Invariant($"Cache - Valid: {IsValid} Value: {Cached}");
     }
 }

@@ -25,6 +25,7 @@ namespace Viking.Pipeline
 
         public void OnInvalidate(IPipelineInvalidator invalidator) => invalidator.InvalidateAllDependentStages(this);
 
+        public override string ToString() => FormattableString.Invariant($"Async Retriever '{Input.Name}'");
 
         private class ResultCache
         {

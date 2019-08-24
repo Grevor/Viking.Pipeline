@@ -52,5 +52,7 @@ namespace Viking.Pipeline
             else
                 invalidator.Revalidate(this);
         }
+
+        public override string ToString() => FormattableString.Invariant($"Suspender - State: {SuspensionState} Pending: {HasPendingInvalidate} Input: '{Input.Name}'");
     }
 }

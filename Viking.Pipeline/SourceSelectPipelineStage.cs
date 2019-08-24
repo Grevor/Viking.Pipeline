@@ -35,5 +35,7 @@ namespace Viking.Pipeline
         public TValue GetValue() => Source.GetValue();
 
         public void OnInvalidate(IPipelineInvalidator invalidator) => invalidator.InvalidateAllDependentStages(this);
+
+        public override string ToString() => FormattableString.Invariant($"Source Selector - Current Source: '{Source.Name}'");
     }
 }

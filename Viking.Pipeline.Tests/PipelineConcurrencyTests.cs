@@ -20,7 +20,7 @@ namespace Viking.Pipeline.Tests
 
             Task.Run(() => value1.SetValue(1001));
             goAhead.WaitOne();
-            Assert.Throws<PipelineException>(() => value2.SetValue(1001));
+            var message = Assert.Throws<PipelineException>(() => value2.SetValue(1001));
         }
 
         [Test]

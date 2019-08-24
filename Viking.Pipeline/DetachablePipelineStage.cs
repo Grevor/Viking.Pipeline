@@ -1,4 +1,6 @@
-﻿namespace Viking.Pipeline
+﻿using System;
+
+namespace Viking.Pipeline
 {
     public class DetachablePipelineStage<TValue> : PassThroughPipelineStage<TValue>
     {
@@ -7,5 +9,7 @@
         }
 
         public void DetachFromPipeline() => this.UnlinkAllDependencies();
+
+        public override string ToString() => FormattableString.Invariant($"Detachable Stage - {Name}");
     }
 }

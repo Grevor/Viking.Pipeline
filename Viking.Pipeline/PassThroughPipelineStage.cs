@@ -17,5 +17,7 @@ namespace Viking.Pipeline
         public TValue GetValue() => Input.GetValue();
 
         public void OnInvalidate(IPipelineInvalidator invalidator) => invalidator.InvalidateAllDependentStages(this);
+
+        public override string ToString() => FormattableString.Invariant($"Pass-through - {Name}");
     }
 }

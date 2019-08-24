@@ -17,5 +17,7 @@ namespace Viking.Pipeline
         public TValue GetValue() => Input.GetValue();
 
         public void OnInvalidate(IPipelineInvalidator invalidator) { }
+
+        public override string ToString() => Name;
     }
 }

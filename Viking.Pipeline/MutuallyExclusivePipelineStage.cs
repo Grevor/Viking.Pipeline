@@ -27,5 +27,7 @@ namespace Viking.Pipeline
             else
                 invalidator.InvalidateAllDependentStages(this);
         }
+
+        public override string ToString() => Name;
     }
 }

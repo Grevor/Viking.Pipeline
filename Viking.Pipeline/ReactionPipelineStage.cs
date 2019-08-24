@@ -22,6 +22,8 @@ namespace Viking.Pipeline
             invalidator.InvalidateAllDependentStages(this);
             Reaction();
         }
+
+        public override string ToString() => Name;
     }
 
     public partial class ReactionPipelineStage<TInput1> : IPipelineStage<TInput1>

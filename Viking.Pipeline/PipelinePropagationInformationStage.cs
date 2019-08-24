@@ -30,5 +30,7 @@ namespace Viking.Pipeline
             LastInvalidationInformation = Extractor(invalidator);
             invalidator.InvalidateAllDependentStages(this);
         }
+
+        public override string ToString() => FormattableString.Invariant($"Pipeline Propagation Exctraction - {Name}");
     }
 }

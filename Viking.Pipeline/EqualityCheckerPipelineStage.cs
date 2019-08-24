@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace Viking.Pipeline
 {
@@ -36,5 +37,7 @@ namespace Viking.Pipeline
             else
                 invalidator.InvalidateAllDependentStages(this);
         }
+
+        public override string ToString() => FormattableString.Invariant($"Equality Checker - Comparer: {Comparer} LastValue: {(HasValue ? LastValue.ToString() : "<None yet>")}");
     }
 }
