@@ -5,11 +5,10 @@ namespace Viking.Pipeline.CodeGenerator
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             Generate("ReactionTemplate.txt", Environment.CurrentDirectory + @"\..\..\..\..\Viking.Pipeline\Generated\Reactions\ReactionPipelineStage$Number$.cs", 8);
             Generate("OperationTemplate.txt", Environment.CurrentDirectory + @"\..\..\..\..\Viking.Pipeline\Generated\Operations\OperationPipelineStage$Number$.cs", 8);
-            //Testing.Test();
         }
 
         private static void Generate(string template, string toFile, int toGenerate)
@@ -17,7 +16,6 @@ namespace Viking.Pipeline.CodeGenerator
             var templateText = File.ReadAllText(template);
 
             var dir = Path.GetDirectoryName(toFile);
-            var ss = Path.Combine(dir, "lol");
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
 
