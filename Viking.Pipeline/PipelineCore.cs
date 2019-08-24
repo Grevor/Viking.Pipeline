@@ -67,8 +67,9 @@ namespace Viking.Pipeline
         }
 
         public static void Invalidate(this IPipelineStage stage) => Invalidate(new[] { stage });
-        public static void Invalidate(this IEnumerable<IPipelineStage> stages) => Invalidate(stages);
-        public static void Invalidate(params IPipelineStage[] stages)
+        public static void Invalidate(this IEnumerable<IPipelineStage> stages) => InvalidatePipeline(stages);
+        public static void Invalidate(params IPipelineStage[] stages) => InvalidatePipeline(stages);
+        private static void InvalidatePipeline(IEnumerable<IPipelineStage> stages)
         {
             var propagation = new PipelinePropagation(stages, Dependencies);
             lock (Dependencies)
