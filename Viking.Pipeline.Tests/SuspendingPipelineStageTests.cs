@@ -5,7 +5,7 @@ namespace Viking.Pipeline.Tests
     [TestFixture]
     public class SuspendingPipelineStageTests
     {
-
+        [Test]
         public void PipelineStartsInExpectedState()
         {
             var sut = new SuspendingPipelineStage<double>(0.2.AsPipelineConstant(), Suspender(PipelineSuspensionState.Resume));
