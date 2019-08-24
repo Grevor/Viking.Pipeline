@@ -5,7 +5,16 @@ using System.Threading;
 
 namespace Viking.Pipeline.Tests
 {
-    public class TestPipelineStage<T> : IPipelineStage<T>
+    public interface ITestPipelineStage
+    {
+        long InvalidateDatum { get; }
+        HashSet<IPipelineStage> InvalidatedStages { get; }
+        int Invalidations { get; }
+        int RetrievedValuesCount { get; }
+        IPipelineStage StageUnderTest { get; }
+    }
+
+    public class TestPipelineStage<T> : IPipelineStage<T>, ITestPipelineStage
     {
         private static long InvalidateDatumSource = 0;
 
@@ -18,6 +27,7 @@ namespace Viking.Pipeline.Tests
         }
         public string Name { get; }
         public IPipelineStage<T> Stage { get; }
+        public IPipelineStage StageUnderTest => Stage;
 
         public List<T> RetrievedValues { get; } = new List<T>();
         public HashSet<IPipelineStage> InvalidatedStages { get; private set; } = new HashSet<IPipelineStage>();
@@ -33,15 +43,6 @@ namespace Viking.Pipeline.Tests
             return value;
         }
 
-        public void AssertStageInvalidated(IPipelineStage sut) => Assert.IsTrue(InvalidatedStages.Contains(sut), $"Stage {sut} was not invalidated when stage {Stage} was called.");
-        public void AssertStageNotInvalidated(IPipelineStage sut) => Assert.IsFalse(InvalidatedStages.Contains(sut), $"Stage {sut} was invalidated when stage {Stage} was called.");
-        public void AssertNotInvalidatedNorRetrieved() => AssertInvalidationsAndRetrievals(0, 0);
-        public void AssertInvalidationsAndRetrievals(int invalidations, int retrievals)
-        {
-            AssertInvalidations(invalidations);
-            AssertRetrievals(retrievals);
-        }
-
         public void OnInvalidate(IPipelineInvalidator invalidator)
         {
             InvalidateDatum = Interlocked.Increment(ref InvalidateDatumSource);
@@ -50,13 +51,21 @@ namespace Viking.Pipeline.Tests
             invalidator.InvalidateAllDependentStages(this);
         }
 
+        public void AssertStageInvalidated(IPipelineStage sut) => Assert.IsTrue(InvalidatedStages.Contains(sut), $"Stage {sut} was not invalidated when stage {Stage} was called.");
+        public void AssertStageNotInvalidated(IPipelineStage sut) => Assert.IsFalse(InvalidatedStages.Contains(sut), $"Stage {sut} was invalidated when stage {Stage} was called.");
+        public void AssertNotInvalidatedNorRetrieved() => AssertInvalidationsAndRetrievals(0, 0);
+        public void AssertInvalidationsAndRetrievals(int invalidations, int retrievals)
+        {
+            AssertInvalidations(invalidations);
+            AssertRetrievals(retrievals);
+        }
         public void AssertInvalidations(int invalidates) => Assert.AreEqual(invalidates, Invalidations, "Stage was not invalidated the expected number of times.");
         public void AssertRetrievals(int num) => Assert.AreEqual(num, RetrievedValuesCount, "Stage value was not retrieved the expected number of times.");
-        public void AssertInvalidatedBefore(params TestPipelineStage<T>[] stages)
+        public void AssertInvalidatedBefore(params ITestPipelineStage[] stages)
         {
             Assert.GreaterOrEqual(InvalidateDatum, 0, $"{Stage} has not been invalidated");
             foreach (var stage in stages)
-                Assert.Less(InvalidateDatum, stage.InvalidateDatum, $"Stage {stage.Stage} was invalidated before stage {Stage}");
+                Assert.Less(InvalidateDatum, stage.InvalidateDatum, $"Stage {stage.StageUnderTest} was invalidated before stage {StageUnderTest}");
         }
 
         internal void PrepareForNext() => InvalidatedStages.Clear();
