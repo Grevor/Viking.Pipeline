@@ -18,12 +18,18 @@ namespace Viking.Pipeline
         /// <returns>An <see cref="IEqualityComparer{T}"/> created from the specified function. Hashcode is still retrieved through <code>x.GetHashCode()</code>.</returns>
         public static IEqualityComparer<T> Equality<T>(EqualityCheck<T> equalityCheck) => new EqualityOnlyComparer<T>(equalityCheck);
         /// <summary>
-        /// Gets an equality comparer which compares two enumerable
+        /// Gets an equality comparer which checks if two sequences has the same items in the same order.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="elementComparer"></param>
-        /// <returns></returns>
+        /// <typeparam name="T">The element type.</typeparam>
+        /// <param name="elementComparer">The element comparer.</param>
+        /// <returns>The <see cref="IEqualityComparer{T}"/>.</returns>
         public static IEqualityComparer<IEnumerable<T>> SequenceEqualityComparer<T>(IEqualityComparer<T> elementComparer) => new EnumerableEqualityComparer<T>(elementComparer);
+        /// <summary>
+        /// Gets an equality comparer which checks if two sequences has the same items, but in any order.
+        /// </summary>
+        /// <typeparam name="T">The element type.</typeparam>
+        /// <param name="elementComparer">The element comparer.</param>
+        /// <returns>The <see cref="IEqualityComparer{T}"/>.</returns>
         public static IEqualityComparer<IEnumerable<T>> IgnoreOrderSequenceEqualityComparer<T>(IEqualityComparer<T> elementComparer) => new IgnoreOrderEnumerableEqualityComparer<T>(elementComparer);
 
 
