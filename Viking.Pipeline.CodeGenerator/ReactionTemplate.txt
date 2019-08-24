@@ -11,6 +11,12 @@ namespace Viking.Pipeline
 			this(GetDefaultName($RepassingParameters$), reaction, $RepassingParameters$) { }
 
 		public ReactionPipelineStage(
+			Action<$GenericParameters$> reaction, 
+			$ConstructorParameters$,
+			bool reactImmediately) :
+			this(GetDefaultName($RepassingParameters$), reaction, $RepassingParameters$, reactImmediately) { }
+
+		public ReactionPipelineStage(
 			string name, 
 			Action<$GenericParameters$> reaction, 
 			$ConstructorParameters$) :
@@ -55,6 +61,15 @@ namespace Viking.Pipeline
 				$RepassingParameters$);
 
 		public static IPipelineStage Create<$GenericParameters$>(
+			Action<$GenericParameters$> reaction, 
+			$ConstructorParameters$, 
+			bool reactImmediately)
+			=> new ReactionPipelineStage<$GenericParameters$>(
+				reaction,
+				$RepassingParameters$,
+				reactImmediately);
+
+		public static IPipelineStage Create<$GenericParameters$>(
 			string name, 
 			Action<$GenericParameters$> reaction, 
 			$ConstructorParameters$)
@@ -62,5 +77,16 @@ namespace Viking.Pipeline
 				name,
 				reaction,
 				$RepassingParameters$);
+
+		public static IPipelineStage Create<$GenericParameters$>(
+			string name, 
+			Action<$GenericParameters$> reaction, 
+			$ConstructorParameters$, 
+			bool reactImmediately)
+			=> new ReactionPipelineStage<$GenericParameters$>(
+				name,
+				reaction,
+				$RepassingParameters$,
+				reactImmediately);
 	}
 }

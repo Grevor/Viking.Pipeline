@@ -13,6 +13,14 @@ namespace Viking.Pipeline
 			this(GetDefaultName(input1, input2, input3), reaction, input1, input2, input3) { }
 
 		public ReactionPipelineStage(
+			Action<TInput1, TInput2, TInput3> reaction, 
+			IPipelineStage<TInput1> input1,
+			IPipelineStage<TInput2> input2,
+			IPipelineStage<TInput3> input3,
+			bool reactImmediately) :
+			this(GetDefaultName(input1, input2, input3), reaction, input1, input2, input3, reactImmediately) { }
+
+		public ReactionPipelineStage(
 			string name, 
 			Action<TInput1, TInput2, TInput3> reaction, 
 			IPipelineStage<TInput1> input1,
@@ -67,6 +75,17 @@ namespace Viking.Pipeline
 				input1, input2, input3);
 
 		public static IPipelineStage Create<TInput1, TInput2, TInput3>(
+			Action<TInput1, TInput2, TInput3> reaction, 
+			IPipelineStage<TInput1> input1,
+			IPipelineStage<TInput2> input2,
+			IPipelineStage<TInput3> input3, 
+			bool reactImmediately)
+			=> new ReactionPipelineStage<TInput1, TInput2, TInput3>(
+				reaction,
+				input1, input2, input3,
+				reactImmediately);
+
+		public static IPipelineStage Create<TInput1, TInput2, TInput3>(
 			string name, 
 			Action<TInput1, TInput2, TInput3> reaction, 
 			IPipelineStage<TInput1> input1,
@@ -76,5 +95,18 @@ namespace Viking.Pipeline
 				name,
 				reaction,
 				input1, input2, input3);
+
+		public static IPipelineStage Create<TInput1, TInput2, TInput3>(
+			string name, 
+			Action<TInput1, TInput2, TInput3> reaction, 
+			IPipelineStage<TInput1> input1,
+			IPipelineStage<TInput2> input2,
+			IPipelineStage<TInput3> input3, 
+			bool reactImmediately)
+			=> new ReactionPipelineStage<TInput1, TInput2, TInput3>(
+				name,
+				reaction,
+				input1, input2, input3,
+				reactImmediately);
 	}
 }
