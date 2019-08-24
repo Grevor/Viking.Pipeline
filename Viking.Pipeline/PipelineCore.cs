@@ -59,14 +59,51 @@ namespace Viking.Pipeline
             lock (Dependencies)
                 return CleanUp();
         }
-        public static IEnumerable<IPipelineStage> GetDependencies(this IPipelineStage stage)
+
+        /// <summary>
+        /// Gets the minimal pipeline graph where all the specified stages are included.
+        /// </summary>
+        /// <param name="stages">The stages.</param>
+        /// <returns>The pipeline graph. In case of errors, this might be invalid.</returns>
+        public static PipelineGraph GetPipelineGraphIncludingStages(IEnumerable<IPipelineStage> stages)
         {
-            lock (Dependencies)
-                return InternalGetDependencies(stage).Select(weak => weak.TryGetTarget(out var target) ? target : null).Where(t => t != null).ToList();
+            var graph = new PipelineGraph();
+            try
+            {
+                var propagation = new PipelinePropagation(stages, Dependencies);
+                lock (Dependencies)
+                    propagation.BuildPropagationTopology(stages, 0);
+
+                foreach (var s in propagation.CurrentPropagationTopology)
+                {
+                    graph.AddNode(s.Stage);
+                    foreach (var dep in s.Dependent)
+                        graph.AddEdge(s.Stage, dep);
+                }
+
+                return graph;
+            }
+            catch
+            {
+                graph.Invalidate();
+                return graph;
+            }
         }
 
+        /// <summary>
+        /// Invalidates this pipeline stage, propagating it through the pipeline.
+        /// </summary>
+        /// <param name="stage">The stage top invalidate.</param>
         public static void Invalidate(this IPipelineStage stage) => Invalidate(new[] { stage });
+        /// <summary>
+        /// Invalidates all specified pipeline stages.
+        /// </summary>
+        /// <param name="stages">The stages to invalidate.</param>
         public static void Invalidate(this IEnumerable<IPipelineStage> stages) => InvalidatePipeline(stages);
+        /// <summary>
+        /// Invalidates all specified pipeline stages.
+        /// </summary>
+        /// <param name="stages">The stages to invalidate.</param>
         public static void Invalidate(params IPipelineStage[] stages) => InvalidatePipeline(stages);
         private static void InvalidatePipeline(IEnumerable<IPipelineStage> stages)
         {
@@ -91,6 +128,11 @@ namespace Viking.Pipeline
             }
         }
 
+        /// <summary>
+        /// Add dependencies for this pipeline stage, propagation on their invalidation.
+        /// </summary>
+        /// <param name="dependee">The stage to add dependencies for.</param>
+        /// <param name="dependencies">The dependencies to add.</param>
         public static void AddDependencies(this IPipelineStage dependee, params IPipelineStage[] dependencies)
         {
             lock (Dependencies)
@@ -112,6 +154,11 @@ namespace Viking.Pipeline
                 MarkPipelineAsUpdated();
             }
         }
+        /// <summary>
+        /// Removes the specified dependencies from this stage.
+        /// </summary>
+        /// <param name="dependee">The stage to remove dependencies for.</param>
+        /// <param name="dependencies">The dependencies to remove.</param>
         public static void RemoveDependencies(this IPipelineStage dependee, params IPipelineStage[] dependencies)
         {
             lock (Dependencies)
@@ -131,6 +178,11 @@ namespace Viking.Pipeline
             }
         }
 
+        /// <summary>
+        /// Get all stages which depend in this stage.
+        /// </summary>
+        /// <param name="stage">The stage to get dependencies for.</param>
+        /// <returns>The dependent stages.</returns>
         public static IEnumerable<IPipelineStage> GetAllDependentStages(this IPipelineStage stage) =>
             InternalGetDependencies(stage)
             .Select(s => s.TryGetTarget(out var target) ? target : null)
