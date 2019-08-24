@@ -2,7 +2,7 @@
 
 namespace Viking.Pipeline
 {
-    public enum PipelineSuspension
+    public enum PipelineSuspensionState
     {
         Resume,
         ResumeWithoutPendingInvalidates,
@@ -11,7 +11,7 @@ namespace Viking.Pipeline
 
     public class SuspendingPipelineStage<TValue> : IPipelineStage<TValue>
     {
-        public SuspendingPipelineStage(IPipelineStage<TValue> input, IPipelineStage<PipelineSuspension> suspend)
+        public SuspendingPipelineStage(IPipelineStage<TValue> input, IPipelineStage<PipelineSuspensionState> suspend)
         {
             Input = input ?? throw new ArgumentNullException(nameof(input));
             Suspend = suspend ?? throw new ArgumentNullException(nameof(suspend));
@@ -20,10 +20,10 @@ namespace Viking.Pipeline
         }
 
         public IPipelineStage<TValue> Input { get; }
-        public IPipelineStage<PipelineSuspension> Suspend { get; }
+        public IPipelineStage<PipelineSuspensionState> Suspend { get; }
         public string Name { get; }
 
-        public PipelineSuspension SuspensionState => Suspend.GetValue();
+        public PipelineSuspensionState SuspensionState => Suspend.GetValue();
         public bool HasPendingInvalidate { get; private set; }
 
         public TValue GetValue() => Input.GetValue();
@@ -34,14 +34,14 @@ namespace Viking.Pipeline
             var shouldInvalidate = HasPendingInvalidate || invalidateFromInput;
             switch (SuspensionState)
             {
-                case PipelineSuspension.Resume:
+                case PipelineSuspensionState.Resume:
                     HasPendingInvalidate = false;
                     break;
-                case PipelineSuspension.Suspend:
+                case PipelineSuspensionState.Suspend:
                     HasPendingInvalidate = shouldInvalidate;
                     shouldInvalidate = false;
                     break;
-                case PipelineSuspension.ResumeWithoutPendingInvalidates:
+                case PipelineSuspensionState.ResumeWithoutPendingInvalidates:
                     HasPendingInvalidate = false;
                     shouldInvalidate = invalidateFromInput;
                     break;

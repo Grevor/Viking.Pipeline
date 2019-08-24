@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Viking.Pipeline
 {
@@ -8,7 +9,8 @@ namespace Viking.Pipeline
         {
             Reaction = reaction ?? throw new ArgumentNullException(nameof(reaction));
             Stages = stages ?? throw new ArgumentNullException(nameof(stages));
-            Name = "Reaction to ";
+            Name = "Reaction to {" + string.Join(", ", Stages.Select(s => s.Name)) + "}";
+            this.AddDependencies(stages);
         }
 
         public string Name { get; }

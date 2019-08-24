@@ -8,14 +8,14 @@ namespace Viking.Pipeline.Tests
 
         public void PipelineStartsInExpectedState()
         {
-            var sut = new SuspendingPipelineStage<double>(0.2.AsPipelineConstant(), Suspender(PipelineSuspension.Resume));
-            Assert.AreEqual(PipelineSuspension.Resume, sut.SuspensionState);
+            var sut = new SuspendingPipelineStage<double>(0.2.AsPipelineConstant(), Suspender(PipelineSuspensionState.Resume));
+            Assert.AreEqual(PipelineSuspensionState.Resume, sut.SuspensionState);
         }
 
-        [TestCase(PipelineSuspension.Resume, 1)]
-        [TestCase(PipelineSuspension.ResumeWithoutPendingInvalidates, 1)]
-        [TestCase(PipelineSuspension.Suspend, 0)]
-        public void InvalidateIsOnlyPropagatedInResumedSuspensionStates(PipelineSuspension state, int expectedInvalidations)
+        [TestCase(PipelineSuspensionState.Resume, 1)]
+        [TestCase(PipelineSuspensionState.ResumeWithoutPendingInvalidates, 1)]
+        [TestCase(PipelineSuspensionState.Suspend, 0)]
+        public void InvalidateIsOnlyPropagatedInResumedSuspensionStates(PipelineSuspensionState state, int expectedInvalidations)
         {
             var value = Assignable(10);
             var sut = new SuspendingPipelineStage<int>(value, Suspender(state));
@@ -29,19 +29,19 @@ namespace Viking.Pipeline.Tests
         public void ValueInvalidateWhileInSuspendedStateIsRememberedAsPending()
         {
             var value = Assignable(10);
-            var sut = new SuspendingPipelineStage<int>(value, Suspender(PipelineSuspension.Suspend));
+            var sut = new SuspendingPipelineStage<int>(value, Suspender(PipelineSuspensionState.Suspend));
 
             value.SetValue(11);
             Assert.IsTrue(sut.HasPendingInvalidate);
         }
 
-        [TestCase(PipelineSuspension.Resume, 1)]
-        [TestCase(PipelineSuspension.ResumeWithoutPendingInvalidates, 0)]
-        [TestCase(PipelineSuspension.Suspend, 0)]
-        public void PendingInvalidateIsEnactedWhenChangingState(PipelineSuspension resumeState, int expectedInvalidations)
+        [TestCase(PipelineSuspensionState.Resume, 1)]
+        [TestCase(PipelineSuspensionState.ResumeWithoutPendingInvalidates, 0)]
+        [TestCase(PipelineSuspensionState.Suspend, 0)]
+        public void PendingInvalidateIsEnactedWhenChangingState(PipelineSuspensionState resumeState, int expectedInvalidations)
         {
             var value = Assignable(10);
-            var state = Suspender(PipelineSuspension.Suspend);
+            var state = Suspender(PipelineSuspensionState.Suspend);
             var sut = new SuspendingPipelineStage<int>(value, state);
             var test = sut.AttachTestStage();
 
@@ -53,11 +53,11 @@ namespace Viking.Pipeline.Tests
             test.AssertInvalidations(expectedInvalidations);
         }
 
-        [TestCase(PipelineSuspension.Resume)]
-        [TestCase(PipelineSuspension.ResumeWithoutPendingInvalidates)]
-        public void ResumeWithoutInvalidationFromInputDoesNotInvalidateStage(PipelineSuspension resumeState)
+        [TestCase(PipelineSuspensionState.Resume)]
+        [TestCase(PipelineSuspensionState.ResumeWithoutPendingInvalidates)]
+        public void ResumeWithoutInvalidationFromInputDoesNotInvalidateStage(PipelineSuspensionState resumeState)
         {
-            var state = Suspender(PipelineSuspension.Suspend);
+            var state = Suspender(PipelineSuspensionState.Suspend);
             var sut = new SuspendingPipelineStage<int>(1.AsPipelineConstant(), state);
             var test = sut.AttachTestStage();
 
@@ -66,7 +66,7 @@ namespace Viking.Pipeline.Tests
         }
 
 
-        private static AssignablePipelineStage<PipelineSuspension> Suspender(PipelineSuspension state) => new AssignablePipelineStage<PipelineSuspension>("", state);
+        private static AssignablePipelineStage<PipelineSuspensionState> Suspender(PipelineSuspensionState state) => new AssignablePipelineStage<PipelineSuspensionState>("", state);
         private static AssignablePipelineStage<T> Assignable<T>(T initial) => new AssignablePipelineStage<T>("", initial);
     }
 }
