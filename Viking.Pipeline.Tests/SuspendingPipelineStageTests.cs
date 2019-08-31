@@ -65,6 +65,32 @@ namespace Viking.Pipeline.Tests
             test.AssertInvalidations(0);
         }
 
+        [TestCase(PipelineSuspensionState.Suspend, PipelineSuspensionState.Suspend, 0)]
+        [TestCase(PipelineSuspensionState.Suspend, PipelineSuspensionState.Resume, 1)]
+        [TestCase(PipelineSuspensionState.Suspend, PipelineSuspensionState.ResumeWithoutPendingInvalidates, 1)]
+
+        [TestCase(PipelineSuspensionState.Resume, PipelineSuspensionState.Suspend, 0)]
+        [TestCase(PipelineSuspensionState.Resume, PipelineSuspensionState.Resume, 1)]
+        [TestCase(PipelineSuspensionState.Resume, PipelineSuspensionState.ResumeWithoutPendingInvalidates, 1)]
+
+        [TestCase(PipelineSuspensionState.ResumeWithoutPendingInvalidates, PipelineSuspensionState.Suspend, 0)]
+        [TestCase(PipelineSuspensionState.ResumeWithoutPendingInvalidates, PipelineSuspensionState.Resume, 1)]
+        [TestCase(PipelineSuspensionState.ResumeWithoutPendingInvalidates, PipelineSuspensionState.ResumeWithoutPendingInvalidates, 1)]
+        public void NewValueAndChangedStageAtTheSameTimeHasTheIntendedReaction(PipelineSuspensionState initial, PipelineSuspensionState state, int invalidations)
+        {
+            var stateStage = Suspender(initial);
+            var value = new AssignablePipelineStage<int>("", 1);
+            var sut = new SuspendingPipelineStage<int>(value, stateStage);
+            var test = sut.AttachTestStage();
+
+            value.SetValueWithoutInvalidating(2);
+            stateStage.SetValueWithoutInvalidating(state);
+
+            PipelineCore.Invalidate(stateStage, value);
+
+            test.AssertInvalidations(invalidations);
+            PipelineAssert.Value(sut, 2);
+        }
 
         private static AssignablePipelineStage<PipelineSuspensionState> Suspender(PipelineSuspensionState state) => new AssignablePipelineStage<PipelineSuspensionState>("", state);
         private static AssignablePipelineStage<T> Assignable<T>(T initial) => new AssignablePipelineStage<T>("", initial);
