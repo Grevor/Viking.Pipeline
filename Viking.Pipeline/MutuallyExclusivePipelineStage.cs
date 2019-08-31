@@ -20,9 +20,9 @@ namespace Viking.Pipeline
         {
             Input = input ?? throw new ArgumentNullException(nameof(input));
             MutuallyExclusiveWith = mutuallyExclusiveWith ?? throw new ArgumentNullException(nameof(mutuallyExclusiveWith));
-            Name = $"'{Input}' mutually exclusive with {{{string.Join(", ", MutuallyExclusiveWith.Select(stage => $"'{stage.Name}'"))}}}";
             this.AddDependencies(input);
             this.AddDependencies(mutuallyExclusiveWith);
+            Name = $"'{Input}' mutually exclusive with {{{string.Join(", ", MutuallyExclusiveWith.Select(stage => $"'{stage.Name}'"))}}}";
         }
 
         public string Name { get; }

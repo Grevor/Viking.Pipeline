@@ -5,7 +5,8 @@ namespace Viking.Pipeline.Tests
     [TestFixture]
     public class ConstantPipelineStageTests
     {
-        private const string TestString = "string value";
+        [Test]
+        public void ExceptionOnNullNameToConstructor() => PipelineAssert.NullArgumentException(() => new ConstantPipelineStage<int>(null, 1), "name");
 
         [TestCase("string value")]
         [TestCase("another string value")]

@@ -11,8 +11,11 @@ namespace Viking.Pipeline.Tests
             var input = 10.AsPipelineConstant();
             var sut = CreateCache(input);
 
-            PipelineAssert.Dependencies(sut, input);
+            PipelineAssert.DependentOn(sut, input);
         }
+
+        [Test]
+        public void ExceptionOnNullInputToConstructor() => PipelineAssert.NullArgumentException(() => new CachingPipelineStage<int>(null), "input");
 
         [Test]
         public void CacheStartsAsInvalid()

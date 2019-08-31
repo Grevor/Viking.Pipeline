@@ -6,13 +6,20 @@ namespace Viking.Pipeline.Tests
     public class SuspendingPipelineStageTests
     {
         [Test]
+        public void ExceptionOnNullInputToConstructor()
+        {
+            PipelineAssert.NullArgumentException(() => new SuspendingPipelineStage<int>(null, PipelineSuspensionState.Resume.AsPipelineConstant()), "input");
+            PipelineAssert.NullArgumentException(() => new SuspendingPipelineStage<int>(1.AsPipelineConstant(), null), "suspendInput");
+        }
+
+        [Test]
         public void DependenciesToInputAndSuspensionAreRegisteredCorrectly()
         {
             var value = Assignable(10);
             var suspend = Suspender(PipelineSuspensionState.Resume);
             var sut = new SuspendingPipelineStage<int>(value, suspend);
 
-            PipelineAssert.Dependencies(sut, value, suspend);
+            PipelineAssert.DependentOn(sut, value, suspend);
         }
 
         [Test]

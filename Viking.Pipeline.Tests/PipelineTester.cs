@@ -21,10 +21,9 @@ namespace Viking.Pipeline.Tests
         public static void Name(IPipelineStage stage, string expected) => Assert.AreEqual(expected, stage.Name);
         public static void NameContains(IPipelineStage stage, string contains) => StringAssert.Contains(contains, stage.Name);
 
-        public static void Dependencies(IPipelineStage stage, params IPipelineStage[] dependencies) => Dependencies(stage, true, dependencies);
-        public static void NotDependencies(IPipelineStage stage, params IPipelineStage[] dependencies) => Dependencies(stage, false, dependencies);
-
-        public static void Dependencies(IPipelineStage stage, bool shouldContain, params IPipelineStage[] dependencies)
+        public static void DependentOn(IPipelineStage stage, params IPipelineStage[] dependencies) => DependentOn(stage, true, dependencies);
+        public static void NotDependentOn(IPipelineStage stage, params IPipelineStage[] dependencies) => DependentOn(stage, false, dependencies);
+        public static void DependentOn(IPipelineStage stage, bool shouldContain, params IPipelineStage[] dependencies)
         {
             foreach(var dependency in dependencies)
             {
@@ -38,6 +37,8 @@ namespace Viking.Pipeline.Tests
             GC.KeepAlive(stage);
             GC.KeepAlive(dependencies);
         }
+
+        public static void NullArgumentException(TestDelegate constructor, string argument) => Assert.Throws<ArgumentNullException>(constructor, $"Expected exception when {argument} was null.");
 
         public static TestPipelineStage<T> AttachTestStage<T>(this IPipelineStage<T> stage) => new TestPipelineStage<T>(stage);
 

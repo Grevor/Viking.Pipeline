@@ -6,12 +6,15 @@ namespace Viking.Pipeline.Tests
     public class PassivePipelineStageTests
     {
         [Test]
+        public void ExceptionOnNullInputToConstructor() => PipelineAssert.NullArgumentException(() => new PassivePipelineStage<int>(null), "input");
+
+        [Test]
         public void InputIsAddedAsDependency()
         {
             var input = 1.AsPipelineConstant();
             var sut = new PassivePipelineStage<int>(input);
 
-            PipelineAssert.Dependencies(sut, input);
+            PipelineAssert.DependentOn(sut, input);
         }
 
         [Test]

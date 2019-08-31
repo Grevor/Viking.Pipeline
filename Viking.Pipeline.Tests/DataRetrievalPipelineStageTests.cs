@@ -5,6 +5,15 @@ namespace Viking.Pipeline.Tests
     [TestFixture]
     public class DataRetrievalPipelineStageTests
     {
+
+        [Test]
+        public void ExceptionOnNullToConstructor()
+        {
+            PipelineAssert.NullArgumentException(() => new DataRetrievalPipelineStage<int>(null, ()=>1), "name");
+            PipelineAssert.NullArgumentException(() => new DataRetrievalPipelineStage<int>("name", null), "source");
+            PipelineAssert.NullArgumentException(() => new DataRetrievalPipelineStage<int>(null, null), "name and source");
+        }
+
         [Test]
         public void DataRetrievalAlwaysCallsTheSpecifiedFunctionOnGetValueCall()
         {

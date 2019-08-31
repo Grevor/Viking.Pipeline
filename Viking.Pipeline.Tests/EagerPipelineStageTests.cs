@@ -7,12 +7,15 @@ namespace Viking.Pipeline.Tests
     public class EagerPipelineStageTests
     {
         [Test]
+        public void ExceptionOnNullInputToConstructor() => PipelineAssert.NullArgumentException(() => new EagerPipelineStage<int>(null), "input");
+
+        [Test]
         public void InputIsAddedAsDependency()
         {
             var input = 10.AsPipelineConstant();
             var sut = new EagerPipelineStage<int>(input);
 
-            PipelineAssert.Dependencies(sut, input);
+            PipelineAssert.DependentOn(sut, input);
         }
 
         [Test]

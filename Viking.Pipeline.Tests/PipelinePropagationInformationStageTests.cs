@@ -6,6 +6,16 @@ namespace Viking.Pipeline.Tests
     [TestFixture]
     public class PipelinePropagationInformationStageTests
     {
+
+        [Test]
+        public void ExceptionOnNullInputToConstructor()
+        {
+            PipelineAssert.NullArgumentException(() => new PipelinePropagationInformationStage<int>(null, _ => 1, 1), "name");
+            PipelineAssert.NullArgumentException(() => new PipelinePropagationInformationStage<int>("", null, 1), "extractor");
+            PipelineAssert.NullArgumentException(() => new PipelinePropagationInformationStage<int>("", _ => 1, 1, null), "stages");
+            PipelineAssert.NullArgumentException(() => new PipelinePropagationInformationStage<int>("", _ => 1, 1, new IPipelineStage[] { null }), "single stage");
+        }
+
         [TestCase(0)]
         [TestCase(1)]
         [TestCase(4)]
@@ -14,7 +24,7 @@ namespace Viking.Pipeline.Tests
             var input = Enumerable.Range(0, stages).Select(i => i.AsPipelineConstant()).ToArray();
             var sut = new PipelinePropagationInformationStage<int>("", inv => 1, -1, input);
 
-            PipelineAssert.Dependencies(sut, input);
+            PipelineAssert.DependentOn(sut, input);
         }
 
         [Test]

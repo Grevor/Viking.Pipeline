@@ -142,6 +142,13 @@ namespace Viking.Pipeline
             {
                 foreach (var dependency in dependencies)
                 {
+                    if (dependency == null)
+                    {
+                        IncrementOperation();
+                        MarkPipelineAsUpdated();
+                        throw new ArgumentNullException("Entry in dependency list", "One or more entries in the given dependency list was null.");
+                    }
+
                     var weak = new WeakHashKey<IPipelineStage>(dependency, false);
                     if (!Dependencies.TryGetValue(weak, out var deps))
                     {
@@ -168,6 +175,13 @@ namespace Viking.Pipeline
             {
                 foreach (var dependency in dependencies)
                 {
+                    if (dependency == null)
+                    {
+                        IncrementOperation();
+                        MarkPipelineAsUpdated();
+                        throw new ArgumentNullException("Entry in dependency list", "One or more entries in the given dependency list was null.");
+                    }
+
                     var strong = new WeakHashKey<IPipelineStage>(dependency, true);
                     if (!Dependencies.TryGetValue(strong, out var deps))
                         continue;

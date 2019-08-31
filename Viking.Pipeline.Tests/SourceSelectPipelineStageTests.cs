@@ -6,13 +6,21 @@ namespace Viking.Pipeline.Tests
     [TestFixture]
     public class SourceSelectPipelineStageTests
     {
+
+        [Test]
+        public void ExceptionOnNullInputToConstructor()
+        {
+            PipelineAssert.NullArgumentException(() => new SourceSelectPipelineStage<int>(null, 1.AsPipelineConstant()), "name");
+            PipelineAssert.NullArgumentException(() => new SourceSelectPipelineStage<int>("", null), "initial");
+        }
+
         [Test]
         public void InitialSourceIsAddedAsDependency()
         {
             var input = 1.AsPipelineConstant();
             var sut = new SourceSelectPipelineStage<int>("", input);
 
-            PipelineAssert.Dependencies(sut, input);
+            PipelineAssert.DependentOn(sut, input);
         }
 
         [Test]
@@ -21,17 +29,17 @@ namespace Viking.Pipeline.Tests
             var input = 1.AsPipelineConstant();
             var sut = new SourceSelectPipelineStage<int>("", input);
 
-            PipelineAssert.Dependencies(sut, input);
+            PipelineAssert.DependentOn(sut, input);
 
             var input2 = 2.AsPipelineConstant();
             sut.SetSource(input2);
-            PipelineAssert.NotDependencies(sut, input);
-            PipelineAssert.Dependencies(sut, input2);
+            PipelineAssert.NotDependentOn(sut, input);
+            PipelineAssert.DependentOn(sut, input2);
 
             var input3 = 3.AsPipelineConstant();
             sut.SetSourceWithoutInvalidating(input3);
-            PipelineAssert.NotDependencies(sut, input2);
-            PipelineAssert.Dependencies(sut, input3);
+            PipelineAssert.NotDependentOn(sut, input2);
+            PipelineAssert.DependentOn(sut, input3);
         }
 
         [Test]

@@ -14,6 +14,10 @@ namespace Viking.Pipeline.Tests
             Assert.AreEqual(initial, sut.GetValue());
         }
 
+
+        [Test]
+        public void ExceptionOnNullInputToConstructor() => PipelineAssert.NullArgumentException(() => new AssignablePipelineStage<int>(null, 1), "name");
+
         [TestCase("name")]
         [TestCase("Another name")]
         public void GivenNameIsReflected(string name)

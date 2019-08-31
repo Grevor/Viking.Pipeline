@@ -6,6 +6,18 @@ namespace Viking.Pipeline.Tests
     [TestFixture]
     public class MutuallyExclusivePipelineStageTests
     {
+
+        [Test]
+        public void ExceptionOnNullInputToConstructor()
+        {
+            var valid = 1.AsPipelineConstant();
+
+            PipelineAssert.NullArgumentException(() => new MutuallyExclusivePipelineStage<int>(null, new IPipelineStage[] { }), "input");
+            PipelineAssert.NullArgumentException(() => new MutuallyExclusivePipelineStage<int>(valid, null), "dependencies");
+            PipelineAssert.NullArgumentException(() => new MutuallyExclusivePipelineStage<int>(valid, new IPipelineStage[] { null }), "single dependency");
+            PipelineAssert.NullArgumentException(() => new MutuallyExclusivePipelineStage<int>(null, null), "input and dependencies");
+        }
+
         [TestCase(0)]
         [TestCase(1)]
         [TestCase(10)]
@@ -15,7 +27,7 @@ namespace Viking.Pipeline.Tests
             var exclusive = Enumerable.Range(0, numExclusive).Select(i => i.AsPipelineConstant()).ToArray();
             var sut = new MutuallyExclusivePipelineStage<int>(input, exclusive);
 
-            PipelineAssert.Dependencies(sut, exclusive.Append(input).ToArray());
+            PipelineAssert.DependentOn(sut, exclusive.Append(input).ToArray());
         }
 
         [Test]
