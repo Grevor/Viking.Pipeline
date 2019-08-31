@@ -5,9 +5,11 @@ VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Viking.Pipeline", "Viking.Pipeline\Viking.Pipeline.csproj", "{26B91F5F-3D86-456A-BE5A-E7FC155BC691}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Viking.Pipeline.CodeGenerator", "Viking.Pipeline.CodeGenerator\Viking.Pipeline.CodeGenerator.csproj", "{DBD75902-58D8-4FC0-8E42-EE2025683A73}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Viking.Pipeline.CodeGenerator", "Viking.Pipeline.CodeGenerator\Viking.Pipeline.CodeGenerator.csproj", "{DBD75902-58D8-4FC0-8E42-EE2025683A73}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Viking.Pipeline.Tests", "Viking.Pipeline.Tests\Viking.Pipeline.Tests.csproj", "{9EB6EB59-0C17-4AD5-852F-DD2A050CF16F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Viking.Pipeline.Tests", "Viking.Pipeline.Tests\Viking.Pipeline.Tests.csproj", "{9EB6EB59-0C17-4AD5-852F-DD2A050CF16F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Viking.Pipeline.FrameworkWpf", "Viking.Pipeline.FrameworkWpf\Viking.Pipeline.FrameworkWpf.csproj", "{2FA35386-E4AD-4426-8068-79648590FB09}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{9EB6EB59-0C17-4AD5-852F-DD2A050CF16F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EB6EB59-0C17-4AD5-852F-DD2A050CF16F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EB6EB59-0C17-4AD5-852F-DD2A050CF16F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FA35386-E4AD-4426-8068-79648590FB09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FA35386-E4AD-4426-8068-79648590FB09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FA35386-E4AD-4426-8068-79648590FB09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FA35386-E4AD-4426-8068-79648590FB09}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

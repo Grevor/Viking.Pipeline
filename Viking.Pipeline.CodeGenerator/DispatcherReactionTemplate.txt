@@ -1,0 +1,98 @@
+﻿using System;
+using System.Linq;
+using System.Windows.Threading;
+
+namespace Viking.Pipeline.Wpf
+{
+    public partial class DispatcherReactionPipelineStage<$GenericParameters$> : IPipelineStage
+    {
+		public DispatcherReactionPipelineStage(
+			Action<$GenericParameters$> reaction, 
+			$ConstructorParameters$) :
+			this(GetDefaultName($RepassingParameters$), reaction, $RepassingParameters$) { }
+
+		public DispatcherReactionPipelineStage(
+			Action<$GenericParameters$> reaction, 
+			$ConstructorParameters$,
+			bool reactImmediately) :
+			this(GetDefaultName($RepassingParameters$), reaction, DispatcherUtilities.DefaultDispatcher, $RepassingParameters$, reactImmediately) { }
+
+		public DispatcherReactionPipelineStage(
+			string name, 
+			Action<$GenericParameters$> reaction, 
+			$ConstructorParameters$) :
+			this(name, reaction, $RepassingParameters$, true) { }
+
+		public DispatcherReactionPipelineStage(
+			string name, 
+			Action<$GenericParameters$> reaction, 
+			Dispatcher dispatcher,
+			$ConstructorParameters$, 
+			bool reactImmediately)
+		{
+			Name = name ?? throw new ArgumentNullException(nameof(name));
+			Reaction = reaction ?? throw new ArgumentNullException(nameof(reaction));
+			Dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
+			$ConstructorAssignment$
+			this.AddDependencies($RepassingParameters$);
+			if(reactImmediately)
+				InvokeReaction();
+		}
+
+		public string Name { get; }
+		public Action<$GenericParameters$> Reaction { get; }
+		public Dispatcher Dispatcher { get; }
+		$ClassFields$
+
+		public void OnInvalidate(IPipelineInvalidator invalidator)
+		{
+			invalidator.InvalidateAllDependentStages(this);
+			InvokeReaction();
+		}
+
+		private void InvokeReaction() => Dispatcher.Invoke(Reaction, new object[] { $Getters$ });
+
+		public override string ToString() => $"{Name} - Reaction is {Reaction.GetDetailedStringRepresentation()}";
+
+		private static string GetDefaultName(params IPipelineStage[] stages) => $"Reaction to {string.Join(", ", stages.Select(p=>"'" + p.Name + "'"))}";
+    }
+
+	public static partial class DispatcherReactions
+	{
+		public static IPipelineStage Create<$GenericParameters$>(
+			Action<$GenericParameters$> reaction, 
+			$ConstructorParameters$)
+			=> new ReactionPipelineStage<$GenericParameters$>(
+				reaction,
+				$RepassingParameters$);
+
+		public static IPipelineStage Create<$GenericParameters$>(
+			Action<$GenericParameters$> reaction, 
+			$ConstructorParameters$, 
+			bool reactImmediately)
+			=> new ReactionPipelineStage<$GenericParameters$>(
+				reaction,
+				$RepassingParameters$,
+				reactImmediately);
+
+		public static IPipelineStage Create<$GenericParameters$>(
+			string name, 
+			Action<$GenericParameters$> reaction, 
+			$ConstructorParameters$)
+			=> new ReactionPipelineStage<$GenericParameters$>(
+				name,
+				reaction,
+				$RepassingParameters$);
+
+		public static IPipelineStage Create<$GenericParameters$>(
+			string name, 
+			Action<$GenericParameters$> reaction, 
+			$ConstructorParameters$, 
+			bool reactImmediately)
+			=> new ReactionPipelineStage<$GenericParameters$>(
+				name,
+				reaction,
+				$RepassingParameters$,
+				reactImmediately);
+	}
+}
