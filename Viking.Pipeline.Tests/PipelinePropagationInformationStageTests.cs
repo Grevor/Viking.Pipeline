@@ -1,10 +1,22 @@
 ﻿using NUnit.Framework;
+using System.Linq;
 
 namespace Viking.Pipeline.Tests
 {
     [TestFixture]
     public class PipelinePropagationInformationStageTests
     {
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(4)]
+        public void InputsAreAddedAsDependencies(int stages)
+        {
+            var input = Enumerable.Range(0, stages).Select(i => i.AsPipelineConstant()).ToArray();
+            var sut = new PipelinePropagationInformationStage<int>("", inv => 1, -1, input);
+
+            PipelineAssert.Dependencies(sut, input);
+        }
+
         [Test]
         public void InitialInformationIsGivenWhenNoInvalidationHasHappened()
         {

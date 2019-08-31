@@ -7,6 +7,15 @@ namespace Viking.Pipeline.Tests
     public class EagerPipelineStageTests
     {
         [Test]
+        public void InputIsAddedAsDependency()
+        {
+            var input = 10.AsPipelineConstant();
+            var sut = new EagerPipelineStage<int>(input);
+
+            PipelineAssert.Dependencies(sut, input);
+        }
+
+        [Test]
         public void EagerStageCausesRetrievalOnInvalidate()
         {
             var input = 1.AsPipelineConstant();

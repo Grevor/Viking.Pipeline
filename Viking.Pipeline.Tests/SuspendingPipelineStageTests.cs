@@ -6,6 +6,16 @@ namespace Viking.Pipeline.Tests
     public class SuspendingPipelineStageTests
     {
         [Test]
+        public void DependenciesToInputAndSuspensionAreRegisteredCorrectly()
+        {
+            var value = Assignable(10);
+            var suspend = Suspender(PipelineSuspensionState.Resume);
+            var sut = new SuspendingPipelineStage<int>(value, suspend);
+
+            PipelineAssert.Dependencies(sut, value, suspend);
+        }
+
+        [Test]
         public void PipelineStartsInExpectedState()
         {
             var sut = new SuspendingPipelineStage<double>(0.2.AsPipelineConstant(), Suspender(PipelineSuspensionState.Resume));

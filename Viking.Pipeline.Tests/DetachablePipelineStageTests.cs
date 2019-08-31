@@ -5,6 +5,15 @@ namespace Viking.Pipeline.Tests
     [TestFixture]
     public class DetachablePipelineStageTests
     {
+        [Test]
+        public void InputIsAddedAsDependency()
+        {
+            var input = 10.AsPipelineConstant();
+            var sut = new DetachablePipelineStage<int>(input);
+
+            PipelineAssert.Dependencies(sut, input);
+        }
+
         [TestCase(0)]
         [TestCase(600)]
         public void DetachableStagePassesPreviousStagesValueThrough(int i)

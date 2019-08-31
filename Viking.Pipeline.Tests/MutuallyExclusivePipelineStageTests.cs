@@ -6,6 +6,18 @@ namespace Viking.Pipeline.Tests
     [TestFixture]
     public class MutuallyExclusivePipelineStageTests
     {
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(10)]
+        public void InputAndAllExclusiveStagesAreAddedAsDependencies(int numExclusive)
+        {
+            var input = 10.AsPipelineConstant();
+            var exclusive = Enumerable.Range(0, numExclusive).Select(i => i.AsPipelineConstant()).ToArray();
+            var sut = new MutuallyExclusivePipelineStage<int>(input, exclusive);
+
+            PipelineAssert.Dependencies(sut, exclusive.Append(input).ToArray());
+        }
+
         [Test]
         public void StagePassesPreviousValueThrough()
         {

@@ -6,6 +6,15 @@ namespace Viking.Pipeline.Tests
     public class CachingPipelineStageTests
     {
         [Test]
+        public void InputIsAddedAsDependency()
+        {
+            var input = 10.AsPipelineConstant();
+            var sut = CreateCache(input);
+
+            PipelineAssert.Dependencies(sut, input);
+        }
+
+        [Test]
         public void CacheStartsAsInvalid()
         {
             var assignable = GetAssignable(1);

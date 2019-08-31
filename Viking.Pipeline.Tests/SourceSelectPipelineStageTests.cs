@@ -7,6 +7,34 @@ namespace Viking.Pipeline.Tests
     public class SourceSelectPipelineStageTests
     {
         [Test]
+        public void InitialSourceIsAddedAsDependency()
+        {
+            var input = 1.AsPipelineConstant();
+            var sut = new SourceSelectPipelineStage<int>("", input);
+
+            PipelineAssert.Dependencies(sut, input);
+        }
+
+        [Test]
+        public void SettingANewSourceRemovesOldDependencyANdAddsNew()
+        {
+            var input = 1.AsPipelineConstant();
+            var sut = new SourceSelectPipelineStage<int>("", input);
+
+            PipelineAssert.Dependencies(sut, input);
+
+            var input2 = 2.AsPipelineConstant();
+            sut.SetSource(input2);
+            PipelineAssert.NotDependencies(sut, input);
+            PipelineAssert.Dependencies(sut, input2);
+
+            var input3 = 3.AsPipelineConstant();
+            sut.SetSourceWithoutInvalidating(input3);
+            PipelineAssert.NotDependencies(sut, input2);
+            PipelineAssert.Dependencies(sut, input3);
+        }
+
+        [Test]
         public void SourceSelectDoesNotAcceptNullAsInputToConstructor()
         {
             Assert.Throws<ArgumentNullException>(() => new SourceSelectPipelineStage<string>("", null));
