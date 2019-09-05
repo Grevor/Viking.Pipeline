@@ -44,11 +44,13 @@ namespace Viking.Pipeline
         /// Sets the value provided by this stage.
         /// </summary>
         /// <param name="value">The new value.</param>
+        /// <returns>True if the value changed.</returns>
         public bool SetValue(TValue value) => SetValue(value, true);
         /// <summary>
         /// Sets the value provided by this stage without invalidating the pipeline.
         /// </summary>
         /// <param name="value">The new value.</param>
+        /// <returns>True if the value changed.</returns>
         public bool SetValueWithoutInvalidating(TValue value) => SetValue(value, false);
         private bool SetValue(TValue value, bool invalidate)
         {
