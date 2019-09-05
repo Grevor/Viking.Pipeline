@@ -37,6 +37,19 @@ namespace Viking.Pipeline.Tests
             test.AssertInvalidations(1);
         }
 
+        [TestCase(0, 1, true)]
+        [TestCase(-2, 30, true)]
+        [TestCase(2, 2, false)]
+        [TestCase(30, 30, false)]
+        public void SettingValueThroughAnyMeansWillResultInABooleanDenotingIfTheValueIsEqualOrNot(int initial, int value, bool expected)
+        {
+            var sut = Create(initial);
+            Assert.AreEqual(expected, sut.SetValue(value));
+
+            sut.SetValue(initial);
+            Assert.AreEqual(expected, sut.SetValueWithoutInvalidating(value));
+        }
+
         [TestCase(1)]
         [TestCase(5)]
         public void NewValueIsPropagatedToDependentStages(int newValue)

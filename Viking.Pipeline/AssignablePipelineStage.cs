@@ -44,18 +44,20 @@ namespace Viking.Pipeline
         /// Sets the value provided by this stage.
         /// </summary>
         /// <param name="value">The new value.</param>
-        public void SetValue(TValue value) => SetValue(value, true);
+        public bool SetValue(TValue value) => SetValue(value, true);
         /// <summary>
         /// Sets the value provided by this stage without invalidating the pipeline.
         /// </summary>
         /// <param name="value">The new value.</param>
-        public void SetValueWithoutInvalidating(TValue value) => SetValue(value, false);
-        private void SetValue(TValue value, bool invalidate)
+        public bool SetValueWithoutInvalidating(TValue value) => SetValue(value, false);
+        private bool SetValue(TValue value, bool invalidate)
         {
-            var valueChanged = invalidate && !Comparer.Equals(Value, value);
+            var valueChanged = !Comparer.Equals(Value, value);
+            invalidate &= valueChanged;
             Value = value;
-            if (valueChanged)
+            if (invalidate)
                 this.Invalidate();
+            return valueChanged;
         }
 
 
