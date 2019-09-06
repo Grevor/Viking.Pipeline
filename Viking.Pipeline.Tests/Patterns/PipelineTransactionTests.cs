@@ -5,7 +5,7 @@ using Viking.Pipeline.Patterns;
 namespace Viking.Pipeline.Tests.Patterns
 {
     [TestFixture]
-    public class AtomicPipelineUpdateTests
+    public class PipelineTransactionTests
     {
         [Test]
         public void NoUpdateIsDoneWhenNoStagesHaveBeenMarkedForUpdate()
@@ -13,7 +13,7 @@ namespace Viking.Pipeline.Tests.Patterns
             var stage = Assignable(10);
             var test = stage.AttachTestStage();
 
-            new AtomicPipelineUpdate().Complete();
+            new AtomicPipelineUpdate().Commit();
 
             test.AssertInvalidations(0);
         }
@@ -30,7 +30,7 @@ namespace Viking.Pipeline.Tests.Patterns
             var sut = new AtomicPipelineUpdate();
             foreach (var stage in stages.Take(updates))
                 sut.Update(stage, numStages);
-            sut.Complete();
+            sut.Commit();
 
             foreach (var test in tests.Take(updates))
                 test.AssertInvalidations(1);
@@ -47,9 +47,16 @@ namespace Viking.Pipeline.Tests.Patterns
 
             new AtomicPipelineUpdate()
                 .Update(value, 1)
-                .Complete();
+                .Commit();
 
             test.AssertNotInvalidatedNorRetrieved();
+        }
+
+        [Test]
+        public void TransactionIsAlwaysCommittedSucessfullyOnCompletedCommit()
+        {
+            Assert.AreEqual(PipelineTransactionCommitResult.Success, new AtomicPipelineUpdate().Commit());
+            Assert.AreEqual(PipelineTransactionCommitResult.Success, new AtomicPipelineUpdate().Update(1.AsPipelineConstant()).Commit());
         }
 
         [Test]
@@ -68,7 +75,7 @@ namespace Viking.Pipeline.Tests.Patterns
             test1.AssertNotInvalidatedNorRetrieved();
             test2.AssertNotInvalidatedNorRetrieved();
 
-            sut.Complete();
+            sut.Commit();
 
             test1.AssertInvalidations(1);
             test2.AssertInvalidations(1);
