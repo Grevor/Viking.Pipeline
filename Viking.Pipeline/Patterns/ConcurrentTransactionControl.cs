@@ -5,96 +5,110 @@ using System.Threading;
 
 namespace Viking.Pipeline.Patterns
 {
-    public enum ConcurrentTransactionType
-    {
-        /// <summary>
-        /// Concurrent transactions will always be committed, in an undefined order. Transactions as a whole will be kept intact.
-        /// </summary>
-        AlwaysCommit,
-        /// <summary>
-        /// The concurrent transaction is rolled back if an interleaving operation was found. Transactions can then be "redone" if needed.
-        /// </summary>
-        RollbackOnConcurrentUpdate
-    }
-
     /// <summary>
-    /// Provides basic transaction control.
+    /// Provides basic transaction .
     /// </summary>
-    public class ConcurrentTransactionControl : IConcurrentTransactionControl
+    public sealed class ConcurrentTransactionControl : IDeferredTransactionControl
     {
         private long _timestamp = 0;
 
-        private long LastUpdatedTimestamp { get; set; } = -1;
+        private HashSet<IPipelineTransaction> OngoingTransactions { get; } = new HashSet<IPipelineTransaction>();
+
+        private Dictionary<IPipelineStage, DeferredTransactionPart> AggregatedTransaction { get; } = new Dictionary<IPipelineStage, DeferredTransactionPart>();
+
         /// <summary>
         /// Gets the transaction type.
         /// </summary>
-        public ConcurrentTransactionType TransactionType { get; }
 
         /// <summary>
         /// Creates a new <see cref="ConcurrentTransactionControl"/> with the specified transaction behavior.
         /// </summary>
         /// <param name="transactionType">The transaction behavior.</param>
-        public ConcurrentTransactionControl(ConcurrentTransactionType transactionType)
+        public ConcurrentTransactionControl() { }
+
+        /// <summary>
+        /// Creates a new transaction. This transaction must be committed, or the system might deadlock.
+        /// </summary>
+        /// <returns></returns>
+        public IPipelineTransaction CreateTransaction() => new DeferredPipelineTransaction(this);
+
+        public void Register(DeferredPipelineTransaction transaction)
         {
-            TransactionType = transactionType;
+            if (transaction is null)
+                throw new ArgumentNullException(nameof(transaction));
+
+            lock (this)
+                OngoingTransactions.Add(transaction);
         }
 
-        public IPipelineTransaction CreateTransaction() => new ConcurrentPipelineTransaction(this);
-
-        public long GetTimestamp() => Interlocked.Increment(ref _timestamp);
-
-        public PipelineTransactionCommitResult Commit(IEnumerable<ConcurrentTransactionPart> parts)
+        public void Deregister(DeferredPipelineTransaction transaction)
         {
-            var res = parts.ToList();
-            if (res.Count <= 0)
-                return PipelineTransactionCommitResult.Success;
+            if (transaction is null)
+                throw new ArgumentNullException(nameof(transaction));
 
             lock (this)
             {
-                if (TransactionType == ConcurrentTransactionType.RollbackOnConcurrentUpdate && HasConcurrentCommit(res))
-                    return PipelineTransactionCommitResult.Failed;
-
-                return CommitTransaction(res);
+                OngoingTransactions.Remove(transaction);
+                if (DeregisterOngoing(transaction))
+                    CommitTransaction(AggregatedTransaction.Values);
             }
         }
 
-        private bool HasConcurrentCommit(List<ConcurrentTransactionPart> res)
+        public long GetTimestamp() => Interlocked.Increment(ref _timestamp);
+
+        public PipelineTransactionResult Commit(DeferredPipelineTransaction transaction, IEnumerable<DeferredTransactionPart> parts)
         {
-            var start = res.Min(part => part.Timestamp);
-            var end = res.Max(part => part.Timestamp);
+            if (transaction is null)
+                throw new ArgumentNullException(nameof(transaction));
+            if (parts is null)
+                throw new ArgumentNullException(nameof(parts));
 
-            var hadConcurrentTransactionCommit = start < LastUpdatedTimestamp;
+            var res = parts.ToList();
+            if (res.Count <= 0)
+                return PipelineTransactionResult.Success;
 
-            LastUpdatedTimestamp = Math.Max(end, LastUpdatedTimestamp);
-
-            return hadConcurrentTransactionCommit;
+            lock (this)
+                return AggregateTransaction(transaction, res);
         }
 
-        private PipelineTransactionCommitResult CommitTransaction(List<ConcurrentTransactionPart> res)
+
+
+        private PipelineTransactionResult AggregateTransaction(IPipelineTransaction transaction, List<DeferredTransactionPart> res)
         {
-            var commits = new Dictionary<IPipelineStage, ConcurrentTransactionPart>();
+            var mustCommitAggregate = DeregisterOngoing(transaction);
+            var mustRollback = res.Any(part => AggregatedTransaction.ContainsKey(part.Stage));
 
-            foreach(var part in res)
+            if (mustRollback)
             {
-                if(!commits.TryGetValue(part.Stage, out var commit))
-                {
-                    commits.Add(part.Stage, part);
-                    continue;
-                }
-
-                if (commit.Timestamp < part.Timestamp)
-                    commits[part.Stage] = part;
+                if (mustCommitAggregate)
+                    CommitTransaction(AggregatedTransaction.Values);
+                return PipelineTransactionResult.Failed;
             }
-
-            var stagesToInvalidate = new List<IPipelineStage>();
-            foreach(var part in commits.Values.OrderBy(p => p.Timestamp))
+            else
             {
-                if (part.Action())
-                    stagesToInvalidate.Add(part.Stage);
+                foreach (var part in res)
+                    AggregatedTransaction.Add(part.Stage, part);
+
+                if (mustCommitAggregate)
+                    return CommitTransaction(AggregatedTransaction.Values);
+                else
+                    return PipelineTransactionResult.PendingSuccess;
             }
+        }
+
+        private bool DeregisterOngoing(IPipelineTransaction transaction)
+        {
+            if (!OngoingTransactions.Remove(transaction))
+                throw new ArgumentException("Transaction is not registered.");
+            return OngoingTransactions.Count <= 0;
+        }
+
+        private PipelineTransactionResult CommitTransaction(IEnumerable<DeferredTransactionPart> res)
+        {
+            var stagesToInvalidate = res.OrderBy(p => p.Timestamp).Where(p => p.Action()).Select(p => p.Stage).ToList();
 
             PipelineCore.Invalidate(stagesToInvalidate);
-            return PipelineTransactionCommitResult.Success;
+            return PipelineTransactionResult.Success;
         }
     }
 }

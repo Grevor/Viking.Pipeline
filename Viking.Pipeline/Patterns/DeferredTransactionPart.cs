@@ -2,9 +2,9 @@
 
 namespace Viking.Pipeline.Patterns
 {
-    public class ConcurrentTransactionPart
+    public class DeferredTransactionPart
     {
-        public ConcurrentTransactionPart(IPipelineStage stage, PipelineUpdateAction action, long timestamp)
+        public DeferredTransactionPart(IPipelineStage stage, PipelineUpdateAction action, long timestamp)
         {
             Stage = stage ?? throw new ArgumentNullException(nameof(stage));
             Action = action ?? throw new ArgumentNullException(nameof(action));

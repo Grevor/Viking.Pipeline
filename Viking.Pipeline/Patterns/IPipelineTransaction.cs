@@ -5,27 +5,50 @@ namespace Viking.Pipeline.Patterns
     /// <summary>
     /// The result of a <see cref="IPipelineTransaction"/> commit.
     /// </summary>
-    public enum PipelineTransactionCommitResult
+    public enum PipelineTransactionResult
     {
         /// <summary>
         /// The commit was sucessful.
         /// </summary>
         Success,
         /// <summary>
-        /// The commit is pending completion.
+        /// The commit succeeded, but is pending completion.
         /// </summary>
-        Pending,
+        PendingSuccess,
         /// <summary>
         /// The commit failed.
         /// </summary>
         Failed
     }
 
+    /// <summary>
+    /// Action which update a pipeline stage.
+    /// </summary>
+    /// <returns>True if the stage was actually updated, else false.</returns>
     public delegate bool PipelineUpdateAction();
+
+    /// <summary>
+    /// Interface of a pipeline transaction.
+    /// Note that a transaction does not have to abide by all the ACID rules.
+    /// </summary>
     public interface IPipelineTransaction
     {
+        /// <summary>
+        /// Updates the specified stage using the specified update function.
+        /// </summary>
+        /// <param name="stage">The stage to update.</param>
+        /// <param name="update">The action updating the stage.</param>
+        /// <returns></returns>
         IPipelineTransaction Update(IPipelineStage stage, PipelineUpdateAction update);
-        PipelineTransactionCommitResult Commit();
+        /// <summary>
+        /// Commits the transaction.
+        /// </summary>
+        /// <returns>The result of the commit.</returns>
+        PipelineTransactionResult Commit();
+        /// <summary>
+        /// Cancels the transaction, discarding all changes.
+        /// </summary>
+        void Cancel();
     }
 
     public static class PipelineUpdateExtensions
@@ -45,8 +68,13 @@ namespace Viking.Pipeline.Patterns
         public static IPipelineTransaction Update<TValue>(this IPipelineTransaction transaction, AssignablePipelineStage<TValue> stage, TValue value)
         {
             bool AssignableUpdate() => stage.SetValueWithoutInvalidating(value);
-
             return transaction.Update(stage, AssignableUpdate);
+        }
+
+        public static IPipelineTransaction Update<TValue>(this IPipelineTransaction transaction, SourceSelectPipelineStage<TValue> stage, IPipelineStage<TValue> newSource)
+        {
+            bool SourceSelectUpdate() => stage.SetSourceWithoutInvalidating(newSource);
+            return transaction.Update(stage, SourceSelectUpdate);
         }
 
         /// <summary>

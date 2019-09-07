@@ -13,7 +13,7 @@ namespace Viking.Pipeline.Tests.Patterns
             var stage = Assignable(10);
             var test = stage.AttachTestStage();
 
-            new AtomicPipelineUpdate().Commit();
+            new PipelineTransaction().Commit();
 
             test.AssertInvalidations(0);
         }
@@ -27,7 +27,7 @@ namespace Viking.Pipeline.Tests.Patterns
             var stages = Enumerable.Range(0, numStages).Select(i => Assignable(i)).ToArray();
             var tests = stages.Select(s => s.AttachTestStage()).ToArray();
 
-            var sut = new AtomicPipelineUpdate();
+            var sut = new PipelineTransaction();
             foreach (var stage in stages.Take(updates))
                 sut.Update(stage, numStages);
             sut.Commit();
@@ -45,7 +45,7 @@ namespace Viking.Pipeline.Tests.Patterns
             var value = Assignable(1);
             var test = value.AttachTestStage();
 
-            new AtomicPipelineUpdate()
+            new PipelineTransaction()
                 .Update(value, 1)
                 .Commit();
 
@@ -55,8 +55,8 @@ namespace Viking.Pipeline.Tests.Patterns
         [Test]
         public void TransactionIsAlwaysCommittedSucessfullyOnCompletedCommit()
         {
-            Assert.AreEqual(PipelineTransactionCommitResult.Success, new AtomicPipelineUpdate().Commit());
-            Assert.AreEqual(PipelineTransactionCommitResult.Success, new AtomicPipelineUpdate().Update(1.AsPipelineConstant()).Commit());
+            Assert.AreEqual(PipelineTransactionResult.Success, new PipelineTransaction().Commit());
+            Assert.AreEqual(PipelineTransactionResult.Success, new PipelineTransaction().Update(1.AsPipelineConstant()).Commit());
         }
 
         [Test]
@@ -68,7 +68,7 @@ namespace Viking.Pipeline.Tests.Patterns
             var test1 = value.AttachTestStage();
             var test2 = other.AttachTestStage();
 
-            var sut = new AtomicPipelineUpdate()
+            var sut = new PipelineTransaction()
                 .Update(value, 2)
                 .Update(other);
 
@@ -79,6 +79,27 @@ namespace Viking.Pipeline.Tests.Patterns
 
             test1.AssertInvalidations(1);
             test2.AssertInvalidations(1);
+        }
+
+        [Test]
+        public void CanceledTransactionDoesNotInvokeAnyOfTheUpdates()
+        {
+            var value = Assignable(1);
+            var other = Assignable("hello");
+
+            var test1 = value.AttachTestStage();
+            var test2 = other.AttachTestStage();
+
+            var sut = new PipelineTransaction()
+                .Update(value, 2)
+                .Update(other, "hello 2");
+
+            sut.Cancel();
+
+            test1.AssertNotInvalidatedNorRetrieved();
+            test2.AssertNotInvalidatedNorRetrieved();
+            PipelineAssert.Value(value, 1);
+            PipelineAssert.Value(other, "hello");
         }
 
         private static AssignablePipelineStage<T> Assignable<T>(T initial) => new AssignablePipelineStage<T>("", initial);

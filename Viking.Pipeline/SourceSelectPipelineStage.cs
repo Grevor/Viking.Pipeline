@@ -33,20 +33,20 @@ namespace Viking.Pipeline
         /// </summary>
         /// <param name="source">The new source. Must not be null.</param>
         /// <exception cref="ArgumentNullException">If <paramref name="source"/> is null.</exception>
-        public void SetSource(IPipelineStage<TValue> source) => SetSource(source, true);
+        public bool SetSource(IPipelineStage<TValue> source) => SetSource(source, true);
         /// <summary>
         /// Sets the source of this <see cref="SourceSelectPipelineStage{TValue}"/> without notifying the rest of the pipeline.
         /// </summary>
         /// <param name="source">The new source. Must not be null.</param>
         /// <exception cref="ArgumentNullException">If <paramref name="source"/> is null.</exception>
-        public void SetSourceWithoutInvalidating(IPipelineStage<TValue> source) => SetSource(source, false);
-        private void SetSource(IPipelineStage<TValue> source, bool invalidate)
+        public bool SetSourceWithoutInvalidating(IPipelineStage<TValue> source) => SetSource(source, false);
+        private bool SetSource(IPipelineStage<TValue> source, bool invalidate)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
             if (Equals(Source, source))
-                return;
+                return false;
 
             this.RemoveDependencies(Source);
             Source = source;
@@ -54,6 +54,7 @@ namespace Viking.Pipeline
 
             if (invalidate)
                 this.Invalidate();
+            return true;
         }
 
         public TValue GetValue() => Source.GetValue();

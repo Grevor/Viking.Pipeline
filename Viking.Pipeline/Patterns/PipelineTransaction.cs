@@ -1,29 +1,29 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Viking.Pipeline.Patterns
 {
     /// <summary>
     /// Enables atomic update of stages through a fluid interface.
     /// </summary>
-    public sealed class AtomicPipelineUpdate : IPipelineTransaction
+    public sealed class PipelineTransaction : IPipelineTransaction
     {
-        private HashSet<IPipelineStage> PendingStages { get; } = new HashSet<IPipelineStage>();
+        private int Timestamp { get; set; }
+        private Dictionary<IPipelineStage, DeferredTransactionPart> PendingStages { get; } = new Dictionary<IPipelineStage, DeferredTransactionPart>();
 
         /// <summary>
-        /// Starts a new <see cref="AtomicPipelineUpdate"/>.
+        /// Starts a new <see cref="PipelineTransaction"/>.
         /// </summary>
-        public AtomicPipelineUpdate() { }
+        public PipelineTransaction() { }
 
         public IPipelineTransaction Update(IPipelineStage stage, PipelineUpdateAction update)
         {
             if (stage is null)
                 throw new System.ArgumentNullException(nameof(stage));
-
             if (update is null)
                 throw new System.ArgumentNullException(nameof(update));
 
-            if (update.Invoke())
-                PendingStages.Add(stage);
+            PendingStages[stage] = new DeferredTransactionPart(stage, update, Timestamp++);
 
             return this;
         }
@@ -31,13 +31,16 @@ namespace Viking.Pipeline.Patterns
         /// <summary>
         /// Complete the update, invalidating all updated stages as an atomic operation.
         /// </summary>
-        /// <returns><see cref="PipelineTransactionCommitResult.Success"/></returns>
-        public PipelineTransactionCommitResult Commit()
+        /// <returns><see cref="PipelineTransactionResult.Success"/></returns>
+        public PipelineTransactionResult Commit()
         {
-            PipelineCore.Invalidate(PendingStages);
+            var stagesToInvalidate = PendingStages.Values.OrderBy(part=> part.Timestamp).Where(part => part.Action()).Select(part => part.Stage).ToList();
+            PipelineCore.Invalidate(stagesToInvalidate);
             PendingStages.Clear();
 
-            return PipelineTransactionCommitResult.Success;
+            return PipelineTransactionResult.Success;
         }
+
+        public void Cancel() => PendingStages.Clear();
     }
 }

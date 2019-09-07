@@ -54,7 +54,7 @@ namespace Viking.Pipeline.Tests
             var sut = new SourceSelectPipelineStage<string>("", "".AsPipelineConstant());
             var test = sut.AttachTestStage();
 
-            sut.SetSource("Derpface".AsPipelineConstant());
+            Assert.IsTrue(sut.SetSource("Derpface".AsPipelineConstant()));
             test.AssertInvalidations(1);
         }
 
@@ -64,7 +64,7 @@ namespace Viking.Pipeline.Tests
             var sut = new SourceSelectPipelineStage<string>("", "".AsPipelineConstant());
             var test = sut.AttachTestStage();
 
-            sut.SetSourceWithoutInvalidating("Derpface".AsPipelineConstant());
+            Assert.IsTrue(sut.SetSourceWithoutInvalidating("Derpface".AsPipelineConstant()));
             test.AssertInvalidations(0);
         }
 
@@ -88,7 +88,7 @@ namespace Viking.Pipeline.Tests
             var sut = new SourceSelectPipelineStage<int>("", source);
             var test = sut.AttachTestStage();
 
-            sut.SetSource(source);
+            Assert.IsFalse(sut.SetSource(source));
             test.AssertInvalidations(0);
         }
 
