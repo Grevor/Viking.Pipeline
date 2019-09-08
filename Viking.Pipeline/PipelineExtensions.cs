@@ -77,7 +77,8 @@ namespace Viking.Pipeline
         /// <param name="stage">The stage to cast from.</param>
         /// <returns>The stage containing the cast value.</returns>
         public static IPipelineStage<TOut> Cast<TIn, TOut>(this IPipelineStage<TIn> stage) where TIn : TOut
-            => PipelineOperations.Create("Cast to " + typeof(TOut).Name + " for: " + stage.Name, a => (TOut)a, stage);
+            => PipelineOperations.Create("Cast to " + typeof(TOut).Name + " for: " + stage.Name, CastObject<TIn, TOut>, stage);
+        private static TOut CastObject<TIn, TOut>(TIn input) where TIn : TOut => input;
 
         /// <summary>
         /// Adds an <see cref="EqualityCheckerPipelineStage{TValue}"/> after this stage.
