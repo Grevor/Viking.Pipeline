@@ -16,6 +16,7 @@ The pipeline library offers things like:
 * Exception messages detailing what, where, and how exception appeared in the pipeline, along with all the preceding stages.
 * Automatic detection of concurrent propagations potentially conflicting with each other.
 * Automatic handling of detachment on GC of pipeline objects. No more memory leaks like in Events*!
+* Different types of transaction and concurrency control on pipelines.
 
 _\* Subject to the shenananigans programmers sometimes do because we just love to make our own lives misserable_
 
@@ -55,9 +56,10 @@ When multiple values must be changed, the following pattern can be used:
 
 ```
 // The below demostrates how multiple values can be changed without triggering a propagation for each change.
-input1.SetValueWithoutInvalidation(5); // Set a new value without triggering an update.
-input2.SetValueWithoutInvalidation(2); // Set a new value without triggering an update.
-PipelineCore.Invalidate(input1, input2); // Trigger an "atomic" update of values.
+new PipelineTransaction()
+  .Update(input1, 5) // Adds an update of the first assignable value
+  .Update(input2, 2) // Adds an update of the second assignable value
+  .Commit(); // Trigger an atomic update of values in the transaction.
 ```
 
 ## Easy Extension
