@@ -29,7 +29,6 @@ namespace Viking.Pipeline.Patterns
         {
             if (stage is null)
                 throw new ArgumentNullException(nameof(stage));
-
             if (update is null)
                 throw new ArgumentNullException(nameof(update));
 

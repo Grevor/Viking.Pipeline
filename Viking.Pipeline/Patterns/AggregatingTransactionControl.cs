@@ -6,25 +6,20 @@ using System.Threading;
 namespace Viking.Pipeline.Patterns
 {
     /// <summary>
-    /// Provides basic transaction .
+    /// Provides control for concurrent transactions. Concurrent transactions are aggregated if they do not overlap.
     /// </summary>
-    public sealed class ConcurrentTransactionControl : IDeferredTransactionControl
+    public sealed class AggregatingTransactionControl : IDeferredTransactionControl
     {
         private long _timestamp = 0;
 
         private HashSet<IPipelineTransaction> OngoingTransactions { get; } = new HashSet<IPipelineTransaction>();
-
         private Dictionary<IPipelineStage, DeferredTransactionPart> AggregatedTransaction { get; } = new Dictionary<IPipelineStage, DeferredTransactionPart>();
 
         /// <summary>
-        /// Gets the transaction type.
-        /// </summary>
-
-        /// <summary>
-        /// Creates a new <see cref="ConcurrentTransactionControl"/> with the specified transaction behavior.
+        /// Creates a new <see cref="AggregatingTransactionControl"/> with the specified transaction behavior.
         /// </summary>
         /// <param name="transactionType">The transaction behavior.</param>
-        public ConcurrentTransactionControl() { }
+        public AggregatingTransactionControl() { }
 
         /// <summary>
         /// Creates a new transaction. This transaction must be committed, or the system might deadlock.
@@ -106,7 +101,6 @@ namespace Viking.Pipeline.Patterns
         private PipelineTransactionResult CommitTransaction(IEnumerable<DeferredTransactionPart> res)
         {
             var stagesToInvalidate = res.OrderBy(p => p.Timestamp).Where(p => p.Action()).Select(p => p.Stage).ToList();
-
             PipelineCore.Invalidate(stagesToInvalidate);
             return PipelineTransactionResult.Success;
         }

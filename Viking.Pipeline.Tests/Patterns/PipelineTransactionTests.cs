@@ -53,6 +53,22 @@ namespace Viking.Pipeline.Tests.Patterns
         }
 
         [Test]
+        public void MultipleUpdatesToSameStageCausesOnlyLastToBeUsed()
+        {
+            var value = Assignable(1);
+            var test = value.AttachTestStage();
+
+            new PipelineTransaction()
+                .Update(value, 2)
+                .Update(value, 3)
+                .Update(value, 4)
+                .Commit();
+
+            PipelineAssert.Value(value, 4);
+            test.AssertInvalidations(1);
+        }
+
+        [Test]
         public void TransactionIsAlwaysCommittedSucessfullyOnCompletedCommit()
         {
             Assert.AreEqual(PipelineTransactionResult.Success, new PipelineTransaction().Commit());
