@@ -23,13 +23,13 @@ namespace Viking.Pipeline.Patterns
         /// </summary>
         /// <param name="transaction">The transaction to commit.</param>
         /// <param name="parts">The parts.</param>
-        /// <returns></returns>
+        /// <returns>The result of the commit.</returns>
         PipelineTransactionResult Commit(DeferredPipelineTransaction transaction, IEnumerable<DeferredTransactionPart> parts);
 
         /// <summary>
-        /// Deregisters the specified transaction from this control.
+        /// Cancels the specified transaction from this control.
         /// </summary>
-        /// <param name="transaction">The transaction to deregister.</param>
-        void Deregister(DeferredPipelineTransaction transaction);
+        /// <param name="transaction">The transaction to cancel.</param>
+        void Cancel(DeferredPipelineTransaction transaction);
     }
 }

@@ -17,7 +17,7 @@ namespace Viking.Pipeline
     /// </summary>
     /// <typeparam name="TInput">The input type.</typeparam>
     /// <typeparam name="TOutput">The delta type.</typeparam>
-    public class DeltaPipelineStage<TInput, TOutput> : IPipelineStage<TOutput>
+    public sealed class DeltaPipelineStage<TInput, TOutput> : IPipelineStage<TOutput>
     {
         /// <summary>
         /// Creates a new <see cref="DeltaPipelineStage{TInput, TOutput}"/> with the specified name, extractor and input.

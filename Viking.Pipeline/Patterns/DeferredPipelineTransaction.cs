@@ -43,7 +43,7 @@ namespace Viking.Pipeline.Patterns
             AssertNotCommitted();
             IsCommitted = true;
             Parts.Clear();
-            Control.Deregister(this);
+            Control.Cancel(this);
         }
 
         private void AssertNotCommitted()

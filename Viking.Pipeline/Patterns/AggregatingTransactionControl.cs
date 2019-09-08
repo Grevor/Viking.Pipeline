@@ -36,7 +36,7 @@ namespace Viking.Pipeline.Patterns
                 OngoingTransactions.Add(transaction);
         }
 
-        public void Deregister(DeferredPipelineTransaction transaction)
+        public void Cancel(DeferredPipelineTransaction transaction)
         {
             if (transaction is null)
                 throw new ArgumentNullException(nameof(transaction));

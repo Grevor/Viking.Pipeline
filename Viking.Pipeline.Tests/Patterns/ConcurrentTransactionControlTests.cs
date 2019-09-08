@@ -10,12 +10,12 @@ namespace Viking.Pipeline.Tests.Patterns
     public class ConcurrentTransactionControlTests
     {
         [Test]
-        public void ControlRefusesToDeregisterTransactionThatIsNotRegistered()
+        public void ControlRefusesToCancelTransactionThatIsNotRegistered()
         {
             var control = new AggregatingTransactionControl();
             var transaction = new DeferredPipelineTransaction(new AggregatingTransactionControl());
 
-            Assert.Throws<ArgumentException>(() => control.Deregister(transaction));
+            Assert.Throws<ArgumentException>(() => control.Cancel(transaction));
         }
 
         public void ControlRefusesToCommitTransactionThatIsNotRegistered()
