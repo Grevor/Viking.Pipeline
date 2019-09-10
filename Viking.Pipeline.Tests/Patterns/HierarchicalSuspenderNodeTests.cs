@@ -43,6 +43,13 @@ namespace Viking.Pipeline.Tests.Patterns
             PipelineSuspensionState.ResumeWithoutPendingInvalidates,
             TestName = "PropagateSuspendOnly: ResumeWithoutPendingInvalidates => Resume => ResumeWithoutPendingInvalidates = ResumeWithoutPendingInvalidates")]
 
+        [TestCase(
+            PipelineSuspensionState.ResumeWithoutPendingInvalidates,
+            new[] { PipelineSuspensionState.Resume, PipelineSuspensionState.ResumeWithoutPendingInvalidates },
+            new[] { HierarchicalBehavior.WeakenSuspensionState, HierarchicalBehavior.PropagateSuspendOnly },
+            PipelineSuspensionState.ResumeWithoutPendingInvalidates,
+            TestName = "PropagateSuspendOnly after WeakenSuspensionState: ResumeWithoutPendingInvalidates => ResumeWithoutPendingInvalidates => Resume = Resume")]
+
 
         [TestCase(
             PipelineSuspensionState.ResumeWithoutPendingInvalidates,
