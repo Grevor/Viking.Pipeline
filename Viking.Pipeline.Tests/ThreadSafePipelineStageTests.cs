@@ -100,7 +100,9 @@ namespace Viking.Pipeline.Tests
             Assert.Pass("No exceptions were thrown, indicating that no concurrency issues were found.");
         }
 
-        [Test]
+        [TestCase(0)]
+        [TestCase(-1)]
+        [TestCase(1337)]
         public void InputValueIsPassedThrough(int value)
         {
             var input = value.AsPipelineConstant();
