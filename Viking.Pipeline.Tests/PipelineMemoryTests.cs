@@ -19,7 +19,9 @@ namespace Viking.Pipeline.Tests
                 CreateMemoryPressure(1024 * 1024);
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
 
-            Assert.Less(source.GetAllDependentStages().Count(), 10000);
+            var numStages = source.GetAllDependentStages().Count();
+            Assert.Less(numStages, 10000);
+            Assert.Pass($"Number of stages created is 10001, but only {numStages} is still living.");
 
             GC.KeepAlive(source);
         }
