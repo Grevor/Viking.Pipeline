@@ -100,6 +100,15 @@ namespace Viking.Pipeline.Tests
             Assert.Pass("No exceptions were thrown, indicating that no concurrency issues were found.");
         }
 
+        [Test]
+        public void InputValueIsPassedThrough(int value)
+        {
+            var input = value.AsPipelineConstant();
+            var sut = new ThreadSafePipelineStage<int>(input);
+
+            PipelineAssert.Value(sut, value);
+        }
+
         private class Container
         {
             public volatile Thread Thread;
