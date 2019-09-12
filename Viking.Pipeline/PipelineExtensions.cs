@@ -54,6 +54,13 @@ namespace Viking.Pipeline
         /// <returns>The eager stage.</returns>
         public static IPipelineStage<T> AsEager<T>(this IPipelineStage<T> stage) => new EagerPipelineStage<T>(stage);
         /// <summary>
+        /// Adds a stage which will add thread safety to this stage's <see cref="IPipelineStage{TOutput}.GetValue"/> method.
+        /// </summary>
+        /// <typeparam name="T">The type of the output.</typeparam>
+        /// <param name="stage">The stage to make thread-safe.</param>
+        /// <returns>The thread-safe stage.</returns>
+        public static IPipelineStage<T> AsThreadSafe<T>(this IPipelineStage<T> stage) => new ThreadSafePipelineStage<T>(stage);
+        /// <summary>
         /// Adds a conditional suspender to this stage, only letting invalidations through if the given pipeline stage is not suspended.
         /// </summary>
         /// <typeparam name="T">The type of the output.</typeparam>
