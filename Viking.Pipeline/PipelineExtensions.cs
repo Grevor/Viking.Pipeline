@@ -150,7 +150,8 @@ namespace Viking.Pipeline
         /// <summary>
         /// Adds a changeable unary operation modifying the pipeline.
         /// </summary>
-        /// <typeparam name="TOutput"></typeparam>
+        /// <typeparam name="TInput">The input type.</typeparam>
+        /// <typeparam name="TOutput">The output type.</typeparam>
         /// <param name="stage">The input stage.</param>
         /// <param name="name">The name of the operations.</param>
         /// <param name="operationStage">The operation </param>
