@@ -136,6 +136,29 @@ namespace Viking.Pipeline
         public static IPipelineStage<T> AsPipelineConstant<T>(this T value, string name) => new ConstantPipelineStage<T>(name, value);
 
         /// <summary>
+        /// Adds a unary operation modifying the pipeline value.
+        /// </summary>
+        /// <typeparam name="TInput">The input type.</typeparam>
+        /// <typeparam name="TOutput">The output type.</typeparam>
+        /// <param name="stage">The input stage.</param>
+        /// <param name="name">The name of the operation.</param>
+        /// <param name="operation">The operation.</param>
+        /// <returns>The output stage.</returns>
+        public static IPipelineStage<TOutput> UnaryOperation<TInput, TOutput>(this IPipelineStage<TInput> stage, string name, Func<TInput, TOutput> operation) 
+            => PipelineOperations.Create(name, operation, stage);
+
+        /// <summary>
+        /// Adds a changeable unary operation modifying the pipeline.
+        /// </summary>
+        /// <typeparam name="TOutput"></typeparam>
+        /// <param name="stage">The input stage.</param>
+        /// <param name="name">The name of the operations.</param>
+        /// <param name="operationStage">The operation </param>
+        /// <returns>The changed output.</returns>
+        public static IPipelineStage<TOutput> ChangeableUnaryOperation<TInput, TOutput>(this IPipelineStage<TInput> stage, string name, IPipelineStage<Func<TInput, TOutput>> operationStage)
+            => ChangeablePipelineOperations.Create(name, operationStage, stage);
+
+        /// <summary>
         /// Creates a reaction to changes of this stage.
         /// </summary>
         /// <param name="stage">The stage to create a reaction for.</param>
