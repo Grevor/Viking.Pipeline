@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Generated\" />
+    <Folder Include="Generated\ChangeableOperations\" />
   </ItemGroup>
 
 </Project>
