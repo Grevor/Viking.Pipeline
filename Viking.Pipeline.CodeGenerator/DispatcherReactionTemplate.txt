@@ -9,19 +9,22 @@ namespace Viking.Pipeline.Wpf
 		public DispatcherReactionPipelineStage(
 			Action<$GenericParameters$> reaction, 
 			$ConstructorParameters$) :
-			this(GetDefaultName($RepassingParameters$), reaction, $RepassingParameters$) { }
+			this(GetDefaultName($RepassingParameters$), reaction, $RepassingParameters$) 
+		{ }
 
 		public DispatcherReactionPipelineStage(
 			Action<$GenericParameters$> reaction, 
 			$ConstructorParameters$,
 			bool reactImmediately) :
-			this(GetDefaultName($RepassingParameters$), reaction, DispatcherUtilities.DefaultDispatcher, $RepassingParameters$, reactImmediately) { }
+			this(GetDefaultName($RepassingParameters$), reaction, DispatcherUtilities.DefaultDispatcher, $RepassingParameters$, reactImmediately) 
+		{ }
 
 		public DispatcherReactionPipelineStage(
 			string name, 
 			Action<$GenericParameters$> reaction, 
 			$ConstructorParameters$) :
-			this(name, reaction, $RepassingParameters$, true) { }
+			this(name, reaction, DispatcherUtilities.DefaultDispatcher, $RepassingParameters$, true) 
+		{ }
 
 		public DispatcherReactionPipelineStage(
 			string name, 
@@ -35,8 +38,8 @@ namespace Viking.Pipeline.Wpf
 			Dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
 			$ConstructorAssignment$
 			this.AddDependencies($RepassingParameters$);
-			if(reactImmediately)
-				InvokeReaction();
+			if (reactImmediately)
+				InvokeReaction($Getters$);
 		}
 
 		public string Name { get; }
@@ -47,14 +50,17 @@ namespace Viking.Pipeline.Wpf
 		public void OnInvalidate(IPipelineInvalidator invalidator)
 		{
 			invalidator.InvalidateAllDependentStages(this);
-			InvokeReaction();
+			InvokeReaction($Getters$);
 		}
 
-		private void InvokeReaction() => Dispatcher.Invoke(Reaction, new object[] { $Getters$ });
+		private void InvokeReaction($ValueParameters$)
+		{
+			Dispatcher.Invoke(() => Reaction.Invoke($RepassingParameters$));
+		}
 
 		public override string ToString() => $"{Name} - Reaction is {Reaction.GetDetailedStringRepresentation()}";
 
-		private static string GetDefaultName(params IPipelineStage[] stages) => $"Reaction to {string.Join(", ", stages.Select(p=>"'" + p.Name + "'"))}";
+		private static string GetDefaultName(params IPipelineStage[] stages) => $"Reaction to {string.Join(", ", stages.Select(p => "'" + p.Name + "'"))}";
     }
 
 	public static partial class DispatcherReactions

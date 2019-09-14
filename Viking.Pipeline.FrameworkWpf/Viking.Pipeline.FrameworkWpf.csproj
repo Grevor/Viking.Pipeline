@@ -44,10 +44,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DispatcherUtilities.cs" />
+    <Compile Include="Generated\Dispatcher\DispatcherReactionPipelineStage1.cs" />
+    <Compile Include="Generated\Dispatcher\DispatcherReactionPipelineStage2.cs" />
+    <Compile Include="Generated\Dispatcher\DispatcherReactionPipelineStage3.cs" />
+    <Compile Include="Generated\Dispatcher\DispatcherReactionPipelineStage4.cs" />
+    <Compile Include="Generated\Dispatcher\DispatcherReactionPipelineStage5.cs" />
+    <Compile Include="Generated\Dispatcher\DispatcherReactionPipelineStage6.cs" />
+    <Compile Include="Generated\Dispatcher\DispatcherReactionPipelineStage7.cs" />
+    <Compile Include="Generated\Dispatcher\DispatcherReactionPipelineStage8.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Generated\" />
+    <ProjectReference Include="..\Viking.Pipeline\Viking.Pipeline.csproj">
+      <Project>{26b91f5f-3d86-456a-be5a-e7fc155bc691}</Project>
+      <Name>Viking.Pipeline</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

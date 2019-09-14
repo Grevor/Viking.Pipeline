@@ -9,12 +9,14 @@ namespace Viking.Pipeline.CodeGenerator
         public const string ConstructorParametersPlaceholder = "$ConstructorParameters$";
         public const string ConstructorAssignmentsPlaceholder = "$ConstructorAssignment$";
         public const string RepassingParametersPlaceholder = "$RepassingParameters$";
+        public const string ValueParametersPlaceholder = "$ValueParameters$";
         public const string GettersPlaceholder = "$Getters$";
         public const string ClassFieldsPlaceholder = "$ClassFields$";
 
 
         private string GenericParameters { get; }
         private string ConstructorParameters { get; }
+        private string ValueParameters { get; }
         private string ConstructorAssignments { get; }
         private string RepassingParameters { get; }
         private string Getters { get; }
@@ -29,6 +31,7 @@ namespace Viking.Pipeline.CodeGenerator
             ConstructorParameters = hasParameters ? string.Join("," + Environment.NewLine + "\t\t\t", parameters.Select(GetConstructorParameter)) : "";
             ConstructorAssignments = hasParameters ? string.Join(Environment.NewLine + "\t\t\t", parameters.Select(GetConstructorAssignment)) : "";
             RepassingParameters = hasParameters ? string.Join(", ", parameters.Select(p => p.ConstructorParameterName)) : "";
+            ValueParameters = hasParameters ? string.Join(", ", parameters.Select(GetValueParameter)) : "";
             Getters = hasParameters ? string.Join(", ", parameters.Select(GetValueGetter)) : "";
             ClassFields = hasParameters ? string.Join(Environment.NewLine + "\t\t", parameters.Select(GetClassProperty)) : "";
         }
@@ -38,6 +41,7 @@ namespace Viking.Pipeline.CodeGenerator
             return template
                 .Replace(GenericParametersPlaceholder, GenericParameters)
                 .Replace(ConstructorParametersPlaceholder, ConstructorParameters)
+                .Replace(ValueParametersPlaceholder, ValueParameters)
                 .Replace(ConstructorAssignmentsPlaceholder, ConstructorAssignments)
                 .Replace(RepassingParametersPlaceholder, RepassingParameters)
                 .Replace(GettersPlaceholder, Getters)
@@ -47,6 +51,7 @@ namespace Viking.Pipeline.CodeGenerator
 
         private static string GetFieldType(Parameter parameter) => $"IPipelineStage<{parameter.TypeParameterName}>";
         private static string GetConstructorParameter(Parameter parameter) => $"{GetFieldType(parameter)} {parameter.ConstructorParameterName}";
+        private static string GetValueParameter(Parameter parameter) => $"{parameter.TypeParameterName} {parameter.ConstructorParameterName}";
         private static string GetClassProperty(Parameter parameter) => $"public {GetFieldType(parameter)} {parameter.ClassFieldName} {{ get; }}";
         private static string GetConstructorAssignment(Parameter parameter) => $"{parameter.ClassFieldName} = {parameter.ConstructorParameterName} ?? throw new ArgumentNullException(nameof({parameter.ConstructorParameterName}));";
         private static string GetValueGetter(Parameter parameter) => $"{parameter.ClassFieldName}.GetValue()";

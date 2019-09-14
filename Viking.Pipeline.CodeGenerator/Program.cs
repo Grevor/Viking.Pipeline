@@ -10,7 +10,7 @@ namespace Viking.Pipeline.CodeGenerator
             Generate("ReactionTemplate.txt", Environment.CurrentDirectory + @"\..\..\..\..\Viking.Pipeline\Generated\Reactions\ReactionPipelineStage$Number$.cs", 8);
             Generate("OperationTemplate.txt", Environment.CurrentDirectory + @"\..\..\..\..\Viking.Pipeline\Generated\Operations\OperationPipelineStage$Number$.cs", 8);
 
-            //Generate("DispatcherReactionTemplate.txt", Environment.CurrentDirectory + @"\..\..\..\..\Viking.Pipeline.FrameworkWpf\Generated\Dispatcher\DispatcherReactionPipelineStage$Number$.cs", 8);
+            Generate("DispatcherReactionTemplate.txt", Environment.CurrentDirectory + @"\..\..\..\..\Viking.Pipeline.FrameworkWpf\Generated\Dispatcher\DispatcherReactionPipelineStage$Number$.cs", 8);
         }
 
         private static void Generate(string template, string toFile, int toGenerate)
