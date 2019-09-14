@@ -10,9 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="ChangeableOperationTemplate.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="OperationTemplate.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

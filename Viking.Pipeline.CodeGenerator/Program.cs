@@ -9,7 +9,6 @@ namespace Viking.Pipeline.CodeGenerator
         {
             Generate("ReactionTemplate.txt", Environment.CurrentDirectory + @"\..\..\..\..\Viking.Pipeline\Generated\Reactions\ReactionPipelineStage$Number$.cs", 8);
             Generate("OperationTemplate.txt", Environment.CurrentDirectory + @"\..\..\..\..\Viking.Pipeline\Generated\Operations\OperationPipelineStage$Number$.cs", 8);
-            Generate("ChangeableOperationTemplate.txt", Environment.CurrentDirectory + @"\..\..\..\..\Viking.Pipeline\Generated\ChangeableOperations\ChangeableOperationPipelineStage$Number$.cs", 8);
 
             //Generate("DispatcherReactionTemplate.txt", Environment.CurrentDirectory + @"\..\..\..\..\Viking.Pipeline.FrameworkWpf\Generated\Dispatcher\DispatcherReactionPipelineStage$Number$.cs", 8);
         }
@@ -22,7 +21,7 @@ namespace Viking.Pipeline.CodeGenerator
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
 
-            for(int i = 1; i < toGenerate + 1; ++i)
+            for (int i = 1; i < toGenerate + 1; ++i)
             {
                 var generator = new Generator(new PepeHands(i));
                 var fileName = toFile.Replace("$Number$", i.ToString());

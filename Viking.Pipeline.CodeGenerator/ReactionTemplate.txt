@@ -8,19 +8,22 @@ namespace Viking.Pipeline
 		public ReactionPipelineStage(
 			Action<$GenericParameters$> reaction, 
 			$ConstructorParameters$) :
-			this(GetDefaultName($RepassingParameters$), reaction, $RepassingParameters$) { }
+			this(GetDefaultName($RepassingParameters$), reaction, $RepassingParameters$) 
+		{ }
 
 		public ReactionPipelineStage(
 			Action<$GenericParameters$> reaction, 
 			$ConstructorParameters$,
 			bool reactImmediately) :
-			this(GetDefaultName($RepassingParameters$), reaction, $RepassingParameters$, reactImmediately) { }
+			this(GetDefaultName($RepassingParameters$), reaction, $RepassingParameters$, reactImmediately) 
+		{ }
 
 		public ReactionPipelineStage(
 			string name, 
 			Action<$GenericParameters$> reaction, 
 			$ConstructorParameters$) :
-			this(name, reaction, $RepassingParameters$, true) { }
+			this(name, reaction, $RepassingParameters$, true) 
+		{ }
 
 		public ReactionPipelineStage(
 			string name, 
@@ -32,7 +35,7 @@ namespace Viking.Pipeline
 			Reaction = reaction ?? throw new ArgumentNullException(nameof(reaction));
 			$ConstructorAssignment$
 			this.AddDependencies($RepassingParameters$);
-			if(reactImmediately)
+			if (reactImmediately)
 				Reaction($Getters$);
 		}
 
