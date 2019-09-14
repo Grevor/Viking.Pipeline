@@ -34,7 +34,7 @@ namespace Viking.Pipeline.Patterns
         /// <returns><see cref="PipelineTransactionResult.Success"/></returns>
         public PipelineTransactionResult Commit()
         {
-            var stagesToInvalidate = PendingStages.Values.OrderBy(part=> part.Timestamp).Where(part => part.Action()).Select(part => part.Stage).ToList();
+            var stagesToInvalidate = PendingStages.Values.OrderBy(part => part.Timestamp).Where(part => part.Action()).Select(part => part.Stage).ToList();
             PipelineCore.Invalidate(stagesToInvalidate);
             PendingStages.Clear();
 

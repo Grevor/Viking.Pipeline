@@ -144,7 +144,7 @@ namespace Viking.Pipeline
         /// <param name="name">The name of the operation.</param>
         /// <param name="operation">The operation.</param>
         /// <returns>The output stage.</returns>
-        public static IPipelineStage<TOutput> UnaryOperation<TInput, TOutput>(this IPipelineStage<TInput> stage, string name, Func<TInput, TOutput> operation) 
+        public static IPipelineStage<TOutput> UnaryOperation<TInput, TOutput>(this IPipelineStage<TInput> stage, string name, Func<TInput, TOutput> operation)
             => PipelineOperations.Create(name, operation, stage);
 
         /// <summary>

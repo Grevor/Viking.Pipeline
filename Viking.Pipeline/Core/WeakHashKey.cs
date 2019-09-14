@@ -8,7 +8,7 @@ namespace Viking.Pipeline
         private WeakReference<T> WeakReference { get; }
         private T StrongReference { get; }
 
-        public WeakHashKey(T target): this(target, false) { }
+        public WeakHashKey(T target) : this(target, false) { }
         public WeakHashKey(T target, bool isStrong)
         {
             if (isStrong)

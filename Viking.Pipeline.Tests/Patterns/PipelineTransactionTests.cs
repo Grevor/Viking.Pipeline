@@ -18,7 +18,7 @@ namespace Viking.Pipeline.Tests.Patterns
             test.AssertInvalidations(0);
         }
 
-        [TestCase(0,0)]
+        [TestCase(0, 0)]
         [TestCase(10, 0)]
         [TestCase(10, 3)]
         [TestCase(30, 30)]

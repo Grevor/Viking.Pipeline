@@ -1,6 +1,6 @@
-﻿using System.Reflection;
+﻿using NUnit.Framework;
+using System.Reflection;
 using System.Runtime.InteropServices;
-using NUnit.Framework;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -26,4 +26,4 @@ using NUnit.Framework;
 //      Revision
 //
 
-    [assembly: Parallelizable(ParallelScope.Children)]
+[assembly: Parallelizable(ParallelScope.Children)]

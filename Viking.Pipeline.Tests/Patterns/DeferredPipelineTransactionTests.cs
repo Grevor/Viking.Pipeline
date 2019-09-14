@@ -1,9 +1,9 @@
 ﻿using Moq;
 using NUnit.Framework;
-using System.Collections.Generic;
-using Viking.Pipeline.Patterns;
-using System.Linq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Viking.Pipeline.Patterns;
 
 namespace Viking.Pipeline.Tests.Patterns
 {
@@ -87,7 +87,7 @@ namespace Viking.Pipeline.Tests.Patterns
             control.Setup(mock => mock.Commit(
                 It.IsAny<DeferredPipelineTransaction>(),
                 It.IsAny<IEnumerable<DeferredTransactionPart>>()))
-                .Callback<DeferredPipelineTransaction,IEnumerable<DeferredTransactionPart>>((a,b)=> Assert.IsTrue(a == sut && b.Count() == 1 && b.First().Stage == value));
+                .Callback<DeferredPipelineTransaction, IEnumerable<DeferredTransactionPart>>((a, b) => Assert.IsTrue(a == sut && b.Count() == 1 && b.First().Stage == value));
 
             sut.Commit();
         }

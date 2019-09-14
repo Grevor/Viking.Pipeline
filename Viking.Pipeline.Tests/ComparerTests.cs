@@ -22,14 +22,14 @@ namespace Viking.Pipeline.Tests
         [TestCase(new int[] { }, new int[] { }, true)]
         [TestCase(new int[] { }, new int[] { 1 }, false)]
 
-        [TestCase(new[] { 1, 2, 3}, new[] { 1, 2, 3 }, true)]
-        [TestCase(new[] { 1, 3, 2}, new[] { 1, 2, 3 }, false)]
+        [TestCase(new[] { 1, 2, 3 }, new[] { 1, 2, 3 }, true)]
+        [TestCase(new[] { 1, 3, 2 }, new[] { 1, 2, 3 }, false)]
 
         [TestCase(new[] { 1, 2, 3 }, new[] { 1, 3 }, false)]
         [TestCase(new[] { 1, 2, 3 }, new[] { 1, 2 }, false)]
 
         [TestCase(new[] { 1 }, new[] { 2 }, false)]
-        [TestCase(new[] { 1, 2 }, new[] {  4, 5 }, false)]
+        [TestCase(new[] { 1, 2 }, new[] { 4, 5 }, false)]
         public void SequenceEqualityGetsExpectedResults(int[] a, int[] b, bool match)
         {
             var comparer = PipelineComparers.SequenceEqualityComparer(EqualityComparer<int>.Default);

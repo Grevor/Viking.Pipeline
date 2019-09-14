@@ -34,7 +34,7 @@ namespace Viking.Pipeline
         {
             var completeRemovals = new List<WeakHashKey<IPipelineStage>>();
             var keys = TotalWeakKeys;
-            foreach(var entry in Dependencies)
+            foreach (var entry in Dependencies)
             {
                 if (entry.Key.IsAlive)
                     keys -= RemoveNonExisting(entry.Value);
@@ -223,7 +223,7 @@ namespace Viking.Pipeline
         private static int RemoveNonExisting(List<WeakReference<IPipelineStage>> dependencies)
         {
             var compact = 0;
-            for(int i = 0; i < dependencies.Count; ++i)
+            for (int i = 0; i < dependencies.Count; ++i)
             {
                 var item = dependencies[i];
                 if (item.TryGetTarget(out var _))

@@ -65,7 +65,7 @@ namespace Viking.Pipeline
 
             try
             {
-                foreach(var stage in CurrentPropagationTopology)
+                foreach (var stage in CurrentPropagationTopology)
                 {
                     if (!invalidator.IsInvalidated(stage.Stage))
                         continue;
@@ -78,7 +78,7 @@ namespace Viking.Pipeline
                     ErrorHandler.SetDependent(invalidator.InvalidatedByThisStep);
                 }
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 throw ErrorHandler.CreatePipelinePropagationException(exception);
             }

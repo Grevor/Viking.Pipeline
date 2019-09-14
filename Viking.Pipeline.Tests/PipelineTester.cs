@@ -25,7 +25,7 @@ namespace Viking.Pipeline.Tests
         public static void NotDependentOn(IPipelineStage stage, params IPipelineStage[] dependencies) => DependentOn(stage, false, dependencies);
         public static void DependentOn(IPipelineStage stage, bool shouldContain, params IPipelineStage[] dependencies)
         {
-            foreach(var dependency in dependencies)
+            foreach (var dependency in dependencies)
             {
                 var deps = dependency.GetAllDependentStages();
                 if (shouldContain)

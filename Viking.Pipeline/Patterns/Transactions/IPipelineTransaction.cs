@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Viking.Pipeline.Patterns
+﻿namespace Viking.Pipeline.Patterns
 {
     /// <summary>
     /// The result of a <see cref="IPipelineTransaction"/> commit.

@@ -85,7 +85,7 @@ namespace Viking.Pipeline.Tests
 
                 container.Thread = Thread.CurrentThread;
 
-                if(container.Thread != Thread.CurrentThread)
+                if (container.Thread != Thread.CurrentThread)
                     throw new Exception();
 
                 container.Thread = null;

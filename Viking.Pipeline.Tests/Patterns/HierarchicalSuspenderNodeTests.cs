@@ -18,9 +18,9 @@ namespace Viking.Pipeline.Tests.Patterns
         }
 
         [TestCase(
-            PipelineSuspensionState.Resume, 
-            new[] { PipelineSuspensionState.ResumeWithoutPendingInvalidates, PipelineSuspensionState.Resume }, 
-            new[] { HierarchicalBehavior.PropagateSuspendOnly, HierarchicalBehavior.PropagateSuspendOnly }, 
+            PipelineSuspensionState.Resume,
+            new[] { PipelineSuspensionState.ResumeWithoutPendingInvalidates, PipelineSuspensionState.Resume },
+            new[] { HierarchicalBehavior.PropagateSuspendOnly, HierarchicalBehavior.PropagateSuspendOnly },
             PipelineSuspensionState.Resume,
             TestName = "PropagateSuspendOnly: Resume => ResumeWithoutPendingInvalidates => Resume = Resume")]
         [TestCase(
@@ -78,9 +78,9 @@ namespace Viking.Pipeline.Tests.Patterns
             TestName = "WeakenSuspensionState: Resume => ResumeWithoutPendingInvalidates => Suspend = Suspend")]
 
         public void HierarchyPropagateSuspensionStateAsExpected(
-            PipelineSuspensionState root, 
-            PipelineSuspensionState[] hierarchy, 
-            HierarchicalBehavior[] behaviors, 
+            PipelineSuspensionState root,
+            PipelineSuspensionState[] hierarchy,
+            HierarchicalBehavior[] behaviors,
             PipelineSuspensionState expectedFinalState)
         {
             var parent = new HierarchicalSuspenderNode(root.AsPipelineConstant());
@@ -103,10 +103,10 @@ namespace Viking.Pipeline.Tests.Patterns
 
             var tests = stages.Select(s => s.Output.AttachTestStage()).ToList();
 
-            for(int i = 0; i < size; ++i)
+            for (int i = 0; i < size; ++i)
             {
                 inputs[i].SetValue(PipelineSuspensionState.Suspend);
-                foreach(var test in tests.Skip(i))
+                foreach (var test in tests.Skip(i))
                     test.AssertInvalidations(i + 1);
                 PipelineAssert.Value(stages.Last().Output, PipelineSuspensionState.Suspend);
             }

@@ -55,10 +55,10 @@ namespace Viking.Pipeline.Tests
             test.AssertInvalidations(2);
         }
 
-        [TestCase(1,1)]
-        [TestCase(2,1)]
-        [TestCase(10,3)]
-        [TestCase(10,9)]
+        [TestCase(1, 1)]
+        [TestCase(2, 1)]
+        [TestCase(10, 3)]
+        [TestCase(10, 9)]
         public void StageIsNotInvalidatedWhenAtLeastOneMutuallyExclusiveStageIsInvalidated(int totalExclusiveStages, int invalidations)
         {
             var previous = 10.AsPipelineConstant();

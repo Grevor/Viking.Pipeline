@@ -74,7 +74,7 @@ namespace Viking.Pipeline.Tests.Patterns
         private static void AssertExpectedTransactionOutcome(
             IPipelineTransaction t1,
             IPipelineTransaction t2,
-            List<AssignablePipelineStage<int>> stages, 
+            List<AssignablePipelineStage<int>> stages,
             List<TestPipelineStage<int>> tests,
             IEnumerable<int> transaction,
             PipelineTransactionResult expectedFirstResult,

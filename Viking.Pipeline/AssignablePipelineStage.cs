@@ -15,7 +15,7 @@ namespace Viking.Pipeline
         /// <param name="name">The name of the value.</param>
         /// <param name="initial">The initial value.</param>
         /// <exception cref="ArgumentNullException">If <paramref name="name"/> is null.</exception>
-        public AssignablePipelineStage(string name, TValue initial) : this(name,initial, EqualityComparer<TValue>.Default) { }
+        public AssignablePipelineStage(string name, TValue initial) : this(name, initial, EqualityComparer<TValue>.Default) { }
         /// <summary>
         /// Creates a new <see cref="AssignablePipelineStage{TValue}"/> with the specified name, initial value and comparer.
         /// </summary>

@@ -57,7 +57,7 @@ namespace Viking.Pipeline.Tests
             var test = assignable.AttachTestStage();
             var cache = CreateCache(test);
 
-            
+
             Assert.IsFalse(cache.IsValid);
 
             PipelineAssert.Value(cache, 1);

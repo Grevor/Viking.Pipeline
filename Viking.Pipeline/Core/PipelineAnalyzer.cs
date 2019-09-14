@@ -22,20 +22,20 @@ namespace Viking.Pipeline
         private Dictionary<IPipelineStage, Mark> Marks { get; } = new Dictionary<IPipelineStage, Mark>();
         private Dictionary<IPipelineStage, TarjanData> Tarjan { get; } = new Dictionary<IPipelineStage, TarjanData>();
 
-        private IEnumerable<WeakReference<IPipelineStage>> GetDependentStages(IPipelineStage stage) 
+        private IEnumerable<WeakReference<IPipelineStage>> GetDependentStages(IPipelineStage stage)
             => DependentStages.TryGetValue(new WeakHashKey<IPipelineStage>(stage, true), out var deps) ? deps : Enumerable.Empty<WeakReference<IPipelineStage>>();
 
         #region Topology Sort
         private Mark GetMark(IPipelineStage stage) => Marks.TryGetValue(stage, out var mark) ? mark : Mark.NoMark;
         private Mark SetMark(IPipelineStage stage, Mark mark) => Marks[stage] = mark;
 
-        
+
         public List<PipelineStagePropagation> GetTopologySorted(IEnumerable<IPipelineStage> initial)
         {
             Marks.Clear();
             var result = new List<PipelineStagePropagation>();
 
-            foreach(var n in initial)
+            foreach (var n in initial)
                 if (Visit(n, result))
                     return null;
 
@@ -70,7 +70,7 @@ namespace Viking.Pipeline
 
         private TarjanData GetTarjan(IPipelineStage stage)
         {
-            if(!Tarjan.TryGetValue(stage, out var tarjan))
+            if (!Tarjan.TryGetValue(stage, out var tarjan))
             {
                 tarjan = new TarjanData(stage);
                 Tarjan.Add(stage, tarjan);
@@ -84,7 +84,7 @@ namespace Viking.Pipeline
             var S = new Stack<TarjanData>();
             var index = 1;
             var result = new List<List<IPipelineStage>>();
-            foreach(var n in initial)
+            foreach (var n in initial)
             {
                 var v = GetTarjan(n);
                 if (v.Index == TarjanData.Undefined)
@@ -99,13 +99,13 @@ namespace Viking.Pipeline
             v.LowLink = index++;
             s.Push(v);
             v.OnStack = true;
-            foreach(var n in GetDependentStages(v.Stage))
+            foreach (var n in GetDependentStages(v.Stage))
             {
                 if (!n.TryGetTarget(out var dependent))
                     continue;
 
                 var w = GetTarjan(dependent);
-                if(w.Index == TarjanData.Undefined)
+                if (w.Index == TarjanData.Undefined)
                 {
                     StrongConnect(s, w, ref index, output);
                     v.LowLink = Math.Min(v.LowLink, w.LowLink);
@@ -116,7 +116,7 @@ namespace Viking.Pipeline
                 }
             }
 
-            if(v.LowLink == v.Index)
+            if (v.LowLink == v.Index)
             {
                 var ssc = new List<IPipelineStage>();
                 TarjanData w;

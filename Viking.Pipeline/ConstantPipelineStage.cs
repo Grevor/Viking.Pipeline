@@ -36,7 +36,7 @@ namespace Viking.Pipeline
         public void OnInvalidate(IPipelineInvalidator invalidator) => invalidator.InvalidateAllDependentStages(this);
 
         public static implicit operator ConstantPipelineStage<TValue>(TValue value) => new ConstantPipelineStage<TValue>(value);
-        public static implicit operator TValue(ConstantPipelineStage<TValue> stage)=> stage.Value;
+        public static implicit operator TValue(ConstantPipelineStage<TValue> stage) => stage.Value;
 
         public override string ToString() => FormattableString.Invariant($"Constant value '{Name}': {Value}");
     }

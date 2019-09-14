@@ -48,7 +48,7 @@ namespace Viking.Pipeline
             AppendInitialStages(builder);
 
             builder.AppendLargeHeader("Potential components where cycles can happen");
-            foreach(var sscc in ssc)
+            foreach (var sscc in ssc)
             {
                 builder.AppendLine(string.Join(Environment.NewLine + "\t", sscc.Select(s => s.GetErrorInfo())));
                 builder.AppendLine();

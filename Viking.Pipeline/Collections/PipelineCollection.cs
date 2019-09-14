@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Viking.Pipeline.Collections
 {
@@ -107,7 +106,7 @@ namespace Viking.Pipeline.Collections
 
         private ChangeEntry GetChangeEntry(TKey key, IPipelineStage<TValue> pipeline, InitialState state)
         {
-            if(!ChangeSet.TryGetValue(key, out var entry))
+            if (!ChangeSet.TryGetValue(key, out var entry))
             {
                 entry = new ChangeEntry(key, pipeline, state);
                 ChangeSet.Add(key, entry);
