@@ -11,15 +11,18 @@ namespace Viking.Pipeline.CodeGenerator
 
             var value = new AssignablePipelineStage<int>("integer", 0);
             var suspension = new AssignablePipelineStage<PipelineSuspensionState>("suspender", PipelineSuspensionState.Resume);
+            var changeableOperation = new AssignablePipelineStage<Func<int, int>>("suspender", a => a);
 
             var multiply = PipelineOperations.Create("multiply", Multiply, value, two);
-            var cache = multiply.WithCache();
+            var changeable = PipelineOperations.Create("changeable", changeableOperation, multiply);
+            var cache = changeable.WithCache();
             var suspender = cache.WithConditionalSuspender(suspension);
 
             var reaction = PipelineReactions.Create(Reaction, suspender);
 
             value.SetValue(1);
             value.SetValue(2);
+            changeableOperation.SetValue(a => a * 2);
 
             GC.KeepAlive(reaction);
             Console.ReadLine();
