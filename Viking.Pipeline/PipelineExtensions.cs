@@ -148,7 +148,7 @@ namespace Viking.Pipeline
             => PipelineOperations.Create(name, operation, stage);
 
         /// <summary>
-        /// Adds a changeable unary operation modifying the pipeline.
+        /// Adds a unary operation modifying the pipeline.
         /// </summary>
         /// <typeparam name="TInput">The input type.</typeparam>
         /// <typeparam name="TOutput">The output type.</typeparam>
@@ -156,8 +156,8 @@ namespace Viking.Pipeline
         /// <param name="name">The name of the operations.</param>
         /// <param name="operationStage">The operation </param>
         /// <returns>The changed output.</returns>
-        public static IPipelineStage<TOutput> ChangeableUnaryOperation<TInput, TOutput>(this IPipelineStage<TInput> stage, string name, IPipelineStage<Func<TInput, TOutput>> operationStage)
-            => ChangeablePipelineOperations.Create(name, operationStage, stage);
+        public static IPipelineStage<TOutput> UnaryOperation<TInput, TOutput>(this IPipelineStage<TInput> stage, string name, IPipelineStage<Func<TInput, TOutput>> operationStage)
+            => PipelineOperations.Create(name, operationStage, stage);
 
         /// <summary>
         /// Creates a reaction to changes of this stage.
