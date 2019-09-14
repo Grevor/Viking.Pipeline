@@ -51,7 +51,7 @@ namespace Viking.Pipeline
 
 		public override string ToString() => $"{Name} - Reaction is {Reaction.GetDetailedStringRepresentation()}";
 
-		private static string GetDefaultName(params IPipelineStage[] stages) => $"Reaction to {string.Join(", ", stages.Select(p=>"'" + p.Name + "'"))}";
+		private static string GetDefaultName(params IPipelineStage[] stages) => $"Reaction to {string.Join(", ", stages.Select(p => "'" + p.Name + "'"))}";
     }
 
 	public static partial class PipelineReactions

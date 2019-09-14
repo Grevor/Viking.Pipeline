@@ -19,7 +19,7 @@ namespace Viking.Pipeline
 			Name = name ?? throw new ArgumentNullException(nameof(name));
 			Operation = operation ?? throw new ArgumentNullException(nameof(operation));
 			$ConstructorAssignment$
-			this.AddDependencies($RepassingParameters$);
+			this.AddDependencies(operation, $RepassingParameters$);
 		}
 
 		public string Name { get; }
