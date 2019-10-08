@@ -9,7 +9,7 @@ namespace Viking.Pipeline.Tests
         public static void AssertPipelineIsInvalidatingDependentStages(IPipelineStage stage)
         {
             var t = new Test();
-            var reaction = new ReactionPipelineStage(t.Reaction);
+            var reaction = new ReactionPipelineStage(t.Reaction, stage);
 
             stage.Invalidate();
             Assert.AreEqual(1, t.Count);

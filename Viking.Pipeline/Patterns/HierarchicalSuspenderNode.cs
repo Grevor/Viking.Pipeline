@@ -72,17 +72,13 @@ namespace Viking.Pipeline.Patterns
         /// <returns>The weakest state, in the order Resume > ResumeWithoutInvalidate > Suspend.</returns>
         public static PipelineSuspensionState GetWeakestState(PipelineSuspensionState parent, PipelineSuspensionState child)
         {
-            switch (parent)
+            return parent switch
             {
-                case PipelineSuspensionState.Resume:
-                    return child;
-                case PipelineSuspensionState.ResumeWithoutPendingInvalidates:
-                    return child == PipelineSuspensionState.Resume ? PipelineSuspensionState.ResumeWithoutPendingInvalidates : child;
-                case PipelineSuspensionState.Suspend:
-                    return PipelineSuspensionState.Suspend;
-                default:
-                    throw new ArgumentException("Invalid argument.", nameof(parent));
-            }
+                PipelineSuspensionState.Resume => child,
+                PipelineSuspensionState.ResumeWithoutPendingInvalidates => child == PipelineSuspensionState.Resume ? PipelineSuspensionState.ResumeWithoutPendingInvalidates : child,
+                PipelineSuspensionState.Suspend => PipelineSuspensionState.Suspend,
+                _ => throw new ArgumentException("Invalid argument.", nameof(parent)),
+            };
         }
 
         /// <summary>

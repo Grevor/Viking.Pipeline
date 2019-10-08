@@ -101,7 +101,7 @@ namespace Viking.Pipeline.Collections
 
         private static ChangeEntry CreateSingleEntry(Entry entry, ChangeState state)
         {
-            return new ChangeEntry(entry.Key, entry.Pipeline, InitialState.Present) { State = ChangeState.Removed };
+            return new ChangeEntry(entry.Key, entry.Pipeline, InitialState.Present) { State = state };
         }
 
         private ChangeEntry GetChangeEntry(TKey key, IPipelineStage<TValue> pipeline, InitialState state)

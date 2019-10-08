@@ -138,7 +138,7 @@ namespace Viking.Pipeline.Tests
         private class Counter { public int I { get; set; } public void Increment() => I++; }
 
 
-        public AssignablePipelineStage<int> GetAssignable(int initial) => new AssignablePipelineStage<int>("", initial);
-        public CachingPipelineStage<int> CreateCache(IPipelineStage<int> input) => new CachingPipelineStage<int>(input);
+        public static AssignablePipelineStage<int> GetAssignable(int initial) => new AssignablePipelineStage<int>("", initial);
+        public static CachingPipelineStage<int> CreateCache(IPipelineStage<int> input) => new CachingPipelineStage<int>(input);
     }
 }

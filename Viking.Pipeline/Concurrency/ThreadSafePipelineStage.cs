@@ -43,6 +43,9 @@ namespace Viking.Pipeline
 
         private static TOutput WaitForRunningInvocationAndGetResultFromIt(Task<TOutput> runningTask) => runningTask.Result;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Usage", "CA2219:Do not raise exceptions in finally clauses", 
+            Justification = "The exception is a fatal exception. The finally clause is needed as well.")]
         private TOutput InvokeGetValueAndThenCleanUp(Task<TOutput> task)
         {
             try

@@ -20,7 +20,7 @@ namespace Viking.Pipeline
         public void SetCurrentStage(IPipelineStage stage) => ExecutionOrder.Add(stage);
         public void SetDependent(List<IPipelineStage> dependents) => ActualExecution.Add(CurrentStage, dependents);
 
-        private string InitialHeader => "Exception while propagating pipeline update";
+        private static string InitialHeader => "Exception while propagating pipeline update";
 
 
         public Exception CreatePipelinePropagationException(Exception ex)

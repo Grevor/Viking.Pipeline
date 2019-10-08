@@ -63,6 +63,7 @@ namespace Viking.Pipeline
                 return CleanUp();
         }
 
+
         /// <summary>
         /// Gets the minimal pipeline graph where all the specified stages are included.
         /// </summary>
@@ -71,26 +72,19 @@ namespace Viking.Pipeline
         public static PipelineGraph GetPipelineGraphIncludingStages(IEnumerable<IPipelineStage> stages)
         {
             var graph = new PipelineGraph();
-            try
-            {
-                var propagation = new PipelinePropagation(stages, Dependencies);
-                lock (Dependencies)
-                    propagation.BuildPropagationTopology(stages, 0);
 
-                foreach (var s in propagation.CurrentPropagationTopology)
-                {
-                    graph.AddNode(s.Stage);
-                    foreach (var dep in s.Dependent)
-                        graph.AddEdge(s.Stage, dep);
-                }
+            var propagation = new PipelinePropagation(stages, Dependencies);
+            lock (Dependencies)
+                propagation.BuildPropagationTopology(stages, 0);
 
-                return graph;
-            }
-            catch
+            foreach (var s in propagation.CurrentPropagationTopology)
             {
-                graph.Invalidate();
-                return graph;
+                graph.AddNode(s.Stage);
+                foreach (var dep in s.Dependent)
+                    graph.AddEdge(s.Stage, dep);
             }
+
+            return graph;
         }
 
         /// <summary>

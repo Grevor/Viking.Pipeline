@@ -29,13 +29,10 @@ namespace Viking.Pipeline
 
             fn.AddDependentNode(tn);
         }
-        internal void Invalidate() => IsValid = false;
 
         public PipelineGraphNode GetNode(IPipelineStage stage) => Nodes[stage];
         public bool HasNode(IPipelineStage stage) => Nodes.ContainsKey(stage);
         public IEnumerable<PipelineGraphNode> TopologySortedNodes => TopologySorted;
-        public bool IsValid { get; private set; } = true;
-
     }
 
     public class PipelineGraphNode

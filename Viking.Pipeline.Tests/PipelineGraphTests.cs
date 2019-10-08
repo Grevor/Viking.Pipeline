@@ -16,7 +16,6 @@ namespace Viking.Pipeline.Tests
             var test = c.AttachTestStage();
 
             var graph = PipelineCore.GetPipelineGraphIncludingStages(new[] { b });
-            Assert.IsTrue(graph.IsValid);
             Assert.AreEqual(3, graph.TopologySortedNodes.Count());
             AssertTopologyPosition(graph, 0, b);
             AssertTopologyPosition(graph, 1, c);
@@ -36,7 +35,6 @@ namespace Viking.Pipeline.Tests
             var test = c.AttachTestStage();
 
             var graph = PipelineCore.GetPipelineGraphIncludingStages(new[] { a, b });
-            Assert.IsTrue(graph.IsValid);
             Assert.AreEqual(4, graph.TopologySortedNodes.Count());
 
             AssertNodeDependents(graph, a, c);

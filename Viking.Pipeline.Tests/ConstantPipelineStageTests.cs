@@ -16,6 +16,7 @@ namespace Viking.Pipeline.Tests
         [TestCase(1337)]
         public void DefaultNameIsTheValueItself(int value) => PipelineAssert.Name(new ConstantPipelineStage<int>(value), value.ToString());
 
+        [Test]
         public void InvalidationFunctionsCorrectly() => PipelineAssert.AssertPipelineIsInvalidatingDependentStages(new ConstantPipelineStage<int>(100));
     }
 }

@@ -39,38 +39,35 @@ namespace Viking.Pipeline.Tests
         [Repeat(3)]
         public void ConcurrentRetrievalsRetrievesOnlyOnceFromUpstreamStage()
         {
-            using (EventWaitHandle completeRetrievalFlag = new EventWaitHandle(false, EventResetMode.ManualReset))
+            using EventWaitHandle completeRetrievalFlag = new EventWaitHandle(false, EventResetMode.ManualReset);
+            using var semaphore = new SemaphoreSlim(0);
+            
+            var input = new DataRetrievalPipelineStage<object>("", () => { completeRetrievalFlag.WaitOne(); return new object(); });
+            var inputTest = input.AttachTestStage();
+
+            var sut = new ThreadSafePipelineStage<object>(inputTest);
+
+            object GetObject()
             {
-                using (var semaphore = new SemaphoreSlim(0))
-                {
-                    var input = new DataRetrievalPipelineStage<object>("", () => { completeRetrievalFlag.WaitOne(); return new object(); });
-                    var inputTest = input.AttachTestStage();
-
-                    var sut = new ThreadSafePipelineStage<object>(inputTest);
-
-                    object GetObject()
-                    {
-                        semaphore.Release();
-                        return sut.GetValue();
-                    }
-
-                    var task1 = Task.Run(GetObject);
-                    var task2 = Task.Run(GetObject);
-
-                    var oneSecond = TimeSpan.FromSeconds(1);
-                    Assert.IsTrue(semaphore.Wait(oneSecond));
-                    Assert.IsTrue(semaphore.Wait(oneSecond));
-
-                    completeRetrievalFlag.Set();
-
-                    Assert.IsTrue(Task.WaitAll(new[] { task1, task2 }, oneSecond));
-
-                    var result1 = task1.Result;
-                    var result2 = task2.Result;
-
-                    Assert.AreSame(result1, result2);
-                }
+                semaphore.Release();
+                return sut.GetValue();
             }
+
+            var task1 = Task.Run(GetObject);
+            var task2 = Task.Run(GetObject);
+
+            var oneSecond = TimeSpan.FromSeconds(1);
+            Assert.IsTrue(semaphore.Wait(oneSecond));
+            Assert.IsTrue(semaphore.Wait(oneSecond));
+
+            completeRetrievalFlag.Set();
+
+            Assert.IsTrue(Task.WaitAll(new[] { task1, task2 }, oneSecond));
+
+            var result1 = task1.Result;
+            var result2 = task2.Result;
+
+            Assert.AreSame(result1, result2);
         }
 
         [Test]

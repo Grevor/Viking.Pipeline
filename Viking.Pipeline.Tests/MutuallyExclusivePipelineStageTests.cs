@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System;
 using System.Linq;
 
 namespace Viking.Pipeline.Tests
@@ -12,7 +13,7 @@ namespace Viking.Pipeline.Tests
         {
             var valid = 1.AsPipelineConstant();
 
-            PipelineAssert.NullArgumentException(() => new MutuallyExclusivePipelineStage<int>(null, new IPipelineStage[] { }), "input");
+            PipelineAssert.NullArgumentException(() => new MutuallyExclusivePipelineStage<int>(null, Array.Empty<IPipelineStage>()), "input");
             PipelineAssert.NullArgumentException(() => new MutuallyExclusivePipelineStage<int>(valid, null), "dependencies");
             PipelineAssert.NullArgumentException(() => new MutuallyExclusivePipelineStage<int>(valid, new IPipelineStage[] { null }), "single dependency");
             PipelineAssert.NullArgumentException(() => new MutuallyExclusivePipelineStage<int>(null, null), "input and dependencies");

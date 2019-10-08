@@ -11,7 +11,7 @@ namespace Viking.Pipeline.Tests
         [Test]
         public void PotentialConcurrentUpdateOfStageIsCorrectlyDiscovered()
         {
-            var goAhead = new ManualResetEvent(false);
+            using var goAhead = new ManualResetEvent(false);
 
             var value1 = new AssignablePipelineStage<int>("", 1000);
             var value2 = new AssignablePipelineStage<int>("", 2000);
@@ -26,7 +26,7 @@ namespace Viking.Pipeline.Tests
         [Test]
         public void ConcurrentUpdateOfTwoSeparateGraphsAreNotLabeledAsConcurrent()
         {
-            var goAhead = new ManualResetEvent(false);
+            using var goAhead = new ManualResetEvent(false);
             var v1 = new AssignablePipelineStage<int>("", 1);
             var v2 = new AssignablePipelineStage<int>("", 3);
 

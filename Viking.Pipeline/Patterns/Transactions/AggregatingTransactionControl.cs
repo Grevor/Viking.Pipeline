@@ -58,6 +58,8 @@ namespace Viking.Pipeline.Patterns
             if (parts is null)
                 throw new ArgumentNullException(nameof(parts));
 
+            if (!OngoingTransactions.Contains(transaction))
+                throw new ArgumentException("Transaction is not registered with this transaction control.", nameof(transaction));
             var res = parts.ToList();
             if (res.Count <= 0)
                 return PipelineTransactionResult.Success;
@@ -98,7 +100,7 @@ namespace Viking.Pipeline.Patterns
             return OngoingTransactions.Count <= 0;
         }
 
-        private PipelineTransactionResult CommitTransaction(IEnumerable<DeferredTransactionPart> res)
+        private static PipelineTransactionResult CommitTransaction(IEnumerable<DeferredTransactionPart> res)
         {
             var stagesToInvalidate = res.OrderBy(p => p.Timestamp).Where(p => p.Action()).Select(p => p.Stage).ToList();
             PipelineCore.Invalidate(stagesToInvalidate);

@@ -18,6 +18,7 @@ namespace Viking.Pipeline.Tests.Patterns
             Assert.Throws<ArgumentException>(() => control.Cancel(transaction));
         }
 
+        [Test]
         public void ControlRefusesToCommitTransactionThatIsNotRegistered()
         {
             var control = new AggregatingTransactionControl();
