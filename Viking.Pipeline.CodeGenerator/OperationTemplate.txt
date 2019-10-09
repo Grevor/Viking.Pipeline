@@ -8,7 +8,7 @@ namespace Viking.Pipeline
 			string name, 
 			Func<$GenericParameters$, TOutput> operation, 
 			$ConstructorParameters$) :
-			this(name, operation?.AsPipelineConstant(), $RepassingParameters$)
+			this(name, operation?.AsPipelineConstant()!, $RepassingParameters$)
 		{ }
 
 		public OperationPipelineStage(

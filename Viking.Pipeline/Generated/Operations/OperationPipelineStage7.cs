@@ -14,7 +14,7 @@ namespace Viking.Pipeline
 			IPipelineStage<TInput5> input5,
 			IPipelineStage<TInput6> input6,
 			IPipelineStage<TInput7> input7) :
-			this(name, operation?.AsPipelineConstant(), input1, input2, input3, input4, input5, input6, input7)
+			this(name, operation?.AsPipelineConstant()!, input1, input2, input3, input4, input5, input6, input7)
 		{ }
 
 		public OperationPipelineStage(

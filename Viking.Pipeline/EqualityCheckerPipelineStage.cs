@@ -42,6 +42,7 @@ namespace Viking.Pipeline
             Input = input ?? throw new ArgumentNullException(nameof(input));
             Comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
             Name = "Equality check for: " + input.Name;
+            LastValue = default!;
             this.AddDependencies(input);
         }
 

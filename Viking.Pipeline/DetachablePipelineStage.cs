@@ -13,9 +13,10 @@ namespace Viking.Pipeline
         /// </summary>
         /// <param name="input">The input.</param>
         /// <exception cref="ArgumentNullException">If <paramref name="input"/> is null.</exception>
-        public DetachablePipelineStage(IPipelineStage<TValue> input) : base("Detacher for: " + (input?.Name ?? ""), input)
+        public DetachablePipelineStage(IPipelineStage<TValue> input) : base(GetNameForInput(input), input)
         {
         }
+
 
         /// <summary>
         /// Detach all dependent stages from this stage.
@@ -23,5 +24,7 @@ namespace Viking.Pipeline
         public void DetachFromPipeline() => this.UnlinkAllDependencies();
 
         public override string ToString() => FormattableString.Invariant($"Detachable Stage - {Name}");
+
+        private static string GetNameForInput(IPipelineStage<TValue>? input) => "Detacher for: " + (input?.Name ?? "");
     }
 }

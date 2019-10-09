@@ -30,7 +30,7 @@ namespace Viking.Pipeline
         private Mark SetMark(IPipelineStage stage, Mark mark) => Marks[stage] = mark;
 
 
-        public List<PipelineStagePropagation> GetTopologySorted(IEnumerable<IPipelineStage> initial)
+        public List<PipelineStagePropagation>? GetTopologySorted(IEnumerable<IPipelineStage> initial)
         {
             Marks.Clear();
             var result = new List<PipelineStagePropagation>();

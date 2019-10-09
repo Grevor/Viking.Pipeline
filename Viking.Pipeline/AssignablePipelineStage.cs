@@ -66,6 +66,6 @@ namespace Viking.Pipeline
         public TValue GetValue() => Value;
         public void OnInvalidate(IPipelineInvalidator invalidator) => invalidator.InvalidateAllDependentStages(this);
 
-        public override string ToString() => FormattableString.Invariant($"Assignable value '{Name}': {Value.ToString()}");
+        public override string ToString() => FormattableString.Invariant($"Assignable value '{Name}': {Value?.ToString() ?? "<null>"}");
     }
 }

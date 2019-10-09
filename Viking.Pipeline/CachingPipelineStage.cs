@@ -17,6 +17,7 @@ namespace Viking.Pipeline
         {
             Input = input ?? throw new ArgumentNullException(nameof(input));
             Name = "Cache for: " + input.Name;
+            Cached = default!;
             this.AddDependencies(input);
         }
 

@@ -6,7 +6,7 @@ namespace Viking.Pipeline
     {
         public HashSet<IPipelineStage> Invalidated { get; } = new HashSet<IPipelineStage>();
         public List<IPipelineStage> InvalidatedByThisStep { get; } = new List<IPipelineStage>();
-        public List<IPipelineStage> DependentStages { get; private set; }
+        public List<IPipelineStage> DependentStages { get; private set; } = new List<IPipelineStage>();
 
         public IEnumerable<IPipelineStage> AllInvalidatedStages => Invalidated;
 

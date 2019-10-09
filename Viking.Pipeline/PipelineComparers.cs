@@ -45,7 +45,7 @@ namespace Viking.Pipeline
             public EqualityCheck<T> EqualityCheck { get; }
 
             public bool Equals(T x, T y) => EqualityCheck.Invoke(x, y);
-            public int GetHashCode(T obj) => obj.GetHashCode();
+            public int GetHashCode(T obj) => obj?.GetHashCode() ?? 0;
         }
         private class EnumerableEqualityComparer<T> : IEqualityComparer<IEnumerable<T>>
         {

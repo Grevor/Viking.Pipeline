@@ -21,7 +21,7 @@ namespace Viking.Pipeline
         public PipelineAnalyzer Analyzer { get; private set; }
         public PipelineErrorHandler ErrorHandler { get; private set; }
 
-        public List<PipelineStagePropagation> CurrentPropagationTopology { get; private set; }
+        public List<PipelineStagePropagation>? CurrentPropagationTopology { get; private set; }
 
         public HashSet<IPipelineStage> StagesThisPropagation { get; } = new HashSet<IPipelineStage>();
 
@@ -59,6 +59,9 @@ namespace Viking.Pipeline
 
         public void Propagate(IEnumerable<IPipelineStage> stages)
         {
+            if (CurrentPropagationTopology == null)
+                throw new InvalidOperationException("Topology has not been successfully created.");
+
             var invalidator = new PipelineInvalidator();
             foreach (var initialStages in stages)
                 invalidator.Invalidate(initialStages);

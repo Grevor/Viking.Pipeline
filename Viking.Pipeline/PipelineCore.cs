@@ -77,7 +77,7 @@ namespace Viking.Pipeline
             lock (Dependencies)
                 propagation.BuildPropagationTopology(stages, 0);
 
-            foreach (var s in propagation.CurrentPropagationTopology)
+            foreach (var s in propagation.CurrentPropagationTopology!)
             {
                 graph.AddNode(s.Stage);
                 foreach (var dep in s.Dependent)
@@ -196,7 +196,7 @@ namespace Viking.Pipeline
         /// <returns>The dependent stages.</returns>
         public static IEnumerable<IPipelineStage> GetAllDependentStages(this IPipelineStage stage) =>
             InternalGetDependencies(stage)
-            .Select(s => s.TryGetTarget(out var target) ? target : null)
+            .Select(s => s.TryGetTarget(out var target) ? target : null!)
             .Where(s => s != null)
             .ToList();
 

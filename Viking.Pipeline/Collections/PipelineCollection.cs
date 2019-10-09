@@ -8,6 +8,14 @@ namespace Viking.Pipeline.Collections
 
     public class PipelineCollection<TKey, TValue>
     {
+        public PipelineCollection()
+        {
+            AddedEntriesAssignable = null!;
+            ChangedEntriesAssignable = null!;
+            RemovedEntriesAssignable = null!;
+            Collection = null!;
+        }
+
         private Suspender Suspender { get; } = new Suspender();
         private bool IsSuspended => Suspender.IsSuspended;
         private Dictionary<TKey, ChangeEntry> ChangeSet { get; } = new Dictionary<TKey, ChangeEntry>();

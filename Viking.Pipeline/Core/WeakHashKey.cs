@@ -5,8 +5,8 @@ namespace Viking.Pipeline
     internal struct WeakHashKey<T> : IEquatable<WeakHashKey<T>> where T : class
     {
         private int HashCode { get; }
-        private WeakReference<T> WeakReference { get; }
-        private T StrongReference { get; }
+        private WeakReference<T>? WeakReference { get; }
+        private T? StrongReference { get; }
 
         public WeakHashKey(T target) : this(target, false) { }
         public WeakHashKey(T target, bool isStrong)
@@ -27,12 +27,12 @@ namespace Viking.Pipeline
         }
 
         public bool IsAlive => WeakReference?.TryGetTarget(out var _) ?? true;
-        public bool TryGetTarget(out T target)
+        public bool TryGetTarget(out T? target)
         {
             target = StrongReference;
             if (target != null)
                 return true;
-            return WeakReference.TryGetTarget(out target);
+            return WeakReference!.TryGetTarget(out target);
         }
 
         public override bool Equals(object obj) => obj is WeakHashKey<T> key && Equals(key);

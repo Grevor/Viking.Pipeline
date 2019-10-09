@@ -41,7 +41,7 @@ namespace Viking.Pipeline
 
         private class ResultCache
         {
-            public TValue Value { get; set; }
+            public TValue Value { get; set; } = default!;
         }
     }
 }

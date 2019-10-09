@@ -28,7 +28,7 @@ namespace Viking.Pipeline
         public IPipelineStage<TOutput> Input { get; }
         public string Name { get; }
 
-        private Task<TOutput> _currentlyRunningTask;
+        private Task<TOutput>? _currentlyRunningTask;
 
         public TOutput GetValue()
         {
