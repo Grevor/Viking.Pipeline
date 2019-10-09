@@ -60,6 +60,7 @@
         /// Sets the value of the specified <see cref="AssignablePipelineStage{TValue}"/>, and adds it to the atomic update.
         /// </summary>
         /// <typeparam name="TValue">The data type.</typeparam>
+        /// <param name="transaction">The transaction.</param>
         /// <param name="stage">The stage to set value for.</param>
         /// <param name="value">The value to set.</param>
         /// <returns>The same update object.</returns>

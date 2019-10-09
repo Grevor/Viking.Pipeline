@@ -3,14 +3,29 @@ using System.Linq;
 
 namespace Viking.Pipeline
 {
-    public partial class ReactionPipelineStage<$GenericParameters$> : IPipelineStage
+	/// <summary>
+    /// Enables reactions to changes in pipeline values.
+    /// </summary>
+    $TypeParameterComments2$
+    public sealed partial class ReactionPipelineStage<$GenericParameters$> : IPipelineStage
     {
+		/// <summary>
+        /// Creates a new <see cref="ReactionPipelineStage"/> with the specified reaction to the specified inputs.
+        /// </summary>
+        /// <param name="reaction">The reaction delegate.</param>
+        $ParameterComments$
 		public ReactionPipelineStage(
 			Action<$GenericParameters$> reaction, 
 			$ConstructorParameters$) :
 			this(GetDefaultName($RepassingParameters$), reaction, $RepassingParameters$) 
 		{ }
 
+		/// <summary>
+        /// Creates a new <see cref="ReactionPipelineStage"/> with the specified reaction to the specified inputs.
+        /// </summary>
+        /// <param name="reaction">The reaction delegate.</param>
+        $ParameterComments$
+        /// <param name="reactImmediately">Denotes if the reaction should fire immediately upon construction.</param>
 		public ReactionPipelineStage(
 			Action<$GenericParameters$> reaction, 
 			$ConstructorParameters$,
@@ -18,6 +33,12 @@ namespace Viking.Pipeline
 			this(GetDefaultName($RepassingParameters$), reaction, $RepassingParameters$, reactImmediately) 
 		{ }
 
+		/// <summary>
+        /// Creates a new <see cref="ReactionPipelineStage"/> with the specified name and reaction to the specified inputs.
+        /// </summary>
+        /// <param name="name">The name of the new reaction.</param>
+        /// <param name="reaction">The reaction delegate.</param>
+        $ParameterComments$
 		public ReactionPipelineStage(
 			string name, 
 			Action<$GenericParameters$> reaction, 
@@ -25,6 +46,13 @@ namespace Viking.Pipeline
 			this(name, reaction, $RepassingParameters$, true) 
 		{ }
 
+		/// <summary>
+        /// Creates a new <see cref="ReactionPipelineStage"/> with the specified name and reaction to the specified inputs.
+        /// </summary>
+        /// <param name="name">The name of the new reaction.</param>
+        /// <param name="reaction">The reaction delegate.</param>
+        $ParameterComments$
+        /// <param name="reactImmediately">Denotes if the reaction should fire immediately upon construction.</param>
 		public ReactionPipelineStage(
 			string name, 
 			Action<$GenericParameters$> reaction, 
@@ -39,16 +67,30 @@ namespace Viking.Pipeline
 				Reaction($Getters$);
 		}
 
+		/// <summary>
+        /// Gets the name of the reaction.
+        /// </summary>
 		public string Name { get; }
+        /// <summary>
+        /// The function which is called as a reaction to any change in inputs.
+        /// </summary>
 		public Action<$GenericParameters$> Reaction { get; }
 		$ClassFields$
 
+		/// <summary>
+        /// Handles invalidation of the operation stage, and reacts as appropriate.
+        /// </summary>
+        /// <param name="invalidator">The invalidator.</param>
 		public void OnInvalidate(IPipelineInvalidator invalidator)
 		{
 			invalidator.InvalidateAllDependentStages(this);
 			Reaction($Getters$);
 		}
 
+		/// <summary>
+        /// Gets a textual representation of this pipeline stage.
+        /// </summary>
+        /// <returns>A textual representation.</returns>
 		public override string ToString() => $"{Name} - Reaction is {Reaction.GetDetailedStringRepresentation()}";
 
 		private static string GetDefaultName(params IPipelineStage[] stages) => $"Reaction to {string.Join(", ", stages.Select(p => "'" + p.Name + "'"))}";
@@ -56,6 +98,13 @@ namespace Viking.Pipeline
 
 	public static partial class PipelineReactions
 	{
+		/// <summary>
+        /// Creates a reaction to the specified pipeline stages.
+        /// </summary>
+        $TypeParameterComments$
+        /// <param name="reaction">The reaction delegate.</param>
+        $ParameterComments$
+        /// <returns>A reaction stage. The reaction is only guaranteed to fire while you hold on to this reference.</returns>
 		public static IPipelineStage Create<$GenericParameters$>(
 			Action<$GenericParameters$> reaction, 
 			$ConstructorParameters$)
@@ -63,6 +112,14 @@ namespace Viking.Pipeline
 				reaction,
 				$RepassingParameters$);
 
+		/// <summary>
+        /// Creates a reaction to the specified pipeline stages.
+        /// </summary>
+        $TypeParameterComments$
+        /// <param name="reaction">The reaction delegate.</param>
+        $ParameterComments$
+        /// <param name="reactImmediately">Denotes if the reaction should fire immediately upon construction.</param>
+        /// <returns>A reaction stage. The reaction is only guaranteed to fire while you hold on to this reference.</returns>
 		public static IPipelineStage Create<$GenericParameters$>(
 			Action<$GenericParameters$> reaction, 
 			$ConstructorParameters$, 
@@ -72,6 +129,14 @@ namespace Viking.Pipeline
 				$RepassingParameters$,
 				reactImmediately);
 
+		/// <summary>
+        /// Creates a reaction to the specified pipeline stages.
+        /// </summary>
+        $TypeParameterComments$
+        /// <param name="name">The name of the new reaction.</param>
+        /// <param name="reaction">The reaction delegate.</param>
+        $ParameterComments$
+        /// <returns>A reaction stage. The reaction is only guaranteed to fire while you hold on to this reference.</returns>
 		public static IPipelineStage Create<$GenericParameters$>(
 			string name, 
 			Action<$GenericParameters$> reaction, 
@@ -81,6 +146,15 @@ namespace Viking.Pipeline
 				reaction,
 				$RepassingParameters$);
 
+		/// <summary>
+        /// Creates a reaction to the specified pipeline stages.
+        /// </summary>
+        $TypeParameterComments$
+        /// <param name="name">The name of the new reaction.</param>
+        /// <param name="reaction">The reaction delegate.</param>
+        $ParameterComments$
+        /// <param name="reactImmediately">Denotes if the reaction should fire immediately upon construction.</param>
+        /// <returns>A reaction stage. The reaction is only guaranteed to fire while you hold on to this reference.</returns>
 		public static IPipelineStage Create<$GenericParameters$>(
 			string name, 
 			Action<$GenericParameters$> reaction, 

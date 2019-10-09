@@ -45,6 +45,9 @@ namespace Viking.Pipeline.Wpf
 		public string Name { get; }
 		public Action<TInput1> Reaction { get; }
 		public Dispatcher Dispatcher { get; }
+		/// <summary>
+		/// Input number 1.
+		/// </summary>
 		public IPipelineStage<TInput1> Input1 { get; }
 
 		public void OnInvalidate(IPipelineInvalidator invalidator)

@@ -2,8 +2,19 @@
 
 namespace Viking.Pipeline
 {
-    public class OperationPipelineStage<$GenericParameters$, TOutput> : IPipelineStage<TOutput>
+	/// <summary>
+    /// Enables operations on pipeline values, yielding a new pipeline as a result.
+    /// </summary>
+    $TypeParameterComments2$
+    /// <typeparam name="TOutput">The stage output type.</typeparam>
+    public sealed class OperationPipelineStage<$GenericParameters$, TOutput> : IPipelineStage<TOutput>
     {
+		/// <summary>
+        /// Creates a new OperationPipelineStage with the specified name, operation and inputs.
+        /// </summary>
+        /// <param name="name">The name of the operation.</param>
+        /// <param name="operation">The operation.</param>
+        $ParameterComments$
 		public OperationPipelineStage(
 			string name, 
 			Func<$GenericParameters$, TOutput> operation, 
@@ -11,6 +22,12 @@ namespace Viking.Pipeline
 			this(name, operation?.AsPipelineConstant()!, $RepassingParameters$)
 		{ }
 
+		/// <summary>
+        /// Creates a new OperationPipelineStage with the specified name, operation and inputs.
+        /// </summary>
+        /// <param name="name">The name of the operation.</param>
+        /// <param name="operation">The pipeline from which to retrieve the operation.</param>
+        $ParameterComments$
 		public OperationPipelineStage(
 			string name, 
 			IPipelineStage<Func<$GenericParameters$, TOutput>> operation, 
@@ -22,19 +39,46 @@ namespace Viking.Pipeline
 			this.AddDependencies(operation, $RepassingParameters$);
 		}
 
+		/// <summary>
+        /// Gets the name of the operation.
+        /// </summary>
 		public string Name { get; }
+		/// <summary>
+		/// Gets the pipeline stage describing the operation to be performed.
+		/// </summary>
 		private IPipelineStage<Func<$GenericParameters$, TOutput>> Operation { get; }
 		$ClassFields$
 
+		/// <summary>
+        /// Gets the result of performing the operation on all specified inputs.
+        /// </summary>
+        /// <returns>The resulting value.</returns>
 		public TOutput GetValue() => Operation.GetValue().Invoke($Getters$);
 
+		/// <summary>
+        /// Handles invalidation of the operation stage.
+        /// </summary>
+        /// <param name="invalidator">The invalidator.</param>
 		public void OnInvalidate(IPipelineInvalidator invalidator) => invalidator.InvalidateAllDependentStages(this);
 
+		/// <summary>
+        /// Gets a textual representation of this pipeline stage.
+        /// </summary>
+        /// <returns>A textual representation.</returns>
 		public override string ToString() => $"{Name} - Operation is {Operation.GetValue()?.GetDetailedStringRepresentation() ?? "<null>" }";
     }
 
 	public static partial class PipelineOperations
 	{
+		/// <summary>
+        /// Create a new pipeline operation.
+        /// </summary>
+        $TypeParameterComments$
+        /// <typeparam name="TOutput">The stage output type.</typeparam>
+        /// <param name="name">The name of the operation.</param>
+        /// <param name="operation">The operation.</param>
+        $ParameterComments$
+        /// <returns>The pipeline stage reflecting the result of the operation.</returns>
 		public static IPipelineStage<TOutput> Create<$GenericParameters$, TOutput>(
 			string name, 
 			Func<$GenericParameters$, TOutput> operation, 
@@ -44,6 +88,15 @@ namespace Viking.Pipeline
 				operation,
 				$RepassingParameters$);
 
+		/// <summary>
+        /// Create a new pipeline operation.
+        /// </summary>
+        $TypeParameterComments$
+        /// <typeparam name="TOutput">The stage output type.</typeparam>
+        /// <param name="name">The name of the operation.</param>
+        /// <param name="operation">The pipeline from which to retrieve the operation.</param>
+        $ParameterComments$
+        /// <returns>The pipeline stage reflecting the result of the operation.</returns>
 		public static IPipelineStage<TOutput> Create<$GenericParameters$, TOutput>(
 			string name, 
 			IPipelineStage<Func<$GenericParameters$, TOutput>> operation, 

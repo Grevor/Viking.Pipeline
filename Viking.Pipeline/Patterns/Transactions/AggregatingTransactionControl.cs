@@ -18,15 +18,18 @@ namespace Viking.Pipeline.Patterns
         /// <summary>
         /// Creates a new <see cref="AggregatingTransactionControl"/> with the specified transaction behavior.
         /// </summary>
-        /// <param name="transactionType">The transaction behavior.</param>
         public AggregatingTransactionControl() { }
 
         /// <summary>
         /// Creates a new transaction. This transaction must be committed, or the system might deadlock.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The new transaction.</returns>
         public IPipelineTransaction CreateTransaction() => new DeferredPipelineTransaction(this);
 
+        /// <summary>
+        /// Registers a specified transaction with this <see cref="AggregatingTransactionControl"/>.
+        /// </summary>
+        /// <param name="transaction">The transaction to register.</param>
         public void Register(DeferredPipelineTransaction transaction)
         {
             if (transaction is null)
@@ -36,6 +39,10 @@ namespace Viking.Pipeline.Patterns
                 OngoingTransactions.Add(transaction);
         }
 
+        /// <summary>
+        /// Cancels the specified transaction.
+        /// </summary>
+        /// <param name="transaction">The transaction to cancel.</param>
         public void Cancel(DeferredPipelineTransaction transaction)
         {
             if (transaction is null)
@@ -49,8 +56,18 @@ namespace Viking.Pipeline.Patterns
             }
         }
 
+        /// <summary>
+        /// Gets a timestamp of some kind.
+        /// </summary>
+        /// <returns>The timestamp.</returns>
         public long GetTimestamp() => Interlocked.Increment(ref _timestamp);
 
+        /// <summary>
+        /// Commits the specified transaction.
+        /// </summary>
+        /// <param name="transaction">The transaction.</param>
+        /// <param name="parts">The parts of the transaction.</param>
+        /// <returns>The result of the commit.</returns>
         public PipelineTransactionResult Commit(DeferredPipelineTransaction transaction, IEnumerable<DeferredTransactionPart> parts)
         {
             if (transaction is null)

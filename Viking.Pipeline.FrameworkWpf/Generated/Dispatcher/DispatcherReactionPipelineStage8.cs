@@ -80,13 +80,37 @@ namespace Viking.Pipeline.Wpf
 		public string Name { get; }
 		public Action<TInput1, TInput2, TInput3, TInput4, TInput5, TInput6, TInput7, TInput8> Reaction { get; }
 		public Dispatcher Dispatcher { get; }
+		/// <summary>
+		/// Input number 1.
+		/// </summary>
 		public IPipelineStage<TInput1> Input1 { get; }
+		/// <summary>
+		/// Input number 2.
+		/// </summary>
 		public IPipelineStage<TInput2> Input2 { get; }
+		/// <summary>
+		/// Input number 3.
+		/// </summary>
 		public IPipelineStage<TInput3> Input3 { get; }
+		/// <summary>
+		/// Input number 4.
+		/// </summary>
 		public IPipelineStage<TInput4> Input4 { get; }
+		/// <summary>
+		/// Input number 5.
+		/// </summary>
 		public IPipelineStage<TInput5> Input5 { get; }
+		/// <summary>
+		/// Input number 6.
+		/// </summary>
 		public IPipelineStage<TInput6> Input6 { get; }
+		/// <summary>
+		/// Input number 7.
+		/// </summary>
 		public IPipelineStage<TInput7> Input7 { get; }
+		/// <summary>
+		/// Input number 8.
+		/// </summary>
 		public IPipelineStage<TInput8> Input8 { get; }
 
 		public void OnInvalidate(IPipelineInvalidator invalidator)

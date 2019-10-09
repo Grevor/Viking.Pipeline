@@ -14,7 +14,7 @@ namespace Viking.Pipeline.CodeGenerator
         {
             var s = p.ToString();
             var n = "Input" + s;
-            return new Parameter("T" + n, "input" + s, n);
+            return new Parameter(s, "T" + n, "input" + s, n);
         }
 
         public IEnumerable<Parameter> GetParameters() => Parameters;

@@ -180,8 +180,10 @@ namespace Viking.Pipeline
         /// <typeparam name="T">The data type.</typeparam>
         /// <param name="stage">The stage to create a reaction for.</param>
         /// <param name="reaction">The action to perform when this stage is invalidated.</param>
+        /// <param name="reactImmediately">Denotes if the reaction should trigger immediately.</param>
         /// <returns>The <see cref="ReactionPipelineStage{TInput1}"/> which will react to changes as long as it is alive.</returns>
         public static IPipelineStage<T> CreateReaction<T>(this IPipelineStage<T> stage, Action<T> reaction, bool reactImmediately) => new ReactionPipelineStage<T>(reaction, stage, reactImmediately);
+
 
 
         public static string GetClassAndMethod(this Delegate del)
