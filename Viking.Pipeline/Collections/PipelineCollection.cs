@@ -6,7 +6,7 @@ namespace Viking.Pipeline.Collections
 {
 
 
-    public sealed class PipelineCollection<TKey, TValue>
+    internal sealed class PipelineCollection<TKey, TValue>
     {
         public PipelineCollection()
         {

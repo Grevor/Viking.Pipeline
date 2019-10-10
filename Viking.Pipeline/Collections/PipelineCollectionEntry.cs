@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Viking.Pipeline.Collections
 {
-    public struct PipelineCollectionEntry<TKey, TValue> : IEquatable<PipelineCollectionEntry<TKey, TValue>>
+    internal struct PipelineCollectionEntry<TKey, TValue> : IEquatable<PipelineCollectionEntry<TKey, TValue>>
     {
         public PipelineCollectionEntry(TKey key, IPipelineStage<TValue> pipeline)
         {

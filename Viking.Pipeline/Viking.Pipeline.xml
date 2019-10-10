@@ -152,6 +152,29 @@
             The constant value.
             </summary>
         </member>
+        <member name="T:Viking.Pipeline.PipelineException">
+            <summary>
+            Represents an error related ot the execution or setup of a pipeline.
+            </summary>
+        </member>
+        <member name="M:Viking.Pipeline.PipelineException.#ctor">
+            <summary>
+            Creates a new <see cref="T:Viking.Pipeline.PipelineException"/>.
+            </summary>
+        </member>
+        <member name="M:Viking.Pipeline.PipelineException.#ctor(System.String)">
+            <summary>
+            Creates a new <see cref="T:Viking.Pipeline.PipelineException"/> with a specified error message.
+            </summary>
+            <param name="message">The error message.</param>
+        </member>
+        <member name="M:Viking.Pipeline.PipelineException.#ctor(System.String,System.Exception)">
+            <summary>
+            Creates a new <see cref="T:Viking.Pipeline.PipelineException"/> with a specified error message and inner exception.
+            </summary>
+            <param name="message">The error message.</param>
+            <param name="innerException">The inner exception.</param>
+        </member>
         <member name="T:Viking.Pipeline.PipelineGraph">
             <summary>
             Describes a part of a pipeline as a graph.
