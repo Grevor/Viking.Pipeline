@@ -185,12 +185,21 @@ namespace Viking.Pipeline
         public static IPipelineStage<T> CreateReaction<T>(this IPipelineStage<T> stage, Action<T> reaction, bool reactImmediately) => new ReactionPipelineStage<T>(reaction, stage, reactImmediately);
 
 
-
+        /// <summary>
+        /// Gets the class and method this delegate is representing.
+        /// </summary>
+        /// <param name="del">The delegate.</param>
+        /// <returns>The class and method.</returns>
         public static string GetClassAndMethod(this Delegate del)
         {
             var method = del.Method;
             return FormattableString.Invariant($"{method.DeclaringType.Name}.{method.Name}");
         }
+        /// <summary>
+        /// Gets a detailed string representation of this delegate.
+        /// </summary>
+        /// <param name="del">The delegate.</param>
+        /// <returns>The textual representation.</returns>
         public static string GetDetailedStringRepresentation(this Delegate del)
         {
             var builder = new StringBuilder();

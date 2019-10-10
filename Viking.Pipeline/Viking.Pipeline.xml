@@ -397,6 +397,11 @@
             </summary>
             <returns>A textual representation.</returns>
         </member>
+        <member name="T:Viking.Pipeline.PipelineOperations">
+            <summary>
+            Provides functions to easily create pipeline operations.
+            </summary>
+        </member>
         <member name="M:Viking.Pipeline.PipelineOperations.Create``2(System.String,System.Func{``0,``1},Viking.Pipeline.IPipelineStage{``0})">
             <summary>
             Create a new pipeline operation.
@@ -1365,6 +1370,17 @@
             Gets a textual representation of this pipeline stage.
             </summary>
             <returns>A textual representation.</returns>
+        </member>
+        <member name="M:Viking.Pipeline.ReactionPipelineStage`1.GetValue">
+            <summary>
+            Gets the pass through value of this <see cref="T:Viking.Pipeline.ReactionPipelineStage`1"/>.
+            </summary>
+            <returns>The pass-through value.</returns>
+        </member>
+        <member name="T:Viking.Pipeline.PipelineReactions">
+            <summary>
+            Provides functions to easily create pipeline reactions.
+            </summary>
         </member>
         <member name="M:Viking.Pipeline.PipelineReactions.Create``1(System.Action{``0},Viking.Pipeline.IPipelineStage{``0})">
             <summary>
@@ -2682,6 +2698,11 @@
             Gets all invalidated stages (thus far).
             </summary>
         </member>
+        <member name="T:Viking.Pipeline.IPipelineStage">
+            <summary>
+            Interface of a stage in a declarative pipeline.
+            </summary>
+        </member>
         <member name="P:Viking.Pipeline.IPipelineStage.Name">
             <summary>
             The name of this <see cref="T:Viking.Pipeline.IPipelineStage"/>.
@@ -2692,6 +2713,12 @@
             Defines the behavior of a pipeline stage after it (and potential dependencies) has been invalidated.
             </summary>
             <param name="invalidator">The invalidator, holding the current state of the pipeline propagation.</param>
+        </member>
+        <member name="T:Viking.Pipeline.IPipelineStage`1">
+            <summary>
+            Interface of a stage in a declarative pipeline which produces output.
+            </summary>
+            <typeparam name="TOutput">The type of output produced by the stage.</typeparam>
         </member>
         <member name="M:Viking.Pipeline.IPipelineStage`1.GetValue">
             <summary>
@@ -2866,6 +2893,41 @@
             <param name="parts">The parts of the transaction.</param>
             <returns>The result of the commit.</returns>
         </member>
+        <member name="T:Viking.Pipeline.Patterns.DeferredPipelineTransaction">
+            <summary>
+            Provides a pipeline transaction which reports back to some <see cref="T:Viking.Pipeline.Patterns.IDeferredTransactionControl"/>.
+            </summary>
+        </member>
+        <member name="M:Viking.Pipeline.Patterns.DeferredPipelineTransaction.#ctor(Viking.Pipeline.Patterns.IDeferredTransactionControl)">
+            <summary>
+            Creates a new <see cref="T:Viking.Pipeline.Patterns.DeferredPipelineTransaction"/> with the specified control.
+            </summary>
+            <param name="control">The control which to report back to.</param>
+        </member>
+        <member name="P:Viking.Pipeline.Patterns.DeferredPipelineTransaction.Control">
+            <summary>
+            Gets the control in charge of this transaction.
+            </summary>
+        </member>
+        <member name="M:Viking.Pipeline.Patterns.DeferredPipelineTransaction.Commit">
+            <summary>
+            Commits this transaction.
+            </summary>
+            <returns>The result.</returns>
+        </member>
+        <member name="M:Viking.Pipeline.Patterns.DeferredPipelineTransaction.Update(Viking.Pipeline.IPipelineStage,Viking.Pipeline.Patterns.PipelineUpdateAction)">
+            <summary>
+            Adds the specified stage and update action as a part of the transaction.
+            </summary>
+            <param name="stage">The stage.</param>
+            <param name="update">The update to perform.</param>
+            <returns>This transaction.</returns>
+        </member>
+        <member name="M:Viking.Pipeline.Patterns.DeferredPipelineTransaction.Cancel">
+            <summary>
+            Cancels this transaction. The transaction will be invalid after this is called.
+            </summary>
+        </member>
         <member name="T:Viking.Pipeline.Patterns.DeferredTransactionPart">
             <summary>
             Describes a part of a transaction.
@@ -2976,6 +3038,11 @@
             Cancels the transaction, discarding all changes.
             </summary>
         </member>
+        <member name="T:Viking.Pipeline.Patterns.PipelineUpdateExtensions">
+            <summary>
+            Provides extensions to all <see cref="T:Viking.Pipeline.Patterns.IPipelineTransaction"/>s.
+            </summary>
+        </member>
         <member name="P:Viking.Pipeline.Patterns.PipelineUpdateExtensions.NoAction">
             <summary>
             Gets an update action denoting no action and always returning true.
@@ -2983,17 +3050,29 @@
         </member>
         <member name="M:Viking.Pipeline.Patterns.PipelineUpdateExtensions.Update``1(Viking.Pipeline.Patterns.IPipelineTransaction,Viking.Pipeline.AssignablePipelineStage{``0},``0)">
             <summary>
-            Sets the value of the specified <see cref="T:Viking.Pipeline.AssignablePipelineStage`1"/>, and adds it to the atomic update.
+            Adds an update to an <see cref="T:Viking.Pipeline.AssignablePipelineStage`1"/>.
             </summary>
             <typeparam name="TValue">The data type.</typeparam>
+            <param name="transaction">The transaction.</param>
             <param name="stage">The stage to set value for.</param>
-            <param name="value">The value to set.</param>
-            <returns>The same update object.</returns>
+            <param name="value">The new value.</param>
+            <returns>The same transaction object.</returns>
+        </member>
+        <member name="M:Viking.Pipeline.Patterns.PipelineUpdateExtensions.Update``1(Viking.Pipeline.Patterns.IPipelineTransaction,Viking.Pipeline.SourceSelectPipelineStage{``0},Viking.Pipeline.IPipelineStage{``0})">
+            <summary>
+            Adds an update to an <see cref="T:Viking.Pipeline.SourceSelectPipelineStage`1"/>.
+            </summary>
+            <typeparam name="TValue">The data type.</typeparam>
+            <param name="transaction">The transaction.</param>
+            <param name="stage">The stage to set value for.</param>
+            <param name="newSource">The new source.</param>
+            <returns>The same transaction object.</returns>
         </member>
         <member name="M:Viking.Pipeline.Patterns.PipelineUpdateExtensions.Update(Viking.Pipeline.Patterns.IPipelineTransaction,Viking.Pipeline.IPipelineStage)">
             <summary>
-            Adds the specified stage to the update, without doing any updating.
+            Adds the specified stage to the update, without doing any actual updating. The stage will be invalidated on transaction commit.
             </summary>
+            <param name="transaction">The transaction</param>
             <param name="stage">The stage to add for the update.</param>
             <returns>The same update object.</returns>
         </member>
@@ -3007,11 +3086,24 @@
             Starts a new <see cref="T:Viking.Pipeline.Patterns.PipelineTransaction"/>.
             </summary>
         </member>
+        <member name="M:Viking.Pipeline.Patterns.PipelineTransaction.Update(Viking.Pipeline.IPipelineStage,Viking.Pipeline.Patterns.PipelineUpdateAction)">
+            <summary>
+            Adds an update to this transaction.
+            </summary>
+            <param name="stage">The stage to update.</param>
+            <param name="update">The update action.</param>
+            <returns>This transaction.</returns>
+        </member>
         <member name="M:Viking.Pipeline.Patterns.PipelineTransaction.Commit">
             <summary>
             Complete the update, invalidating all updated stages as an atomic operation.
             </summary>
             <returns><see cref="F:Viking.Pipeline.Patterns.PipelineTransactionResult.Success"/></returns>
+        </member>
+        <member name="M:Viking.Pipeline.Patterns.PipelineTransaction.Cancel">
+            <summary>
+            Cancels the transaction.
+            </summary>
         </member>
         <member name="T:Viking.Pipeline.PipelineComparers">
             <summary>
@@ -3021,7 +3113,7 @@
         <member name="M:Viking.Pipeline.PipelineComparers.Equality``1(Viking.Pipeline.EqualityCheck{``0})">
             <summary>
             Creates an <see cref="T:System.Collections.Generic.IEqualityComparer`1"/> from a function. 
-            Note that this comparer will retrieve hashcodes through the <see cref="!:T.GetHashCode()"/> method.
+            Note that this comparer will retrieve hashcodes through the <c>GetHashCode()</c> method.
             </summary>
             <typeparam name="T">The type of object to check equality for.</typeparam>
             <param name="equalityCheck">The compare function to use.</param>
@@ -3283,7 +3375,22 @@
             <typeparam name="T">The data type.</typeparam>
             <param name="stage">The stage to create a reaction for.</param>
             <param name="reaction">The action to perform when this stage is invalidated.</param>
+            <param name="reactImmediately">Denotes if the reaction should trigger immediately.</param>
             <returns>The <see cref="T:Viking.Pipeline.ReactionPipelineStage`1"/> which will react to changes as long as it is alive.</returns>
+        </member>
+        <member name="M:Viking.Pipeline.PipelineCore.GetClassAndMethod(System.Delegate)">
+            <summary>
+            Gets the class and method this delegate is representing.
+            </summary>
+            <param name="del">The delegate.</param>
+            <returns>The class and method.</returns>
+        </member>
+        <member name="M:Viking.Pipeline.PipelineCore.GetDetailedStringRepresentation(System.Delegate)">
+            <summary>
+            Gets a detailed string representation of this delegate.
+            </summary>
+            <param name="del">The delegate.</param>
+            <returns>The textual representation.</returns>
         </member>
         <member name="T:Viking.Pipeline.PipelinePropagationInformationStage`1">
             <summary>

@@ -16,6 +16,12 @@ namespace Viking.Pipeline.Patterns
         /// </summary>
         public PipelineTransaction() { }
 
+        /// <summary>
+        /// Adds an update to this transaction.
+        /// </summary>
+        /// <param name="stage">The stage to update.</param>
+        /// <param name="update">The update action.</param>
+        /// <returns>This transaction.</returns>
         public IPipelineTransaction Update(IPipelineStage stage, PipelineUpdateAction update)
         {
             if (stage is null)
@@ -41,6 +47,9 @@ namespace Viking.Pipeline.Patterns
             return PipelineTransactionResult.Success;
         }
 
+        /// <summary>
+        /// Cancels the transaction.
+        /// </summary>
         public void Cancel() => PendingStages.Clear();
     }
 }

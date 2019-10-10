@@ -44,6 +44,10 @@ namespace Viking.Pipeline
 
     public partial class ReactionPipelineStage<TInput1> : IPipelineStage<TInput1>
     {
+        /// <summary>
+        /// Gets the pass through value of this <see cref="ReactionPipelineStage{TInput1}"/>.
+        /// </summary>
+        /// <returns>The pass-through value.</returns>
         public TInput1 GetValue() => Input1.GetValue();
     }
 }

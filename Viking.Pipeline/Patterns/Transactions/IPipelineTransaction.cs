@@ -49,6 +49,9 @@
         void Cancel();
     }
 
+    /// <summary>
+    /// Provides extensions to all <see cref="IPipelineTransaction"/>s.
+    /// </summary>
     public static class PipelineUpdateExtensions
     {
         /// <summary>
@@ -57,19 +60,27 @@
         public static PipelineUpdateAction NoAction { get; } = NoUpdateAction;
 
         /// <summary>
-        /// Sets the value of the specified <see cref="AssignablePipelineStage{TValue}"/>, and adds it to the atomic update.
+        /// Adds an update to an <see cref="AssignablePipelineStage{TValue}"/>.
         /// </summary>
         /// <typeparam name="TValue">The data type.</typeparam>
         /// <param name="transaction">The transaction.</param>
         /// <param name="stage">The stage to set value for.</param>
-        /// <param name="value">The value to set.</param>
-        /// <returns>The same update object.</returns>
+        /// <param name="value">The new value.</param>
+        /// <returns>The same transaction object.</returns>
         public static IPipelineTransaction Update<TValue>(this IPipelineTransaction transaction, AssignablePipelineStage<TValue> stage, TValue value)
         {
             bool AssignableUpdate() => stage.SetValueWithoutInvalidating(value);
             return transaction.Update(stage, AssignableUpdate);
         }
 
+        /// <summary>
+        /// Adds an update to an <see cref="SourceSelectPipelineStage{TValue}"/>.
+        /// </summary>
+        /// <typeparam name="TValue">The data type.</typeparam>
+        /// <param name="transaction">The transaction.</param>
+        /// <param name="stage">The stage to set value for.</param>
+        /// <param name="newSource">The new source.</param>
+        /// <returns>The same transaction object.</returns>
         public static IPipelineTransaction Update<TValue>(this IPipelineTransaction transaction, SourceSelectPipelineStage<TValue> stage, IPipelineStage<TValue> newSource)
         {
             bool SourceSelectUpdate() => stage.SetSourceWithoutInvalidating(newSource);
@@ -77,8 +88,9 @@
         }
 
         /// <summary>
-        /// Adds the specified stage to the update, without doing any updating.
+        /// Adds the specified stage to the update, without doing any actual updating. The stage will be invalidated on transaction commit.
         /// </summary>
+        /// <param name="transaction">The transaction</param>
         /// <param name="stage">The stage to add for the update.</param>
         /// <returns>The same update object.</returns>
         public static IPipelineTransaction Update(this IPipelineTransaction transaction, IPipelineStage stage) => transaction.Update(stage, NoAction);

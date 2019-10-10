@@ -12,7 +12,7 @@ namespace Viking.Pipeline
 
         /// <summary>
         /// Creates an <see cref="IEqualityComparer{T}"/> from a function. 
-        /// Note that this comparer will retrieve hashcodes through the <see cref="T.GetHashCode()"/> method.
+        /// Note that this comparer will retrieve hashcodes through the <c>GetHashCode()</c> method.
         /// </summary>
         /// <typeparam name="T">The type of object to check equality for.</typeparam>
         /// <param name="equalityCheck">The compare function to use.</param>
