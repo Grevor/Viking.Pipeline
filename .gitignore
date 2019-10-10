@@ -338,3 +338,6 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+
+# xml documentation file(s)
+Viking.Pipeline/Viking.Pipeline.xml
