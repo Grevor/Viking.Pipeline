@@ -3,9 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Erik Nyström</Authors>
-    <Version>0.1.0</Version>
+    <Version>0.1.0-beta</Version>
     <Copyright>Erik Nyström 2019</Copyright>
     <Company />
+    <Title>Viking Pipeline</Title>
     <Description>Declarative pipeline library for C#</Description>
     <RepositoryUrl>https://github.com/Grevor/Viking.Pipeline</RepositoryUrl>
     <PackageLicenseFile>LICENSE.TXT</PackageLicenseFile>
@@ -15,6 +16,12 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
+    <PackageReleaseNotes>First beta version.
+
+Added basic proposal of declarative pipeline functionality.</PackageReleaseNotes>
+    <RepositoryType>git</RepositoryType>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageTags>Declarative Pipeline</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
