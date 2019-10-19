@@ -26,7 +26,32 @@ namespace Viking.Pipeline.Tests
             GC.KeepAlive(source);
         }
 
+        [Test]
+        public void GarbageCollectionDoNotDisposeStagesReferencedByAlivePipelineStage()
+        {
+            var source = 1.AsPipelineConstant();
 
+            var fork = source.WithCache().AsEager().AsThreadSafe();
+
+            var aliveObject = fork.AsThreadSafe().AsPassive();
+            var deadObject = fork.AsAsync().AsDetachable();
+            deadObject = null;
+
+            for (int i = 0; i < 100; ++i)
+                CreateMemoryPressure(1024 * 1024);
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
+
+            IPipelineStage cursor = source;
+            for(int i = 0; i < 5; ++i)
+            {
+                var dependentStages = cursor.GetAllDependentStages().ToList();
+                Assert.AreEqual(1, dependentStages.Count);
+                cursor = dependentStages.Single();
+            }
+            Assert.IsFalse(cursor.GetAllDependentStages().Any());
+
+            GC.KeepAlive(aliveObject);
+        }
 
         private static byte[] CreateMemoryPressure(int bytes)
         {
