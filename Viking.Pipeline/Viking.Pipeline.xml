@@ -2761,6 +2761,21 @@
             </summary>
             <returns>The output value of this stage.</returns>
         </member>
+        <member name="T:Viking.Pipeline.LazyDeltaPipelineStage`2">
+            <summary>
+            Supports lazy delta extraction. The delta and baseline is only recalculated when someone requests the value. 
+            </summary>
+            <typeparam name="TInput">The input type.</typeparam>
+            <typeparam name="TOutput">The delta type.</typeparam>
+        </member>
+        <member name="M:Viking.Pipeline.LazyDeltaPipelineStage`2.#ctor(System.String,Viking.Pipeline.DeltaExtractor{`0,`1},Viking.Pipeline.IPipelineStage{`0})">
+            <summary>
+            Creates a new <see cref="T:Viking.Pipeline.LazyDeltaPipelineStage`2"/> with the specified name, extractor and input.
+            </summary>        
+            <param name="name">The name of this stage.</param>
+            <param name="extractor">The function used to extract a delta.</param>
+            <param name="input">The pipeline stage which to extract delta from.</param>
+        </member>
         <member name="T:Viking.Pipeline.MutuallyExclusivePipelineStage`1">
             <summary>
             Conditionally propagates invalidations based on other stages invalidation state during propagation.

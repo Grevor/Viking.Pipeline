@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Erik Nyström</Authors>
-    <Version>0.1.0-beta</Version>
+    <Version>1.0.0-beta</Version>
     <Copyright>Erik Nyström 2019</Copyright>
     <Company />
     <Title>Viking Pipeline</Title>
@@ -16,12 +16,14 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
-    <PackageReleaseNotes>First beta version.
+    <PackageReleaseNotes>Second beta version.
 
-Added basic proposal of declarative pipeline functionality.</PackageReleaseNotes>
+Changed version number to 1.0.0. Added more integration tests and stages.</PackageReleaseNotes>
     <RepositoryType>git</RepositoryType>
     <NeutralLanguage>en</NeutralLanguage>
     <PackageTags>Declarative Pipeline</PackageTags>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
