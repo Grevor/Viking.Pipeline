@@ -79,6 +79,36 @@
             Invalidates the cache.
             </summary>
         </member>
+        <member name="T:Viking.Pipeline.CollectingPipelineStage`1">
+            <summary>
+            Pipeline stage aggregating outputs from multiple stages into a single <see cref="T:System.Collections.Generic.IEnumerable`1"/>.
+            </summary>
+            <typeparam name="TOutput">The output type.</typeparam>
+        </member>
+        <member name="M:Viking.Pipeline.CollectingPipelineStage`1.#ctor(System.String,System.Collections.Generic.IEnumerable{Viking.Pipeline.IPipelineStage{`0}})">
+            <summary>
+            Creates a new <see cref="T:Viking.Pipeline.CollectingPipelineStage`1"/> with the specified name and initial inputs.
+            </summary>
+            <param name="name">The name of this stage.</param>
+            <param name="inputs">The initial inputs.</param>
+        </member>
+        <member name="P:Viking.Pipeline.CollectingPipelineStage`1.CurrentInputs">
+            <summary>
+            Gets all current input <see cref="T:Viking.Pipeline.IPipelineStage`1"/>.
+            </summary>
+        </member>
+        <member name="M:Viking.Pipeline.CollectingPipelineStage`1.RemoveInputs(System.Collections.Generic.IEnumerable{Viking.Pipeline.IPipelineStage{`0}})">
+            <summary>
+            Removes the specified inputs from this stage.
+            </summary>
+            <param name="inputs">The inputs to remove.</param>
+        </member>
+        <member name="M:Viking.Pipeline.CollectingPipelineStage`1.AddInputs(System.Collections.Generic.IEnumerable{Viking.Pipeline.IPipelineStage{`0}})">
+            <summary>
+            Adds the specified inputs from this stage.
+            </summary>
+            <param name="inputs">The inputs to add.</param>
+        </member>
         <member name="T:Viking.Pipeline.AsyncPipelineStage`1">
             <summary>
             Retrieves upstream values in an async-await fashion.
