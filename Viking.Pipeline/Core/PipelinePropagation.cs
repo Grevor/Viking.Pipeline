@@ -23,12 +23,12 @@ namespace Viking.Pipeline
 
         public List<PipelineStagePropagation>? CurrentPropagationTopology { get; private set; }
 
-        public HashSet<AmbivalentReference<IPipelineStage>> StagesThisPropagation { get; } = new HashSet<AmbivalentReference<IPipelineStage>>(AmbivalentReference<IPipelineStage>.InequalityOnDeadComparer);
+        public HashSet<AmbivalentPipelineReference> StagesThisPropagation { get; } = new HashSet<AmbivalentPipelineReference>();
 
         public long PipelineVersionOfCurrentPropagation { get; private set; }
 
 
-        public PipelinePropagation(IEnumerable<IPipelineStage> initialStages, Dictionary<AmbivalentReference<IPipelineStage>, List<WeakReference<IPipelineStage>>> dependent)
+        public PipelinePropagation(IEnumerable<IPipelineStage> initialStages, Dictionary<AmbivalentPipelineReference, List<WeakReference<IPipelineStage>>> dependent)
         {
             Analyzer = new PipelineAnalyzer(dependent);
             ErrorHandler = new PipelineErrorHandler(initialStages);
@@ -44,7 +44,7 @@ namespace Viking.Pipeline
 
             StagesThisPropagation.Clear();
             foreach (var stage in CurrentPropagationTopology.Select(s => s.Stage))
-                StagesThisPropagation.Add(new AmbivalentReference<IPipelineStage>(stage));
+                StagesThisPropagation.Add(new AmbivalentPipelineReference(stage));
         }
 
         public void PrepareForPotentialNewPropagation() => StagesThisPropagation.Clear();
@@ -81,9 +81,9 @@ namespace Viking.Pipeline
             }
         }
 
-        public void CheckForConcurrentPropagation(HashSet<AmbivalentReference<IPipelineStage>> currentlyUpdatingPipelineStages)
+        public void CheckForConcurrentPropagation(HashSet<AmbivalentPipelineReference> currentlyUpdatingPipelineStages)
         {
-            var potentialConcurrentPropagation = new HashSet<AmbivalentReference<IPipelineStage>>(StagesThisPropagation);
+            var potentialConcurrentPropagation = new HashSet<AmbivalentPipelineReference>(StagesThisPropagation);
             potentialConcurrentPropagation.IntersectWith(currentlyUpdatingPipelineStages);
 
             if (potentialConcurrentPropagation.Count > 0)

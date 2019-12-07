@@ -12,10 +12,9 @@ namespace Viking.Pipeline
         private const int MinimumOperationsRequiredBeforeCleanup = 100;
 
         #region Lock-protected Core Properties
-        private static HashSet<AmbivalentReference<IPipelineStage>> PotentialStagesForUpdate { get; } 
-            = new HashSet<AmbivalentReference<IPipelineStage>>(AmbivalentReference<IPipelineStage>.InequalityOnDeadComparer);
-        private static Dictionary<AmbivalentReference<IPipelineStage>, List<WeakReference<IPipelineStage>>> Dependencies { get; }
-            = new Dictionary<AmbivalentReference<IPipelineStage>, List<WeakReference<IPipelineStage>>>();
+        private static HashSet<AmbivalentPipelineReference> PotentialStagesForUpdate { get; } = new HashSet<AmbivalentPipelineReference>();
+        private static Dictionary<AmbivalentPipelineReference, List<WeakReference<IPipelineStage>>> Dependencies { get; }
+            = new Dictionary<AmbivalentPipelineReference, List<WeakReference<IPipelineStage>>>();
         private static int OperationsSinceLastCleanup { get; set; }
         private static int TotalWeakKeys { get; set; }
         private static long PipelineVersion { get; set; }
@@ -33,7 +32,7 @@ namespace Viking.Pipeline
 
         private static int CleanUp()
         {
-            var completeRemovals = new List<AmbivalentReference<IPipelineStage>>();
+            var completeRemovals = new List<AmbivalentPipelineReference>();
             var keys = TotalWeakKeys;
             foreach (var entry in Dependencies)
             {
@@ -147,7 +146,7 @@ namespace Viking.Pipeline
                         throw new ArgumentNullException("Entry in dependency list", "One or more entries in the given dependency list was null.");
                     }
 
-                    var weak = new AmbivalentReference<IPipelineStage>(dependency, false);
+                    var weak = new AmbivalentPipelineReference(dependency, false);
                     if (!Dependencies.TryGetValue(weak, out var deps))
                     {
                         deps = new List<WeakReference<IPipelineStage>>();
@@ -180,7 +179,7 @@ namespace Viking.Pipeline
                         throw new ArgumentNullException("Entry in dependency list", "One or more entries in the given dependency list was null.");
                     }
 
-                    var strong = new AmbivalentReference<IPipelineStage>(dependency, true);
+                    var strong = new AmbivalentPipelineReference(dependency, true);
                     if (!Dependencies.TryGetValue(strong, out var deps))
                         continue;
                     TotalWeakKeys -= deps.RemoveAll(r => !r.TryGetTarget(out var reference) || reference == dependee);
@@ -209,7 +208,7 @@ namespace Viking.Pipeline
         private static IEnumerable<WeakReference<IPipelineStage>> InternalGetDependencies(IPipelineStage stage)
         {
             IncrementOperation();
-            var strong = new AmbivalentReference<IPipelineStage>(stage, true);
+            var strong = new AmbivalentPipelineReference(stage, true);
             if (!Dependencies.TryGetValue(strong, out var dependencies))
                 return Enumerable.Empty<WeakReference<IPipelineStage>>();
 
@@ -240,7 +239,7 @@ namespace Viking.Pipeline
             lock (Dependencies)
             {
                 IncrementOperation();
-                Dependencies.Remove(new AmbivalentReference<IPipelineStage>(stage, true));
+                Dependencies.Remove(new AmbivalentPipelineReference(stage, true));
                 MarkPipelineAsUpdated();
             }
         }

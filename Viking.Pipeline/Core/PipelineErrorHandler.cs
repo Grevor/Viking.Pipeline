@@ -56,7 +56,7 @@ namespace Viking.Pipeline
             return new PipelineException(builder.ToString());
         }
 
-        public Exception CreatePipelineConcurrentPropagationException(IEnumerable<AmbivalentReference<IPipelineStage>> potentialOverlaps)
+        public Exception CreatePipelineConcurrentPropagationException(IEnumerable<AmbivalentPipelineReference> potentialOverlaps)
         {
             var builder = new StringBuilder(1000);
             builder
