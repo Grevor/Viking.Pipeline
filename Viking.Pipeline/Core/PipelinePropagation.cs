@@ -30,7 +30,7 @@ namespace Viking.Pipeline
         public long PipelineVersionOfCurrentPropagation { get; private set; }
 
 
-        public PipelinePropagation(IEnumerable<IPipelineStage> initialStages, Dictionary<WeakHashKey<IPipelineStage>, List<WeakReference<IPipelineStage>>> dependent)
+        public PipelinePropagation(IEnumerable<IPipelineStage> initialStages, Dictionary<AmbivalentReference<IPipelineStage>, List<WeakReference<IPipelineStage>>> dependent)
         {
             Analyzer = new PipelineAnalyzer(dependent);
             ErrorHandler = new PipelineErrorHandler(initialStages);
@@ -68,8 +68,10 @@ namespace Viking.Pipeline
 
             try
             {
-                foreach (var stage in CurrentPropagationTopology)
+                for(int stageIndex = 0; stageIndex < CurrentPropagationTopology.Count;++stageIndex)
                 {
+                    var stage = CurrentPropagationTopology[stageIndex];
+                    CurrentPropagationTopology[stageIndex] = default;
                     if (!invalidator.IsInvalidated(stage.Stage))
                         continue;
 

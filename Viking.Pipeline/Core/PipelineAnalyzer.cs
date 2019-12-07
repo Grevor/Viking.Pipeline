@@ -13,17 +13,17 @@ namespace Viking.Pipeline
             PermanentMark
         }
 
-        public PipelineAnalyzer(Dictionary<WeakHashKey<IPipelineStage>, List<WeakReference<IPipelineStage>>> dependentStages)
+        public PipelineAnalyzer(Dictionary<AmbivalentReference<IPipelineStage>, List<WeakReference<IPipelineStage>>> dependentStages)
         {
             DependentStages = dependentStages ?? throw new ArgumentNullException(nameof(dependentStages));
         }
 
-        private Dictionary<WeakHashKey<IPipelineStage>, List<WeakReference<IPipelineStage>>> DependentStages { get; }
+        private Dictionary<AmbivalentReference<IPipelineStage>, List<WeakReference<IPipelineStage>>> DependentStages { get; }
         private Dictionary<IPipelineStage, Mark> Marks { get; } = new Dictionary<IPipelineStage, Mark>();
         private Dictionary<IPipelineStage, TarjanData> Tarjan { get; } = new Dictionary<IPipelineStage, TarjanData>();
 
         private IEnumerable<WeakReference<IPipelineStage>> GetDependentStages(IPipelineStage stage)
-            => DependentStages.TryGetValue(new WeakHashKey<IPipelineStage>(stage, true), out var deps) ? deps : Enumerable.Empty<WeakReference<IPipelineStage>>();
+            => DependentStages.TryGetValue(new AmbivalentReference<IPipelineStage>(stage, true), out var deps) ? deps : Enumerable.Empty<WeakReference<IPipelineStage>>();
 
         #region Topology Sort
         private Mark GetMark(IPipelineStage stage) => Marks.TryGetValue(stage, out var mark) ? mark : Mark.NoMark;

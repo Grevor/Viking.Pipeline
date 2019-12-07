@@ -2,14 +2,14 @@
 
 namespace Viking.Pipeline
 {
-    internal struct WeakHashKey<T> : IEquatable<WeakHashKey<T>> where T : class
+    internal struct AmbivalentReference<T> : IEquatable<AmbivalentReference<T>> where T : class
     {
         private int HashCode { get; }
         private WeakReference<T>? WeakReference { get; }
         private T? StrongReference { get; }
 
-        public WeakHashKey(T target) : this(target, false) { }
-        public WeakHashKey(T target, bool isStrong)
+        public AmbivalentReference(T target) : this(target, false) { }
+        public AmbivalentReference(T target, bool isStrong)
         {
             if (isStrong)
             {
@@ -35,11 +35,11 @@ namespace Viking.Pipeline
             return WeakReference!.TryGetTarget(out target);
         }
 
-        public override bool Equals(object obj) => obj is WeakHashKey<T> key && Equals(key);
-        public bool Equals(WeakHashKey<T> other)
+        public override bool Equals(object obj) => obj is AmbivalentReference<T> key && Equals(key);
+        public bool Equals(AmbivalentReference<T> other)
         {
             var aAlive = TryGetTarget(out var a);
-            var bAlive = TryGetTarget(out var b);
+            var bAlive = other.TryGetTarget(out var b);
 
             if (aAlive == false && bAlive == false)
                 return HashCode == other.HashCode;
@@ -48,7 +48,7 @@ namespace Viking.Pipeline
 
         public override int GetHashCode() => HashCode;
 
-        public static bool operator ==(WeakHashKey<T> left, WeakHashKey<T> right) => left.Equals(right);
-        public static bool operator !=(WeakHashKey<T> left, WeakHashKey<T> right) => !(left == right);
+        public static bool operator ==(AmbivalentReference<T> left, AmbivalentReference<T> right) => left.Equals(right);
+        public static bool operator !=(AmbivalentReference<T> left, AmbivalentReference<T> right) => !(left == right);
     }
 }
