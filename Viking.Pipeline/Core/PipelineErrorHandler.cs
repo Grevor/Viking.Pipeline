@@ -56,7 +56,7 @@ namespace Viking.Pipeline
             return new PipelineException(builder.ToString());
         }
 
-        public Exception CreatePipelineConcurrentPropagationException(IEnumerable<IPipelineStage> potentialOverlaps)
+        public Exception CreatePipelineConcurrentPropagationException(IEnumerable<AmbivalentReference<IPipelineStage>> potentialOverlaps)
         {
             var builder = new StringBuilder(1000);
             builder
@@ -65,8 +65,8 @@ namespace Viking.Pipeline
             AppendInitialStages(builder);
 
             builder.AppendSmallHeader("Potential stages with concurrent propagation");
-            foreach (var potential in potentialOverlaps)
-                builder.AppendLine(potential.GetErrorInfo());
+            foreach (var potential in potentialOverlaps.Select(reference => reference.TryGetTarget(out var target) ? target : null).Where(target => target != null))
+                builder.AppendLine(potential!.GetErrorInfo());
 
             return new PipelineException(builder.ToString());
         }

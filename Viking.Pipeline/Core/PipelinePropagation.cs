@@ -23,9 +23,7 @@ namespace Viking.Pipeline
 
         public List<PipelineStagePropagation>? CurrentPropagationTopology { get; private set; }
 
-        public HashSet<IPipelineStage> StagesThisPropagation { get; } = new HashSet<IPipelineStage>();
-
-        public HashSet<IPipelineStage> StagesToIgnore { get; } = new HashSet<IPipelineStage>();
+        public HashSet<AmbivalentReference<IPipelineStage>> StagesThisPropagation { get; } = new HashSet<AmbivalentReference<IPipelineStage>>(AmbivalentReference<IPipelineStage>.InequalityOnDeadComparer);
 
         public long PipelineVersionOfCurrentPropagation { get; private set; }
 
@@ -44,18 +42,12 @@ namespace Viking.Pipeline
             if (CurrentPropagationTopology == null)
                 throw ErrorHandler.CreatePipelineCycleException(Analyzer.FindCycles(stages));
 
-            CurrentPropagationTopology = CurrentPropagationTopology.Where(stage => !StagesToIgnore.Contains(stage.Stage)).ToList();
-
             StagesThisPropagation.Clear();
             foreach (var stage in CurrentPropagationTopology.Select(s => s.Stage))
-                StagesThisPropagation.Add(stage);
+                StagesThisPropagation.Add(new AmbivalentReference<IPipelineStage>(stage));
         }
 
-        public void PrepareForPotentialNewPropagation()
-        {
-            StagesToIgnore.UnionWith(StagesThisPropagation);
-            StagesThisPropagation.Clear();
-        }
+        public void PrepareForPotentialNewPropagation() => StagesThisPropagation.Clear();
 
         public void Propagate(IEnumerable<IPipelineStage> stages)
         {
@@ -89,9 +81,9 @@ namespace Viking.Pipeline
             }
         }
 
-        public void CheckForConcurrentPropagation(HashSet<IPipelineStage> currentlyUpdatingPipelineStages)
+        public void CheckForConcurrentPropagation(HashSet<AmbivalentReference<IPipelineStage>> currentlyUpdatingPipelineStages)
         {
-            var potentialConcurrentPropagation = new HashSet<IPipelineStage>(StagesThisPropagation);
+            var potentialConcurrentPropagation = new HashSet<AmbivalentReference<IPipelineStage>>(StagesThisPropagation);
             potentialConcurrentPropagation.IntersectWith(currentlyUpdatingPipelineStages);
 
             if (potentialConcurrentPropagation.Count > 0)

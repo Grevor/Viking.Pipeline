@@ -12,7 +12,8 @@ namespace Viking.Pipeline
         private const int MinimumOperationsRequiredBeforeCleanup = 100;
 
         #region Lock-protected Core Properties
-        private static HashSet<IPipelineStage> PotentialStagesForUpdate { get; } = new HashSet<IPipelineStage>();
+        private static HashSet<AmbivalentReference<IPipelineStage>> PotentialStagesForUpdate { get; } 
+            = new HashSet<AmbivalentReference<IPipelineStage>>(AmbivalentReference<IPipelineStage>.InequalityOnDeadComparer);
         private static Dictionary<AmbivalentReference<IPipelineStage>, List<WeakReference<IPipelineStage>>> Dependencies { get; }
             = new Dictionary<AmbivalentReference<IPipelineStage>, List<WeakReference<IPipelineStage>>>();
         private static int OperationsSinceLastCleanup { get; set; }
@@ -50,6 +51,9 @@ namespace Viking.Pipeline
 
             var removals = TotalWeakKeys - keys;
             TotalWeakKeys = keys;
+
+            PotentialStagesForUpdate.RemoveWhere(reference => !reference.IsAlive);
+
             return removals;
         }
         private static void MarkPipelineAsUpdated() => ++PipelineVersion;

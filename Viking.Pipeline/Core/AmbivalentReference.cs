@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Viking.Pipeline
 {
     internal struct AmbivalentReference<T> : IEquatable<AmbivalentReference<T>> where T : class
     {
+        public static IEqualityComparer<AmbivalentReference<T>> InequalityOnDeadComparer { get; } = new InequalityOnDead();
+
         private int HashCode { get; }
         private WeakReference<T>? WeakReference { get; }
         private T? StrongReference { get; }
@@ -50,5 +53,23 @@ namespace Viking.Pipeline
 
         public static bool operator ==(AmbivalentReference<T> left, AmbivalentReference<T> right) => left.Equals(right);
         public static bool operator !=(AmbivalentReference<T> left, AmbivalentReference<T> right) => !(left == right);
+
+        private class InequalityOnDead : IEqualityComparer<AmbivalentReference<T>>
+        {
+            public bool Equals(AmbivalentReference<T> x, AmbivalentReference<T> y)
+            {
+                var aAlive = x.TryGetTarget(out var a);
+                var bAlive = y.TryGetTarget(out var b);
+
+                if (aAlive == false && bAlive == false)
+                    return false;
+                return aAlive == bAlive && Equals(a, b);
+            }
+
+            public int GetHashCode(AmbivalentReference<T> obj)
+            {
+                return obj.HashCode;
+            }
+        }
     }
 }
