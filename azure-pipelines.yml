@@ -41,7 +41,7 @@ steps:
   inputs:
     command: 'pack'
     outputDir: '$(Build.ArtifactStagingDirectory)'
-    packagesToPack: '**/*.csproj'
+    packagesToPack: '**/Viking.Pipeline.csproj'
     nobuild: true
     includesymbols: true
     versioningScheme: 'off'
