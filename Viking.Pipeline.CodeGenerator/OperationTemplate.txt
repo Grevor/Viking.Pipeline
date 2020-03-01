@@ -93,6 +93,22 @@ namespace Viking.Pipeline
         /// </summary>
         $TypeParameterComments$
         /// <typeparam name="TOutput">The stage output type.</typeparam>
+        /// <param name="operation">The operation.</param>
+        $ParameterComments$
+        /// <returns>The pipeline stage reflecting the result of the operation.</returns>
+		public static IPipelineStage<TOutput> Create<$GenericParameters$, TOutput>(
+			Func<$GenericParameters$, TOutput> operation, 
+			$ConstructorParameters$)
+			=> new OperationPipelineStage<$GenericParameters$, TOutput>(
+				operation.GetClassAndMethod(),
+				operation,
+				$RepassingParameters$);
+
+		/// <summary>
+        /// Create a new pipeline operation.
+        /// </summary>
+        $TypeParameterComments$
+        /// <typeparam name="TOutput">The stage output type.</typeparam>
         /// <param name="name">The name of the operation.</param>
         /// <param name="operation">The pipeline from which to retrieve the operation.</param>
         $ParameterComments$

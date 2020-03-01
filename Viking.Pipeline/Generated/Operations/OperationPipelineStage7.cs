@@ -180,6 +180,40 @@ namespace Viking.Pipeline
 		/// <typeparam name="TInput6">The type of input number 6.</typeparam>
 		/// <typeparam name="TInput7">The type of input number 7.</typeparam>
         /// <typeparam name="TOutput">The stage output type.</typeparam>
+        /// <param name="operation">The operation.</param>
+        /// <param name="input1">Input number 1.</param>
+		/// <param name="input2">Input number 2.</param>
+		/// <param name="input3">Input number 3.</param>
+		/// <param name="input4">Input number 4.</param>
+		/// <param name="input5">Input number 5.</param>
+		/// <param name="input6">Input number 6.</param>
+		/// <param name="input7">Input number 7.</param>
+        /// <returns>The pipeline stage reflecting the result of the operation.</returns>
+		public static IPipelineStage<TOutput> Create<TInput1, TInput2, TInput3, TInput4, TInput5, TInput6, TInput7, TOutput>(
+			Func<TInput1, TInput2, TInput3, TInput4, TInput5, TInput6, TInput7, TOutput> operation, 
+			IPipelineStage<TInput1> input1,
+			IPipelineStage<TInput2> input2,
+			IPipelineStage<TInput3> input3,
+			IPipelineStage<TInput4> input4,
+			IPipelineStage<TInput5> input5,
+			IPipelineStage<TInput6> input6,
+			IPipelineStage<TInput7> input7)
+			=> new OperationPipelineStage<TInput1, TInput2, TInput3, TInput4, TInput5, TInput6, TInput7, TOutput>(
+				operation.GetClassAndMethod(),
+				operation,
+				input1, input2, input3, input4, input5, input6, input7);
+
+		/// <summary>
+        /// Create a new pipeline operation.
+        /// </summary>
+        /// <typeparam name="TInput1">The type of input number 1.</typeparam>
+		/// <typeparam name="TInput2">The type of input number 2.</typeparam>
+		/// <typeparam name="TInput3">The type of input number 3.</typeparam>
+		/// <typeparam name="TInput4">The type of input number 4.</typeparam>
+		/// <typeparam name="TInput5">The type of input number 5.</typeparam>
+		/// <typeparam name="TInput6">The type of input number 6.</typeparam>
+		/// <typeparam name="TInput7">The type of input number 7.</typeparam>
+        /// <typeparam name="TOutput">The stage output type.</typeparam>
         /// <param name="name">The name of the operation.</param>
         /// <param name="operation">The pipeline from which to retrieve the operation.</param>
         /// <param name="input1">Input number 1.</param>

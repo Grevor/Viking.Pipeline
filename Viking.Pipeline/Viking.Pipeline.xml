@@ -51,6 +51,30 @@
             <param name="value">The new value.</param>
             <returns>True if the value changed.</returns>
         </member>
+        <member name="T:Viking.Pipeline.AssignablePipelineStage">
+            <summary>
+            Convenience methods for creating <see cref="T:Viking.Pipeline.AssignablePipelineStage`1"/>.
+            </summary>
+        </member>
+        <member name="M:Viking.Pipeline.AssignablePipelineStage.Create``1(System.String,``0)">
+            <summary>
+            Creates a new <see cref="T:Viking.Pipeline.AssignablePipelineStage`1"/> with the specified name and initial value, using the default <see cref="T:System.Collections.Generic.IEqualityComparer`1"/> to check for equality.
+            </summary>
+            <param name="name">The name of the value.</param>
+            <param name="initial">The initial value.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="name"/> is null.</exception>
+            <returns>The assignable pipeline stage.</returns>
+        </member>
+        <member name="M:Viking.Pipeline.AssignablePipelineStage.Create``1(System.String,``0,System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+            Creates a new <see cref="T:Viking.Pipeline.AssignablePipelineStage`1"/> with the specified name, initial value and comparer.
+            </summary>
+            <param name="name">The name of the value.</param>
+            <param name="initial">The initial value.</param>
+            <param name="comparer">The comparer to use for equality comparison.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="name"/> or <paramref name="comparer"/> is null.</exception>
+            <returns>The assignable pipeline stage.</returns>
+        </member>
         <member name="T:Viking.Pipeline.CachingPipelineStage`1">
             <summary>
             Provides caching of values in the pipeline to prevent multiple retrievals from upstream.
@@ -478,6 +502,16 @@
             <param name="input1">Input number 1.</param>
             <returns>The pipeline stage reflecting the result of the operation.</returns>
         </member>
+        <member name="M:Viking.Pipeline.PipelineOperations.Create``2(System.Func{``0,``1},Viking.Pipeline.IPipelineStage{``0})">
+            <summary>
+            Create a new pipeline operation.
+            </summary>
+            <typeparam name="TInput1">The type of input number 1.</typeparam>
+            <typeparam name="TOutput">The stage output type.</typeparam>
+            <param name="operation">The operation.</param>
+            <param name="input1">Input number 1.</param>
+            <returns>The pipeline stage reflecting the result of the operation.</returns>
+        </member>
         <member name="M:Viking.Pipeline.PipelineOperations.Create``2(System.String,Viking.Pipeline.IPipelineStage{System.Func{``0,``1}},Viking.Pipeline.IPipelineStage{``0})">
             <summary>
             Create a new pipeline operation.
@@ -497,6 +531,18 @@
             <typeparam name="TInput2">The type of input number 2.</typeparam>
             <typeparam name="TOutput">The stage output type.</typeparam>
             <param name="name">The name of the operation.</param>
+            <param name="operation">The operation.</param>
+            <param name="input1">Input number 1.</param>
+            <param name="input2">Input number 2.</param>
+            <returns>The pipeline stage reflecting the result of the operation.</returns>
+        </member>
+        <member name="M:Viking.Pipeline.PipelineOperations.Create``3(System.Func{``0,``1,``2},Viking.Pipeline.IPipelineStage{``0},Viking.Pipeline.IPipelineStage{``1})">
+            <summary>
+            Create a new pipeline operation.
+            </summary>
+            <typeparam name="TInput1">The type of input number 1.</typeparam>
+            <typeparam name="TInput2">The type of input number 2.</typeparam>
+            <typeparam name="TOutput">The stage output type.</typeparam>
             <param name="operation">The operation.</param>
             <param name="input1">Input number 1.</param>
             <param name="input2">Input number 2.</param>
@@ -530,6 +576,20 @@
             <param name="input3">Input number 3.</param>
             <returns>The pipeline stage reflecting the result of the operation.</returns>
         </member>
+        <member name="M:Viking.Pipeline.PipelineOperations.Create``4(System.Func{``0,``1,``2,``3},Viking.Pipeline.IPipelineStage{``0},Viking.Pipeline.IPipelineStage{``1},Viking.Pipeline.IPipelineStage{``2})">
+            <summary>
+            Create a new pipeline operation.
+            </summary>
+            <typeparam name="TInput1">The type of input number 1.</typeparam>
+            <typeparam name="TInput2">The type of input number 2.</typeparam>
+            <typeparam name="TInput3">The type of input number 3.</typeparam>
+            <typeparam name="TOutput">The stage output type.</typeparam>
+            <param name="operation">The operation.</param>
+            <param name="input1">Input number 1.</param>
+            <param name="input2">Input number 2.</param>
+            <param name="input3">Input number 3.</param>
+            <returns>The pipeline stage reflecting the result of the operation.</returns>
+        </member>
         <member name="M:Viking.Pipeline.PipelineOperations.Create``4(System.String,Viking.Pipeline.IPipelineStage{System.Func{``0,``1,``2,``3}},Viking.Pipeline.IPipelineStage{``0},Viking.Pipeline.IPipelineStage{``1},Viking.Pipeline.IPipelineStage{``2})">
             <summary>
             Create a new pipeline operation.
@@ -555,6 +615,22 @@
             <typeparam name="TInput4">The type of input number 4.</typeparam>
             <typeparam name="TOutput">The stage output type.</typeparam>
             <param name="name">The name of the operation.</param>
+            <param name="operation">The operation.</param>
+            <param name="input1">Input number 1.</param>
+            <param name="input2">Input number 2.</param>
+            <param name="input3">Input number 3.</param>
+            <param name="input4">Input number 4.</param>
+            <returns>The pipeline stage reflecting the result of the operation.</returns>
+        </member>
+        <member name="M:Viking.Pipeline.PipelineOperations.Create``5(System.Func{``0,``1,``2,``3,``4},Viking.Pipeline.IPipelineStage{``0},Viking.Pipeline.IPipelineStage{``1},Viking.Pipeline.IPipelineStage{``2},Viking.Pipeline.IPipelineStage{``3})">
+            <summary>
+            Create a new pipeline operation.
+            </summary>
+            <typeparam name="TInput1">The type of input number 1.</typeparam>
+            <typeparam name="TInput2">The type of input number 2.</typeparam>
+            <typeparam name="TInput3">The type of input number 3.</typeparam>
+            <typeparam name="TInput4">The type of input number 4.</typeparam>
+            <typeparam name="TOutput">The stage output type.</typeparam>
             <param name="operation">The operation.</param>
             <param name="input1">Input number 1.</param>
             <param name="input2">Input number 2.</param>
@@ -598,6 +674,24 @@
             <param name="input5">Input number 5.</param>
             <returns>The pipeline stage reflecting the result of the operation.</returns>
         </member>
+        <member name="M:Viking.Pipeline.PipelineOperations.Create``6(System.Func{``0,``1,``2,``3,``4,``5},Viking.Pipeline.IPipelineStage{``0},Viking.Pipeline.IPipelineStage{``1},Viking.Pipeline.IPipelineStage{``2},Viking.Pipeline.IPipelineStage{``3},Viking.Pipeline.IPipelineStage{``4})">
+            <summary>
+            Create a new pipeline operation.
+            </summary>
+            <typeparam name="TInput1">The type of input number 1.</typeparam>
+            <typeparam name="TInput2">The type of input number 2.</typeparam>
+            <typeparam name="TInput3">The type of input number 3.</typeparam>
+            <typeparam name="TInput4">The type of input number 4.</typeparam>
+            <typeparam name="TInput5">The type of input number 5.</typeparam>
+            <typeparam name="TOutput">The stage output type.</typeparam>
+            <param name="operation">The operation.</param>
+            <param name="input1">Input number 1.</param>
+            <param name="input2">Input number 2.</param>
+            <param name="input3">Input number 3.</param>
+            <param name="input4">Input number 4.</param>
+            <param name="input5">Input number 5.</param>
+            <returns>The pipeline stage reflecting the result of the operation.</returns>
+        </member>
         <member name="M:Viking.Pipeline.PipelineOperations.Create``6(System.String,Viking.Pipeline.IPipelineStage{System.Func{``0,``1,``2,``3,``4,``5}},Viking.Pipeline.IPipelineStage{``0},Viking.Pipeline.IPipelineStage{``1},Viking.Pipeline.IPipelineStage{``2},Viking.Pipeline.IPipelineStage{``3},Viking.Pipeline.IPipelineStage{``4})">
             <summary>
             Create a new pipeline operation.
@@ -629,6 +723,26 @@
             <typeparam name="TInput6">The type of input number 6.</typeparam>
             <typeparam name="TOutput">The stage output type.</typeparam>
             <param name="name">The name of the operation.</param>
+            <param name="operation">The operation.</param>
+            <param name="input1">Input number 1.</param>
+            <param name="input2">Input number 2.</param>
+            <param name="input3">Input number 3.</param>
+            <param name="input4">Input number 4.</param>
+            <param name="input5">Input number 5.</param>
+            <param name="input6">Input number 6.</param>
+            <returns>The pipeline stage reflecting the result of the operation.</returns>
+        </member>
+        <member name="M:Viking.Pipeline.PipelineOperations.Create``7(System.Func{``0,``1,``2,``3,``4,``5,``6},Viking.Pipeline.IPipelineStage{``0},Viking.Pipeline.IPipelineStage{``1},Viking.Pipeline.IPipelineStage{``2},Viking.Pipeline.IPipelineStage{``3},Viking.Pipeline.IPipelineStage{``4},Viking.Pipeline.IPipelineStage{``5})">
+            <summary>
+            Create a new pipeline operation.
+            </summary>
+            <typeparam name="TInput1">The type of input number 1.</typeparam>
+            <typeparam name="TInput2">The type of input number 2.</typeparam>
+            <typeparam name="TInput3">The type of input number 3.</typeparam>
+            <typeparam name="TInput4">The type of input number 4.</typeparam>
+            <typeparam name="TInput5">The type of input number 5.</typeparam>
+            <typeparam name="TInput6">The type of input number 6.</typeparam>
+            <typeparam name="TOutput">The stage output type.</typeparam>
             <param name="operation">The operation.</param>
             <param name="input1">Input number 1.</param>
             <param name="input2">Input number 2.</param>
@@ -682,6 +796,28 @@
             <param name="input7">Input number 7.</param>
             <returns>The pipeline stage reflecting the result of the operation.</returns>
         </member>
+        <member name="M:Viking.Pipeline.PipelineOperations.Create``8(System.Func{``0,``1,``2,``3,``4,``5,``6,``7},Viking.Pipeline.IPipelineStage{``0},Viking.Pipeline.IPipelineStage{``1},Viking.Pipeline.IPipelineStage{``2},Viking.Pipeline.IPipelineStage{``3},Viking.Pipeline.IPipelineStage{``4},Viking.Pipeline.IPipelineStage{``5},Viking.Pipeline.IPipelineStage{``6})">
+            <summary>
+            Create a new pipeline operation.
+            </summary>
+            <typeparam name="TInput1">The type of input number 1.</typeparam>
+            <typeparam name="TInput2">The type of input number 2.</typeparam>
+            <typeparam name="TInput3">The type of input number 3.</typeparam>
+            <typeparam name="TInput4">The type of input number 4.</typeparam>
+            <typeparam name="TInput5">The type of input number 5.</typeparam>
+            <typeparam name="TInput6">The type of input number 6.</typeparam>
+            <typeparam name="TInput7">The type of input number 7.</typeparam>
+            <typeparam name="TOutput">The stage output type.</typeparam>
+            <param name="operation">The operation.</param>
+            <param name="input1">Input number 1.</param>
+            <param name="input2">Input number 2.</param>
+            <param name="input3">Input number 3.</param>
+            <param name="input4">Input number 4.</param>
+            <param name="input5">Input number 5.</param>
+            <param name="input6">Input number 6.</param>
+            <param name="input7">Input number 7.</param>
+            <returns>The pipeline stage reflecting the result of the operation.</returns>
+        </member>
         <member name="M:Viking.Pipeline.PipelineOperations.Create``8(System.String,Viking.Pipeline.IPipelineStage{System.Func{``0,``1,``2,``3,``4,``5,``6,``7}},Viking.Pipeline.IPipelineStage{``0},Viking.Pipeline.IPipelineStage{``1},Viking.Pipeline.IPipelineStage{``2},Viking.Pipeline.IPipelineStage{``3},Viking.Pipeline.IPipelineStage{``4},Viking.Pipeline.IPipelineStage{``5},Viking.Pipeline.IPipelineStage{``6})">
             <summary>
             Create a new pipeline operation.
@@ -719,6 +855,30 @@
             <typeparam name="TInput8">The type of input number 8.</typeparam>
             <typeparam name="TOutput">The stage output type.</typeparam>
             <param name="name">The name of the operation.</param>
+            <param name="operation">The operation.</param>
+            <param name="input1">Input number 1.</param>
+            <param name="input2">Input number 2.</param>
+            <param name="input3">Input number 3.</param>
+            <param name="input4">Input number 4.</param>
+            <param name="input5">Input number 5.</param>
+            <param name="input6">Input number 6.</param>
+            <param name="input7">Input number 7.</param>
+            <param name="input8">Input number 8.</param>
+            <returns>The pipeline stage reflecting the result of the operation.</returns>
+        </member>
+        <member name="M:Viking.Pipeline.PipelineOperations.Create``9(System.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8},Viking.Pipeline.IPipelineStage{``0},Viking.Pipeline.IPipelineStage{``1},Viking.Pipeline.IPipelineStage{``2},Viking.Pipeline.IPipelineStage{``3},Viking.Pipeline.IPipelineStage{``4},Viking.Pipeline.IPipelineStage{``5},Viking.Pipeline.IPipelineStage{``6},Viking.Pipeline.IPipelineStage{``7})">
+            <summary>
+            Create a new pipeline operation.
+            </summary>
+            <typeparam name="TInput1">The type of input number 1.</typeparam>
+            <typeparam name="TInput2">The type of input number 2.</typeparam>
+            <typeparam name="TInput3">The type of input number 3.</typeparam>
+            <typeparam name="TInput4">The type of input number 4.</typeparam>
+            <typeparam name="TInput5">The type of input number 5.</typeparam>
+            <typeparam name="TInput6">The type of input number 6.</typeparam>
+            <typeparam name="TInput7">The type of input number 7.</typeparam>
+            <typeparam name="TInput8">The type of input number 8.</typeparam>
+            <typeparam name="TOutput">The stage output type.</typeparam>
             <param name="operation">The operation.</param>
             <param name="input1">Input number 1.</param>
             <param name="input2">Input number 2.</param>

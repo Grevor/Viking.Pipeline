@@ -96,6 +96,22 @@ namespace Viking.Pipeline
         /// </summary>
         /// <typeparam name="TInput1">The type of input number 1.</typeparam>
         /// <typeparam name="TOutput">The stage output type.</typeparam>
+        /// <param name="operation">The operation.</param>
+        /// <param name="input1">Input number 1.</param>
+        /// <returns>The pipeline stage reflecting the result of the operation.</returns>
+		public static IPipelineStage<TOutput> Create<TInput1, TOutput>(
+			Func<TInput1, TOutput> operation, 
+			IPipelineStage<TInput1> input1)
+			=> new OperationPipelineStage<TInput1, TOutput>(
+				operation.GetClassAndMethod(),
+				operation,
+				input1);
+
+		/// <summary>
+        /// Create a new pipeline operation.
+        /// </summary>
+        /// <typeparam name="TInput1">The type of input number 1.</typeparam>
+        /// <typeparam name="TOutput">The stage output type.</typeparam>
         /// <param name="name">The name of the operation.</param>
         /// <param name="operation">The pipeline from which to retrieve the operation.</param>
         /// <param name="input1">Input number 1.</param>
