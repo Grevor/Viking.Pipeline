@@ -35,13 +35,13 @@ namespace Viking.Pipeline.Tests
             test.AssertInvalidations(1);
         }
 
-        [Test]
-        [Repeat(3)]
+        [Test(Description = "Test that concurrent retrievals are relegated to one single retrieval. Sadly, this test is a bit volatile.")]
+        [Repeat(5)]
         public void ConcurrentRetrievalsRetrievesOnlyOnceFromUpstreamStage()
         {
-            using EventWaitHandle completeRetrievalFlag = new EventWaitHandle(false, EventResetMode.ManualReset);
+            using var completeRetrievalFlag = new EventWaitHandle(false, EventResetMode.ManualReset);
             using var semaphore = new SemaphoreSlim(0);
-            
+
             var input = new DataRetrievalPipelineStage<object>("", () => { completeRetrievalFlag.WaitOne(); return new object(); });
             var inputTest = input.AttachTestStage();
 
@@ -56,9 +56,13 @@ namespace Viking.Pipeline.Tests
             var task1 = Task.Run(GetObject);
             var task2 = Task.Run(GetObject);
 
+            // Attempt to get both tasks to be inside the GetValue method of the pipeline stage.
+            // This is, sadly, the best we can do with the current design. 
+            // At least we at this stage know that both tasks are in a running state.
             var oneSecond = TimeSpan.FromSeconds(1);
             Assert.IsTrue(semaphore.Wait(oneSecond));
             Assert.IsTrue(semaphore.Wait(oneSecond));
+            Thread.Sleep(oneSecond);
 
             completeRetrievalFlag.Set();
 

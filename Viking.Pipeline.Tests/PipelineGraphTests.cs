@@ -43,6 +43,23 @@ namespace Viking.Pipeline.Tests
             AssertNodeDependents(graph, test);
         }
 
+        [Test(Description = "Regression test for a propagation bug which could cause the wrong pipeline stage to be triggered when two hash codes overlapped.")]
+        public void GraphDoesNotBreakDownIfTwoStagesHaveTheSameHashCode()
+        {
+            var constantA = 10.AsPipelineConstant();
+            var constantB = 10.AsPipelineConstant();
+            var a = new SameHashPipelineStage<int>(constantA);
+            var b = new SameHashPipelineStage<int>(constantB);
+
+            var testA = a.AttachTestStage();
+            var testB = b.AttachTestStage();
+
+            constantA.Invalidate();
+
+            testA.AssertInvalidations(1);
+            testB.AssertInvalidations(0);
+        }
+
 
         private static void AssertTopologyPosition(PipelineGraph graph, int topologyIndex, IPipelineStage expected)
         {
@@ -54,6 +71,27 @@ namespace Viking.Pipeline.Tests
         {
             var node = graph.GetNode(stage);
             CollectionAssert.AreEquivalent(expected, node.DependentNodes.Select(n => n.Stage));
+        }
+
+
+
+        private class SameHashPipelineStage<T> : IPipelineStage<T>
+        {
+            public SameHashPipelineStage(IPipelineStage<T> input)
+            {
+                Input = input ?? throw new System.ArgumentNullException(nameof(input));
+                this.AddDependencies(input);
+            }
+
+            public string Name => "Name";
+
+            public IPipelineStage<T> Input { get; }
+
+            public void OnInvalidate(IPipelineInvalidator invalidator) => invalidator.InvalidateAllDependentStages(this);
+
+            public override int GetHashCode() => 0;
+
+            public T GetValue() => Input.GetValue();
         }
     }
 }
