@@ -68,4 +68,31 @@ namespace Viking.Pipeline
 
         public override string ToString() => FormattableString.Invariant($"Assignable value '{Name}': {Value?.ToString() ?? "<null>"}");
     }
+
+    /// <summary>
+    /// Convenience methods for creating <see cref="AssignablePipelineStage{TValue}"/>.
+    /// </summary>
+    public static class AssignablePipelineStage
+    {
+        /// <summary>
+        /// Creates a new <see cref="AssignablePipelineStage{TValue}"/> with the specified name and initial value, using the default <see cref="IEqualityComparer{T}"/> to check for equality.
+        /// </summary>
+        /// <param name="name">The name of the value.</param>
+        /// <param name="initial">The initial value.</param>
+        /// <exception cref="ArgumentNullException">If <paramref name="name"/> is null.</exception>
+        /// <returns>The assignable pipeline stage.</returns>
+        public static AssignablePipelineStage<TValue> Create<TValue>(string name, TValue initial)
+            => new AssignablePipelineStage<TValue>(name, initial);
+
+        /// <summary>
+        /// Creates a new <see cref="AssignablePipelineStage{TValue}"/> with the specified name, initial value and comparer.
+        /// </summary>
+        /// <param name="name">The name of the value.</param>
+        /// <param name="initial">The initial value.</param>
+        /// <param name="comparer">The comparer to use for equality comparison.</param>
+        /// <exception cref="ArgumentNullException">If <paramref name="name"/> or <paramref name="comparer"/> is null.</exception>
+        /// <returns>The assignable pipeline stage.</returns>
+        public static AssignablePipelineStage<TValue> Create<TValue>(string name, TValue initial, IEqualityComparer<TValue> comparer)
+            => new AssignablePipelineStage<TValue>(name, initial, comparer);
+    }
 }
