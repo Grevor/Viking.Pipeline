@@ -20,6 +20,10 @@ The pipeline library offers things like:
 
 _\* Subject to the shenananigans programmers sometimes do because we just love to make our own lives misserable_
 
+## Getting Started
+Want to try Viking.Pipeline out? Just include the NuGet package **Viking.Pipeline** in your project and you're ready to go!
+_Please note that the library is currently in prerelease. Ensure you're including prereleases when searching for it._
+
 ## Simple Examples
 Using the library is simple, and syntax is minimal for most operations. 
 The following example sets up a pipeline which takes two changeable values and multiplies them together, 
