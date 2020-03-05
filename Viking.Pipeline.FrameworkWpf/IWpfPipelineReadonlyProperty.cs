@@ -1,4 +1,4 @@
-﻿namespace Viking.Pipeline.FrameworkWpf
+﻿namespace Viking.Pipeline.Wpf
 {
     public interface IWpfPipelineReadonlyProperty<TType>
     {

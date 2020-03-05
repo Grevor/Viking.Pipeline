@@ -2966,45 +2966,6 @@
             <param name="extractor">The function used to extract a delta.</param>
             <param name="input">The pipeline stage which to extract delta from.</param>
         </member>
-        <member name="T:Viking.Pipeline.MultiplexingPipelineStage`2">
-            <summary>
-            Selects one of multiple input signals to output.
-            </summary>
-            <typeparam name="TSelect">The select signal type.</typeparam>
-            <typeparam name="TOutput">The output type.</typeparam>
-        </member>
-        <member name="M:Viking.Pipeline.MultiplexingPipelineStage`2.#ctor(System.String,Viking.Pipeline.IPipelineStage{`0},System.Collections.Generic.IDictionary{`0,Viking.Pipeline.IPipelineStage{`1}})">
-            <summary>
-            Creates a new <see cref="T:Viking.Pipeline.MultiplexingPipelineStage`2"/> with the given select signal, inputs and select signal comparer.
-            </summary>
-            <param name="name">The name of this pipeline stage.</param>
-            <param name="select">The select signal.</param>
-            <param name="inputs">The input stages.</param>
-        </member>
-        <member name="M:Viking.Pipeline.MultiplexingPipelineStage`2.#ctor(System.String,Viking.Pipeline.IPipelineStage{`0},System.Collections.Generic.IDictionary{`0,Viking.Pipeline.IPipelineStage{`1}},System.Collections.Generic.IEqualityComparer{`0})">
-            <summary>
-            Creates a new <see cref="T:Viking.Pipeline.MultiplexingPipelineStage`2"/> with the given select signal, inputs and select signal comparer.
-            </summary>
-            <param name="name">The name of this pipeline stage.</param>
-            <param name="select">The select signal.</param>
-            <param name="inputs">The input stages.</param>
-            <param name="comparer">The comparer used when comparing the select signals.</param>
-        </member>
-        <member name="M:Viking.Pipeline.MultiplexingPipelineStage`2.SetInput(`0,Viking.Pipeline.IPipelineStage{`1})">
-            <summary>
-            Adds or changes an input mapping.
-            </summary>
-            <param name="key">The key to associate with the specified input stage.</param>
-            <param name="input">The input stage.</param>
-            <exception cref="T:System.ArgumentNullException">If <paramref name="input"/> is null.</exception>
-        </member>
-        <member name="M:Viking.Pipeline.MultiplexingPipelineStage`2.RemoveInput(`0)">
-            <summary>
-            Removes an input mapping.
-            </summary>
-            <param name="key">The key to remove mapping for.</param>
-            <exception cref="T:System.ArgumentException">If <paramref name="key"/> is currently the selected input.</exception>
-        </member>
         <member name="T:Viking.Pipeline.MutuallyExclusivePipelineStage`1">
             <summary>
             Conditionally propagates invalidations based on other stages invalidation state during propagation.

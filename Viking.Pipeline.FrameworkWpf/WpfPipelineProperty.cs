@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Viking.Pipeline.FrameworkWpf
+namespace Viking.Pipeline.Wpf
 {
     public class WpfPipelineProperty<TType> : IWpfPipelineReadonlyProperty<TType>
     {

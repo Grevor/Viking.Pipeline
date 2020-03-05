@@ -7,12 +7,13 @@
     <ProjectGuid>{2FA35386-E4AD-4426-8068-79648590FB09}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Viking.Pipeline.FrameworkWpf</RootNamespace>
-    <AssemblyName>Viking.Pipeline.FrameworkWpf</AssemblyName>
+    <RootNamespace>Viking.Pipeline.Wpf</RootNamespace>
+    <AssemblyName>Viking.Pipeline.Wpf</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,6 +31,12 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>VikingPipeline.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationFramework" />
@@ -58,12 +65,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WpfPipelineProperty.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\Viking.Pipeline\Viking.Pipeline.csproj">
-      <Project>{26b91f5f-3d86-456a-be5a-e7fc155bc691}</Project>
-      <Name>Viking.Pipeline</Name>
-    </ProjectReference>
+    <PackageReference Include="Viking.Pipeline">
+      <Version>1.0.0-beta3</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="VikingPipeline.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -12,7 +12,7 @@
     <PackageLicenseFile>LICENSE.TXT</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\VikingPipeline.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>VikingPipeline.snk</AssemblyOriginatorKeyFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
@@ -35,7 +35,7 @@ Added more integration tests, added convenience functions.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\LICENSE.TXT">
+    <None Include="..\..\LICENSE.TXT">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>

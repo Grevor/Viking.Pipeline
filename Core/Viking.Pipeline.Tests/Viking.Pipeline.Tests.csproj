@@ -19,11 +19,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Viking.Pipeline\Viking.Pipeline.csproj" />
+    <Folder Include="Generated\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Generated\" />
+    <ProjectReference Include="..\Viking.Pipeline\Viking.Pipeline.csproj" />
   </ItemGroup>
 
 </Project>

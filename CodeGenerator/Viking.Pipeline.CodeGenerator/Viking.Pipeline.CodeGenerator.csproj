@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Viking.Pipeline\Viking.Pipeline.csproj" />
+    <ProjectReference Include="..\..\Core\Viking.Pipeline\Viking.Pipeline.csproj" />
   </ItemGroup>
 
   <ItemGroup>
