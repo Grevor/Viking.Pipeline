@@ -31,7 +31,7 @@ Added more integration tests, added convenience functions.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>C:\src\repos\Viking.Pipeline\Viking.Pipeline\Viking.Pipeline.xml</DocumentationFile>
+    <DocumentationFile>C:\src\repos\Viking.Pipeline\Core\Viking.Pipeline\Viking.Pipeline.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

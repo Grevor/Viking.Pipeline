@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Viking.Pipeline.Wpf", "Viking.Pipeline.FrameworkWpf\Viking.Pipeline.Wpf.csproj", "{2FA35386-E4AD-4426-8068-79648590FB09}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F3C28804-FC8A-4233-8F34-30100DD18E59}"
 	ProjectSection(SolutionItems) = preProject
 		LICENSE.TXT = LICENSE.TXT
@@ -22,16 +20,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Viking.Pipeline", "Core\Vik
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Viking.Pipeline.Tests", "Core\Viking.Pipeline.Tests\Viking.Pipeline.Tests.csproj", "{AC8ACEED-5CC8-4539-B9A1-0CDA9909079C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Viking.Pipeline.Wpf", "Wpf\Viking.Pipeline.Wpf\Viking.Pipeline.Wpf.csproj", "{2FA35386-E4AD-4426-8068-79648590FB09}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2FA35386-E4AD-4426-8068-79648590FB09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2FA35386-E4AD-4426-8068-79648590FB09}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2FA35386-E4AD-4426-8068-79648590FB09}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2FA35386-E4AD-4426-8068-79648590FB09}.Release|Any CPU.Build.0 = Release|Any CPU
 		{68C59BAA-0352-49CE-B937-D9504D7CFF4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{68C59BAA-0352-49CE-B937-D9504D7CFF4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68C59BAA-0352-49CE-B937-D9504D7CFF4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -44,15 +40,19 @@ Global
 		{AC8ACEED-5CC8-4539-B9A1-0CDA9909079C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC8ACEED-5CC8-4539-B9A1-0CDA9909079C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC8ACEED-5CC8-4539-B9A1-0CDA9909079C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FA35386-E4AD-4426-8068-79648590FB09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FA35386-E4AD-4426-8068-79648590FB09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FA35386-E4AD-4426-8068-79648590FB09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FA35386-E4AD-4426-8068-79648590FB09}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{2FA35386-E4AD-4426-8068-79648590FB09} = {1695BA25-81BD-415C-86BB-BF5607DF370C}
 		{68C59BAA-0352-49CE-B937-D9504D7CFF4E} = {AA3DFB4B-FD36-4A56-922D-1CF273037538}
 		{E8A9BCAC-FCED-456A-B3E5-06AA6C98CC80} = {636B47F3-5566-4817-AB9E-6D7340FF3DE0}
 		{AC8ACEED-5CC8-4539-B9A1-0CDA9909079C} = {636B47F3-5566-4817-AB9E-6D7340FF3DE0}
+		{2FA35386-E4AD-4426-8068-79648590FB09} = {1695BA25-81BD-415C-86BB-BF5607DF370C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D2AAEAAF-1B14-4BC7-AF4F-C0C46596ABB4}
