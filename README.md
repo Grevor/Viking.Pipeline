@@ -32,10 +32,11 @@ The following classes and functions should get you off to a good start:
 
 ## Simple Examples
 Using the library is simple, and syntax is minimal for most operations. 
-The following example sets up a pipeline which takes two changeable values and multiplies them together, 
-then caches the value to prevent multiple recalculations, 
-then adds a stage which uses the default equality comparison to determine if the downstream pipeline should be notified of changes,
-then creates a reaction which will write out any changes to console.
+The following example sets up a pipeline which
+1. takes two changeable values and multiplies them together, 
+2. then caches the value to prevent multiple recalculations, 
+3. then adds a stage which uses the default equality comparison to determine if the downstream pipeline should be notified of changes,
+4. then creates a reaction which will write out any changes to console.
 
 ```
 var input1 = new AssignablePipelineStage<int>("input 1", 10);
