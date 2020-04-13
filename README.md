@@ -22,7 +22,13 @@ _\* Subject to the shenananigans programmers sometimes do because we just love t
 
 ## Getting Started
 Want to try Viking.Pipeline out? Just include the NuGet package **Viking.Pipeline** in your project and you're ready to go!
-_Please note that the library is currently in prerelease. Ensure you're including prereleases when searching for it._
+
+The following classes and functions should get you off to a good start:
+* __AssignablePipelineStage__ - Probably the most common way to publish values to the pipeline which can change over time.
+* __[any struct or class].AsPipelineConstant()__ - Publishes a constant value to the pipeline.
+* __PipelineOperations.Create("name", [function], [input(s)])__ - Create a function taking one or more inputs and outputting one value.
+* __[any pipeline stage].WithCache()__ - Caches the output of the previous pipeline stage. Recomputation of the value will only be done if something has changed upstream.
+* __PipelineTransaction__ - Perform multiple changes atomically with only one propagation through the pipeline.
 
 ## Simple Examples
 Using the library is simple, and syntax is minimal for most operations. 
