@@ -3,11 +3,11 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Erik Nyström</Authors>
-    <Version>1.0.0-beta3</Version>
-    <Copyright>Erik Nyström 2019</Copyright>
+    <Version>1.0.0</Version>
+    <Copyright>Copyright © Erik Nyström 2020</Copyright>
     <Company />
     <Title>Viking Pipeline</Title>
-    <Description>Declarative pipeline library for C#</Description>
+    <Description>Declarative data pipeline library for C#</Description>
     <RepositoryUrl>https://github.com/Grevor/Viking.Pipeline</RepositoryUrl>
     <PackageLicenseFile>LICENSE.TXT</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -16,12 +16,10 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
-    <PackageReleaseNotes>Third (and hopefully final) beta version.
-
-Added more integration tests, added convenience functions.</PackageReleaseNotes>
+    <PackageReleaseNotes>First stable version of Viking.Pipeline.</PackageReleaseNotes>
     <RepositoryType>git</RepositoryType>
     <NeutralLanguage>en</NeutralLanguage>
-    <PackageTags>Declarative Pipeline</PackageTags>
+    <PackageTags>Update Graph, Data Graph, Declarative Pipeline</PackageTags>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
