@@ -28,6 +28,7 @@ The following classes and functions should get you off to a good start:
 * __[any struct or class].AsPipelineConstant()__ - Publishes a constant value to the pipeline.
 * __PipelineOperations.Create("name", [function], [input(s)])__ - Create a function taking one or more inputs and outputting one value.
 * __[any pipeline stage].WithCache()__ - Caches the output of the previous pipeline stage. Recomputation of the value will only be done if something has changed upstream.
+* __[any pipeline stage].CreateReaction(...)__ - Define a function which will be called with the results of zero or more pipeline stages if any of them change as a result of the entire computation.
 * __PipelineTransaction__ - Perform multiple changes atomically with only one propagation through the pipeline.
 
 ## Simple Examples
