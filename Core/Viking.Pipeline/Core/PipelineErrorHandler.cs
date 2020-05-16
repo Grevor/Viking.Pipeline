@@ -18,7 +18,7 @@ namespace Viking.Pipeline
         private Dictionary<IPipelineStage, List<IPipelineStage>> ActualExecution { get; } = new Dictionary<IPipelineStage, List<IPipelineStage>>();
 
         public void SetCurrentStage(IPipelineStage stage) => ExecutionOrder.Add(stage);
-        public void SetDependent(List<IPipelineStage> dependents) => ActualExecution.Add(CurrentStage, dependents);
+        public void SetDependent(List<IPipelineStage> dependents) => ActualExecution.Add(CurrentStage, new List<IPipelineStage>(dependents));
 
         private static string InitialHeader => "Exception while propagating pipeline update";
 
@@ -88,10 +88,18 @@ namespace Viking.Pipeline
             foreach (var stage in ExecutionOrder)
                 AppendTrace(builder, stage);
         }
+
+        private static string TraceLineStart { get; } = Environment.NewLine + "\t-> ";
         private void AppendTrace(StringBuilder builder, IPipelineStage stage)
         {
-            builder.AppendSmallHeader(stage.Name)
-                .AppendLine(string.Join(Environment.NewLine + "\t-> ", ActualExecution[stage].Select(s => s.GetErrorInfo())))
+            builder.AppendSmallHeader(stage.Name);
+
+            if (!ActualExecution.TryGetValue(stage, out var invalidatedStages) || invalidatedStages.Count < 1)
+                return;
+
+            builder
+                .Append("\t-> ")
+                .AppendLine(string.Join(TraceLineStart, ActualExecution[stage].Select(s => s.GetErrorInfo())))
                 .AppendLine();
         }
     }
@@ -109,6 +117,6 @@ namespace Viking.Pipeline
 
         public static StringBuilder AppendSmallHeader(this StringBuilder builder, string header) => builder.Append("# ").Append(header).AppendLine(" #");
         public static StringBuilder AppendIndentedLine(this StringBuilder builder, string line, int indent) => builder.Append('\t', indent).AppendLine(line);
-        public static string GetErrorInfo(this IPipelineStage stage) => FormattableString.Invariant($"{stage.Name}{new string(' ', Math.Max(50 - stage.Name.Length, 1))}({stage.ToString()})");
+        public static string GetErrorInfo(this IPipelineStage stage) => FormattableString.Invariant($"{stage.Name}{new string(' ', Math.Max(50 - stage.Name.Length, 1))}({stage})");
     }
 }
