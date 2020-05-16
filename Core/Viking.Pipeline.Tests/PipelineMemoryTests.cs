@@ -35,7 +35,7 @@ namespace Viking.Pipeline.Tests
 
             var aliveObject = fork.AsThreadSafe().AsPassive();
             var deadObject = fork.AsAsync().AsDetachable();
-            deadObject = null;
+            deadObject = null; // --- needed for release test to correctly remove the dead object. Not always released in debug configuration.
 
             for (int i = 0; i < 100; ++i)
                 CreateMemoryPressure(1024 * 1024);
