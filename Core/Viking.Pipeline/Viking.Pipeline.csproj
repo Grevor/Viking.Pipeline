@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Erik Nyström</Authors>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Copyright>Copyright © Erik Nyström 2020</Copyright>
     <Company />
     <Title>Viking Pipeline</Title>
@@ -16,12 +16,12 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
-    <PackageReleaseNotes>First stable version of Viking.Pipeline.</PackageReleaseNotes>
+    <PackageReleaseNotes>Fixed an issue with error reporting when an exception happens in the pipeline.</PackageReleaseNotes>
     <RepositoryType>git</RepositoryType>
     <NeutralLanguage>en</NeutralLanguage>
     <PackageTags>Update Graph, Data Graph, Declarative Pipeline</PackageTags>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
